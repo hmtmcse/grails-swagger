@@ -1,4 +1,4 @@
-package grails.swagger
+package com.hmtmcse.gs
 
 import grails.plugins.*
 
