@@ -13,8 +13,8 @@ class GrailsSwaggerGrailsPlugin extends Plugin {
 
     // TODO Fill in these fields
     def title = "Grails Swagger" // Headline display name of the plugin
-    def author = "Your name"
-    def authorEmail = ""
+    def author = "H.M.Touhid Mia (HMTMCSE)"
+    def authorEmail = "hmtm.cse@gmail.com"
     def description = '''\
 Brief summary/description of the plugin.
 '''
