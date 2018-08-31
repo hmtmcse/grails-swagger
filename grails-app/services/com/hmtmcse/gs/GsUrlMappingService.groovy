@@ -1,7 +1,7 @@
 package com.hmtmcse.gs
 
 
-class GSResponseService {
+class GsUrlMappingService {
 
     def serviceMethod() {
 

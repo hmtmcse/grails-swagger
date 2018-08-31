@@ -1,7 +1,7 @@
 package com.hmtmcse.gs
 
 
-class GSRequestService {
+class GsResponseService {
 
     def serviceMethod() {
 

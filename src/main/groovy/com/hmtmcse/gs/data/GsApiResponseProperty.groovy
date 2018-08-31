@@ -1,17 +1,17 @@
 package com.hmtmcse.gs.data
 
-class GSApiResponseProperty {
+class GsApiResponseProperty {
 
     public String name
     public String alias = null
     public Closure<String> closure = null
 
-    GSApiResponseProperty(String name, String alias) {
+    GsApiResponseProperty(String name, String alias) {
         this.name = name
         this.alias = alias
     }
 
-    GSApiResponseProperty(String name) {
+    GsApiResponseProperty(String name) {
         this.name = name
     }
 

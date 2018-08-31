@@ -1,6 +1,6 @@
 package com.hmtmcse.gs.data
 
-class GSApiRequestProperty {
+class GsApiRequestProperty {
 
     public String name
     public Boolean isRequired = false
