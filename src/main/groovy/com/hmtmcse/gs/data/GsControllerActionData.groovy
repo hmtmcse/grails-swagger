@@ -2,8 +2,13 @@ package com.hmtmcse.gs.data
 
 class GsControllerActionData {
 
+    class GsAction{
+        String name
+        String httpMethod
+    }
+
     public String controllerName
-    public List<String> actions = new ArrayList<>()
+    public List<GsAction> actions = new ArrayList<>()
 
     String getControllerName() {
         return controllerName
@@ -13,11 +18,11 @@ class GsControllerActionData {
         this.controllerName = controllerName
     }
 
-    List<String> getActions() {
+    List<GsAction> getActions() {
         return actions
     }
 
-    void setActions(List<String> actions) {
+    void setActions(List<GsAction> actions) {
         this.actions = actions
     }
 }

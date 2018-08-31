@@ -7,8 +7,6 @@ class GsRestfulController {
 
     GsRestfulService gsRestfulService
 
-
-
     private mapResponseTo(Boolean isSuccess, String message = null, def response = null, Integer codes = 0){
         Map responseMap = [
                 "isSuccess" : isSuccess,
@@ -25,16 +23,16 @@ class GsRestfulController {
     }
 
 
-    successAcknowledge(String message){
+    def gsSuccessMessage(String message){
         return jsonResponseTo(true, message)
     }
 
-    failedAcknowledge(String message){
+    def gsFailedMessage(String message){
         return jsonResponseTo(false, message)
     }
 
 
-    successResponse(String message){
+    def gsSuccessResponse(String message){
         return jsonResponseTo(true, message)
     }
 
