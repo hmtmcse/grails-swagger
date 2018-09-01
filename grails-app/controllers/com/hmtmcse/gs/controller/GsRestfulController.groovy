@@ -1,5 +1,6 @@
 package com.hmtmcse.gs.controller
 
+import com.hmtmcse.gs.GsApiActionDefinition
 import com.hmtmcse.gs.GsRestfulService
 import grails.converters.JSON
 
@@ -35,5 +36,17 @@ class GsRestfulController {
     def gsSuccessResponse(String message){
         return jsonResponseTo(true, message)
     }
+
+    def gsRead(GsApiActionDefinition definition){}
+
+    def gsReadList(GsApiActionDefinition definition){}
+
+    def gsCreate(GsApiActionDefinition definition){}
+
+    def gsUpdate(GsApiActionDefinition definition){}
+
+    def gsDelete(GsApiActionDefinition definition){}
+
+
 
 }

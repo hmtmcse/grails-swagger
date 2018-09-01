@@ -3,7 +3,7 @@ package com.hmtmcse.gs
 import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsApiResponseProperty
 
-class GsApiDefinition {
+class GsApiActionDefinition {
 
 
     private Map<String, GsApiResponseProperty> responseProperties = new HashMap<>()
