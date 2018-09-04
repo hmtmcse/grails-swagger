@@ -8,6 +8,7 @@ class GsApiRequestProperty {
     public String errorMessage = null
     public String helpText = null
     public Closure<String> closure = null
+    public String dataType = null
 
     String getName() {
         return name

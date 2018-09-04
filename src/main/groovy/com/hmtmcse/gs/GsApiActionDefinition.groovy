@@ -11,6 +11,7 @@ class GsApiActionDefinition {
     public String definitionFor = null
     public String description = null
     public Closure queryConditions = null
+    public Boolean enableFilter = true
 
 
     public addResponseProperty(){}

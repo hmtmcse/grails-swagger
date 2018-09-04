@@ -4,6 +4,7 @@ class GsApiResponseProperty {
 
     public String name
     public String alias = null
+    public String dataType = null
     public Closure<String> closure = null
 
     GsApiResponseProperty(String name, String alias) {
