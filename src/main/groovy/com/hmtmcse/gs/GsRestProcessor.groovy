@@ -30,17 +30,17 @@ class GsRestProcessor {
 
     }
 
-    def gsRead(GsApiActionDefinition definition) {
+    def gsReadResponse(GsApiActionDefinition definition) {
         return isDefinition ? definition : responseTo(gsRestfulService.gsRead(definition))
     }
 
-    def gsReadList(GsApiActionDefinition definition){}
+    def gsReadListResponse(GsApiActionDefinition definition){}
 
-    def gsCreate(GsApiActionDefinition definition){}
+    def gsCreateResponse(GsApiActionDefinition definition){}
 
-    def gsUpdate(GsApiActionDefinition definition){}
+    def gsUpdateResponse(GsApiActionDefinition definition){}
 
-    def gsDelete(GsApiActionDefinition definition){}
+    def gsDeleteResponse(GsApiActionDefinition definition){}
 
 
 
