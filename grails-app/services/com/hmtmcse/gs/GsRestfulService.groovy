@@ -1,10 +1,12 @@
 package com.hmtmcse.gs
 
+import com.hmtmcse.gs.data.GsApiResponseData
+
 
 class GsRestfulService {
 
-    def gsRead(GsApiActionDefinition definition){
-        return "GS Read"
+    GsApiResponseData gsRead(GsApiActionDefinition definition){
+        return GsApiResponseData.failed("Failed")
     }
 
     def gsReadList(GsApiActionDefinition definition){}
