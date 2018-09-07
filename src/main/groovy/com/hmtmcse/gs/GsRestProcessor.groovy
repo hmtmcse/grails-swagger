@@ -1,14 +1,13 @@
-package com.hmtmcse.gs.controller
+package com.hmtmcse.gs
 
-import com.hmtmcse.gs.GsApiActionDefinition
-import com.hmtmcse.gs.GsRestfulService
 import grails.converters.JSON
 
-class GsRestfulController {
+class GsRestProcessor {
 
     GsRestfulService gsRestfulService
+    Boolean isDefinition = false
 
-    private mapResponseTo(Boolean isSuccess, String message = null, def response = null, Integer codes = 0){
+    private Map mapResponseTo(Boolean isSuccess, String message = null, def response = null, Integer codes = 0){
         Map responseMap = [
                 "isSuccess" : isSuccess,
         ]
@@ -24,6 +23,10 @@ class GsRestfulController {
     }
 
 
+    private def responseTo(Boolean isSuccess, String message = null, def response = null, Integer codes = 0){
+        return jsonResponseTo(isSuccess, message, response, codes)
+    }
+
     def gsSuccessMessage(String message){
         return jsonResponseTo(true, message)
     }
@@ -37,7 +40,11 @@ class GsRestfulController {
         return jsonResponseTo(true, message)
     }
 
-    def gsRead(GsApiActionDefinition definition){}
+    def gsRead(GsApiActionDefinition definition) {
+        return isDefinition ? definition : {
+            gsRestfulService.gsRead(definition)
+        }
+    }
 
     def gsReadList(GsApiActionDefinition definition){}
 

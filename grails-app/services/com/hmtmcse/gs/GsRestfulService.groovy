@@ -3,7 +3,9 @@ package com.hmtmcse.gs
 
 class GsRestfulService {
 
-    def gsRead(GsApiActionDefinition definition){}
+    def gsRead(GsApiActionDefinition definition){
+        return "GS Read"
+    }
 
     def gsReadList(GsApiActionDefinition definition){}
 
@@ -12,6 +14,7 @@ class GsRestfulService {
     def gsUpdate(GsApiActionDefinition definition){}
 
     def gsDelete(GsApiActionDefinition definition){}
+
 
 
 }
