@@ -3,7 +3,8 @@ package com.hmtmcse.gs
 import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsApiResponseProperty
 
-class GsApiActionDefinition {
+
+class GsApiActionDefinition<T> {
 
 
     private Map<String, GsApiResponseProperty> responseProperties = new HashMap<>()
@@ -12,6 +13,13 @@ class GsApiActionDefinition {
     public String description = null
     public Closure queryConditions = null
     public Boolean enableFilter = true
+    private Class<T> domain
+
+
+    public GsApiActionDefinition(Class<T> domain){
+        this.domain = domain
+    }
+
 
 
     public addResponseProperty(){}
