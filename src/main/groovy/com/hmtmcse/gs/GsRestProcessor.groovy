@@ -42,6 +42,19 @@ class GsRestProcessor {
 
     def gsDeleteResponse(GsApiActionDefinition definition){}
 
+    def list(GsApiActionDefinition definition){
+      return  render(gsRestfulService.gsReadList(definition, params) as JSON)
+    }
+
+    def get(GsApiActionDefinition definition){
+        JSON.registerObjectMarshaller(definition.domain){
+            def output = [:]
+            output['name'] = it.name
+            return output
+        }
+        return  render(definition.domain.list() as JSON)
+    }
+
 
 
 }

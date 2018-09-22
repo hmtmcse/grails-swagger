@@ -5,6 +5,7 @@ class GsApiResponseProperty {
     public String name
     public String alias = null
     public String dataType = null
+    public String defaultValue = ""
     public Closure<String> closure = null
 
     GsApiResponseProperty(String name, String alias) {
@@ -38,5 +39,17 @@ class GsApiResponseProperty {
 
     void setClosure(Closure closure) {
         this.closure = closure
+    }
+
+    String getMapKey(){
+        return alias != null ? alias : name
+    }
+
+    String getDefaultValue() {
+        return defaultValue
+    }
+
+    void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue
     }
 }
