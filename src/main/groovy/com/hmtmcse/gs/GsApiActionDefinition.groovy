@@ -14,15 +14,23 @@ class GsApiActionDefinition<T> {
     public Closure queryConditions = null
     public Boolean enableFilter = true
     private Class<T> domain
+    public T instance
 
 
     public GsApiActionDefinition(Class<T> domain){
         this.domain = domain
+        this.instance = domain.newInstance()
     }
 
 
+    public static GsApiActionDefinition instance(Class<T> domain){
+        return new GsApiActionDefinition(domain)
+    }
 
-    public addResponseProperty(){}
+    public addResponseProperty(Object property){
+       println( property.toString())
+
+    }
 
     public addRequestProperty(){}
 
