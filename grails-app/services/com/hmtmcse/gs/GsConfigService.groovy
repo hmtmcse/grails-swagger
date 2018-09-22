@@ -15,6 +15,10 @@ class GsConfigService {
         return "desc"
     }
 
+    String failedMessage() {
+        return "Unable to Process Request"
+    }
+
     public static String getUID(){
         return UUID.randomUUID().toString().toUpperCase();
     }

@@ -15,10 +15,29 @@ class GsRestfulService {
     }
 
 
-    def gsReadList(GsApiActionDefinition definition, GrailsParameterMap params){
-        registerJsonMarshaller(definition)
-        params = processParamsData(params)
-        return definition.domain.list(params)
+    private GsApiResponseData processReadListResponse(Long total, def queryData){
+        Map response = [:]
+        response.total = to
+        response.data = queryData
+        return GsApiResponseData.successResponse(response)
+    }
+
+
+    def gsReadList(GsApiActionDefinition definition, Map params){
+        GsApiResponseData responseData = GsApiResponseData.failed(gsConfigService.failedMessage())
+        try{
+            responseData.isSuccess = true
+            registerJsonMarshaller(definition)
+            params = processListParamsData(params)
+            Map response = [:]
+            response.total = definition.domain.createCriteria().count(){}
+            response.data = definition.domain.createCriteria().list(params){}
+            responseData = GsApiResponseData.successResponse(response)
+        }catch(Exception e){
+            println(e.getMessage())
+            responseData = GsApiResponseData.failed(gsConfigService.failedMessage())
+        }
+        return responseData.toMap()
     }
 
 
@@ -36,14 +55,15 @@ class GsRestfulService {
         }
     }
 
-    private GrailsParameterMap processParamsData(GrailsParameterMap params){
-        params.max = params.max ?: gsConfigService.itemsPerPage()
-        params.offset = params.offset ?: 0
+    private Map processListParamsData(Map params){
+        Map refineParams = [:]
+        refineParams.max = params.max ?: gsConfigService.itemsPerPage()
+        refineParams.offset = params.offset ?: 0
         if (!params.sort) {
-            params.sort = gsConfigService.sortColumn()
-            params.order = gsConfigService.sortOrder()
+            refineParams.sort = gsConfigService.sortColumn()
+            refineParams.order = gsConfigService.sortOrder()
         }
-        return params
+        return refineParams
     }
 
 
