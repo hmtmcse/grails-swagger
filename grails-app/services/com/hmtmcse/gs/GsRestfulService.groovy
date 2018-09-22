@@ -3,7 +3,6 @@ package com.hmtmcse.gs
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
 import grails.converters.JSON
-import grails.web.servlet.mvc.GrailsParameterMap
 
 
 class GsRestfulService {
@@ -12,14 +11,6 @@ class GsRestfulService {
 
     GsApiResponseData gsRead(GsApiActionDefinition definition){
         return GsApiResponseData.failed("Failed")
-    }
-
-
-    private GsApiResponseData processReadListResponse(Long total, def queryData){
-        Map response = [:]
-        response.total = to
-        response.data = queryData
-        return GsApiResponseData.successResponse(response)
     }
 
 
