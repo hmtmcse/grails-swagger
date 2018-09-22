@@ -8,6 +8,8 @@ import grails.web.servlet.mvc.GrailsParameterMap
 
 class GsRestfulService {
 
+    GsConfigService gsConfigService
+
     GsApiResponseData gsRead(GsApiActionDefinition definition){
         return GsApiResponseData.failed("Failed")
     }
@@ -15,8 +17,11 @@ class GsRestfulService {
 
     def gsReadList(GsApiActionDefinition definition, GrailsParameterMap params){
         registerJsonMarshaller(definition)
-        return definition.domain.list()
+        params = processParamsData(params)
+        return definition.domain.list(params)
     }
+
+
 
     def gsCreate(GsApiActionDefinition definition){}
 
@@ -31,17 +36,27 @@ class GsRestfulService {
         }
     }
 
+    private GrailsParameterMap processParamsData(GrailsParameterMap params){
+        params.max = params.max ?: gsConfigService.itemsPerPage()
+        params.offset = params.offset ?: 0
+        if (!params.sort) {
+            params.sort = gsConfigService.sortColumn()
+            params.order = gsConfigService.sortOrder()
+        }
+        return params
+    }
+
+
     private Map mapDomainDataToDefinition(def domain, Map<String, GsApiResponseProperty> responseProperties){
         def map = [:]
-        def value
         responseProperties.each {String key, GsApiResponseProperty property ->
-            value = domain[key]
-            map.put(property.getMapKey(), getValueFromDomain(key, domain, property))
+            map.put(property.getMapKey(), valueFromDomain(key, domain, property))
         }
         return map
     }
 
-    private def getValueFromDomain(String key, def domain, GsApiResponseProperty gsApiResponseProperty){
+
+    private def valueFromDomain(String key, def domain, GsApiResponseProperty gsApiResponseProperty){
         try{
           return domain[key]
         }catch(Exception e){
