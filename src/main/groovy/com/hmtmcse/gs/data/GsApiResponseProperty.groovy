@@ -29,8 +29,9 @@ class GsApiResponseProperty {
         return alias
     }
 
-    void setAlias(String alias) {
+    GsApiResponseProperty setAlias(String alias) {
         this.alias = alias
+        return this;
     }
 
     Closure getClosure() {

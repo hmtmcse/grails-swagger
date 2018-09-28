@@ -27,9 +27,19 @@ class GsApiActionDefinition<T> {
         return new GsApiActionDefinition(domain)
     }
 
-    public addResponseProperty(){
+    public GsApiActionDefinition<T> addResponseProperty(String name, String alias = null, String defaultValue = ""){
+        responseProperties.put(name,
+                new GsApiResponseProperty(name).setAlias(alias).setDefaultValue(defaultValue))
+        return this
+    }
 
+    public GsApiActionDefinition<T> addResponseProperty(GsApiResponseProperty responseProperty){
+        responseProperties.put(responseProperty.getName(), responseProperty)
+        return this
+    }
 
+    public GsApiResponseProperty responsePropertyDefine(String name){
+        return new GsApiResponseProperty(name)
     }
 
     public addRequestProperty(){}
@@ -40,10 +50,11 @@ class GsApiActionDefinition<T> {
     }
 
 
-    public includeOnlyProperty(List<String> fields){
+    public GsApiActionDefinition<T> includeOnlyProperty(List<String> fields){
         fields?.each { String field ->
             responseProperties.put(field, new GsApiResponseProperty(field))
         }
+        return this
     }
 
 

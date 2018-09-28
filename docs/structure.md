@@ -13,6 +13,7 @@ Action
         a. Example : getList, postCreate, deleteDelete
         b. The URL will be api/v1/name/list (only Allow get Request)
         c. The URL will be api/v1/name/create (only Allow post Request with json data)
+
         
 List and get data
     params
@@ -31,4 +32,12 @@ List and get data
                inList: (key: column, value: [value, value, value])
                and: { all above condition with and format}
                or: { all above condition with or format}
-               
+
+
+Request Processing Mechanism
+    Steps
+        1. Check the Allowed http method
+        2. Check the content type
+        3. Validate or Refine the parameter
+        4. Process the parameter
+        5. Process Conditions                
