@@ -1,6 +1,4 @@
 window.onload = function() {
-
-    // Build a system
     const ui = SwaggerUIBundle({
         url: "https://petstore.swagger.io/v2/swagger.json",
         dom_id: '#swagger-ui',
@@ -13,7 +11,6 @@ window.onload = function() {
             SwaggerUIBundle.plugins.DownloadUrl
         ],
         layout: "StandaloneLayout"
-    })
-
+    });
     window.ui = ui
-}
+};
