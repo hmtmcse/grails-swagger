@@ -32,6 +32,10 @@ class GsRestfulService {
     }
 
 
+    def resolveCondition(){
+
+    }
+
 
     def gsCreate(GsApiActionDefinition definition){}
 
