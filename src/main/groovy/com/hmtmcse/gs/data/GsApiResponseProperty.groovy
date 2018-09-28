@@ -31,7 +31,7 @@ class GsApiResponseProperty {
 
     GsApiResponseProperty setAlias(String alias) {
         this.alias = alias
-        return this;
+        return this
     }
 
     Closure getClosure() {
