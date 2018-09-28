@@ -14,10 +14,10 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
 
     public List<SwaggerTags> tags = new ArrayList<>();
     private SwaggerInfo info = null;
+    private SwaggerPropertyDefinition propertyDefinition = null;
 
     public String paths;
     public String securityDefinitions;
-    public String definitions;
     public String externalDocs;
 
 
@@ -36,6 +36,7 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
         return this;
     }
 
+
     public SwaggerInfo setInfo(String title){
         this.info = new SwaggerInfo(title);
         return this.info;
@@ -48,6 +49,16 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
         return tags.get(swaggerTags.index);
     }
 
+    public SwaggerPropertyDefinition addDefinition(String name, String type){
+        if (this.propertyDefinition == null){
+            this.propertyDefinition = new SwaggerPropertyDefinition();
+        }
+        return this.propertyDefinition.addDefinition(name, type);
+    }
+
+    public SwaggerProperty property(String name, String type){
+        return new SwaggerProperty().property(name, type);
+    }
 
     public HashMap<Object, Object> getDefinition(){
         definition.put("swagger", swagger);
@@ -59,6 +70,9 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
         }
         if (tags.size() != 0){
             definition.put("tags", getHashMapList(tags));
+        }
+        if (propertyDefinition != null){
+            definition.put("definitions", propertyDefinition.getDefinition());
         }
         return this.definition;
     }
