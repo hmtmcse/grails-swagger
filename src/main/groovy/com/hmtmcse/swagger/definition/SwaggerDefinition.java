@@ -62,7 +62,7 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
         return new SwaggerProperty().property(name, type);
     }
 
-    public SwaggerPath path(String name, String type){
+    public SwaggerPath path(){
         return new SwaggerPath();
     }
 

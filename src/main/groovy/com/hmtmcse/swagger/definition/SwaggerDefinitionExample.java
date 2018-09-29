@@ -17,11 +17,24 @@ public class SwaggerDefinitionExample {
 
         swaggerDefinition.host("petstore.swagger.io");
         swaggerDefinition.basePath("/v2");
-        swaggerDefinition.host("petstore.swagger.io");
         swaggerDefinition.scheme("https");
 
-        swaggerDefinition.addTag("mia", "vai").setExternalDocs("url", "xyz");
-        swaggerDefinition.addTag("kotha", "hobe");
+        swaggerDefinition.addTag("pet", "Everything about your Pets").setExternalDocs("http://swagger.io", "Find out more");
+        swaggerDefinition.addTag("store", "Access to Petstore orders");
+
+        SwaggerPath swaggerPath = swaggerDefinition.path();
+        SwaggerPathParameter parameter = swaggerDefinition.pathParameter(SwaggerConstant.IN_BODY, "body");
+        parameter.description("Pet object that needs to be added to the store");
+        parameter.required().schema("Pet");
+
+        swaggerPath.addTag("pet");
+        swaggerPath.summary("Add a new pet to the store");
+        swaggerPath.description("");
+        swaggerPath.operationId("addPet");
+
+        swaggerPath.summary("pet");
+        swaggerPath.summary("pet");
+
 
         SwaggerProperty swaggerProperty = swaggerDefinition
                 .property("id", "integer").format("int64")
