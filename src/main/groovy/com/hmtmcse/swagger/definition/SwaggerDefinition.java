@@ -16,7 +16,7 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
     private SwaggerInfo info = null;
     private SwaggerPropertyDefinition propertyDefinition = null;
 
-    public String paths;
+    public SwaggerPath paths;
     public String securityDefinitions;
     public String externalDocs;
 
@@ -58,6 +58,18 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
 
     public SwaggerProperty property(String name, String type){
         return new SwaggerProperty().property(name, type);
+    }
+
+    public SwaggerPath path(String name, String type){
+        return new SwaggerPath();
+    }
+
+    public SwaggerPathParameter pathParameter(String in, String name){
+        return new SwaggerPathParameter().start(in, name);
+    }
+
+    public SwaggerPathResponse pathResponse(String httpCode){
+        return new SwaggerPathResponse().start(httpCode);
     }
 
     public HashMap<Object, Object> getDefinition(){
