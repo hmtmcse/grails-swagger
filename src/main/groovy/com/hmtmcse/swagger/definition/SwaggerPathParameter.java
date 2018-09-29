@@ -26,7 +26,6 @@ public class SwaggerPathParameter extends SwaggerCommonDefinition{
     }
 
 
-
     public SwaggerPathParameter schema(String name){
         definition.put("schema", SwaggerMap.string().setGet("$ref", "#/definitions/" + name));
         return this;

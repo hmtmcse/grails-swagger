@@ -11,6 +11,8 @@ public class SwaggerPath {
 
     private List<String> produces = Arrays.asList(SwaggerConstant.APPLICATION_JSON);
     private List<String> consumes = new ArrayList<>();
+    private List<String> tags = new ArrayList<>();
+    private List parameters = new ArrayList<>();
 
 
     public SwaggerPath addResponseProduceType(String type) {
@@ -39,13 +41,37 @@ public class SwaggerPath {
         return this;
     }
 
+    public SwaggerPath addParameter(SwaggerPathParameter parameter) {
+        parameters.add(parameter.getDefinition());
+        return this;
+    }
+
+    public SwaggerPath addResponse(SwaggerPathResponse response) {
+        definition.put("responses", response.getDefinition());
+        return this;
+    }
+
+    public SwaggerPath addTag(String tag) {
+        tags.add(tag);
+        return this;
+    }
+
+    public SwaggerPath deprecated() {
+        definition.put("deprecated", true);
+        return this;
+    }
 
     public HashMap getDefinition(){
         if (consumes.size() != 0){
             definition.put("consumes", consumes);
         }
+        if (parameters.size() != 0){
+            definition.put("parameters", parameters);
+        }
+        if (tags.size() != 0){
+            definition.put("tags", tags);
+        }
         definition.put("produces", produces);
-
         return this.definition;
     }
 }
