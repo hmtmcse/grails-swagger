@@ -1,7 +1,5 @@
 package com.hmtmcse.swagger.definition;
 
-import java.util.HashMap;
-
 public class SwaggerInfo extends SwaggerCommonDefinition{
 
     public SwaggerInfo(String title){
@@ -10,6 +8,11 @@ public class SwaggerInfo extends SwaggerCommonDefinition{
 
     public SwaggerInfo contactEmail(String email){
         definition.put("contact", SwaggerMap.string().setGet("email", email));
+        return this;
+    }
+
+    public SwaggerInfo license(String name, String url){
+        definition.put("license", SwaggerMap.string().set("name", name).setGet("url", url));
         return this;
     }
 

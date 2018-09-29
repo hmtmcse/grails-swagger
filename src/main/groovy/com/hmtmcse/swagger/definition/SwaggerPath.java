@@ -12,7 +12,7 @@ public class SwaggerPath {
     private List<String> produces = Arrays.asList(SwaggerConstant.APPLICATION_JSON);
     private List<String> consumes = new ArrayList<>();
     private List<String> tags = new ArrayList<>();
-    private List parameters = new ArrayList<>();
+    private List<Object> parameters = new ArrayList<>();
 
 
     public SwaggerPath addResponseProduceType(String type) {

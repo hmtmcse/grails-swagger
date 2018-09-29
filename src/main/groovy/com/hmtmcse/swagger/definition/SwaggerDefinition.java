@@ -7,22 +7,23 @@ import java.util.List;
 
 public class SwaggerDefinition extends SwaggerCommonDefinition{
 
-    public String swagger = "2.0";
-    public String host = "http://localhost";
-    public String basePath = "";
-    public List<String> schemes = Arrays.asList("http", "https");
+    private String swagger = "2.0";
+    private List<String> schemes = new ArrayList<>();
 
-    public List<SwaggerTags> tags = new ArrayList<>();
-    private SwaggerInfo info = null;
+    private List<SwaggerTags> tags = new ArrayList<>();
+    private SwaggerInfo swaggerInfo = null;
     private SwaggerPropertyDefinition propertyDefinition = null;
 
-    public SwaggerPath paths;
-    public String securityDefinitions;
-    public String externalDocs;
+    private SwaggerPath paths;
+    private String securityDefinitions;
+    private String externalDocs;
+    private String host;
+    private String basePath;
 
 
     public SwaggerDefinition(){
         definition = new HashMap<>();
+        schemes.add("http");
     }
 
 
@@ -37,12 +38,13 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
     }
 
 
-    public SwaggerInfo setInfo(String title){
-        this.info = new SwaggerInfo(title);
-        return this.info;
+    public SwaggerInfo info(String title){
+        this.swaggerInfo = new SwaggerInfo(title);
+        return this.swaggerInfo;
     }
 
-    public SwaggerTags setTag(String name, String description){
+
+    public SwaggerTags addTag(String name, String description){
         SwaggerTags swaggerTags = new SwaggerTags(name, description);
         swaggerTags.index = tags.size();
         tags.add(swaggerTags);
@@ -72,17 +74,39 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
         return new SwaggerPathResponse().start(httpCode);
     }
 
+    public SwaggerDefinition host(String host){
+        this.host = host;
+        return this;
+    }
+
+    public SwaggerDefinition basePath(String basePath){
+        this.basePath = basePath;
+        return this;
+    }
+
+
+    public SwaggerDefinition scheme(String scheme){
+        schemes.add(scheme);
+        return this;
+    }
+
+    public SwaggerDefinition swagger(String swagger){
+        this.swagger = swagger;
+        return this;
+    }
+
     public HashMap<Object, Object> getDefinition(){
         definition.put("swagger", swagger);
         definition.put("host", host);
         definition.put("basePath", basePath);
-        definition.put("schemes", schemes);
-        if (info != null){
-            definition.put("info", info.getDefinition());
+        if (swaggerInfo != null){
+            definition.put("info", swaggerInfo.getDefinition());
         }
+        definition.put("schemes", schemes);
         if (tags.size() != 0){
             definition.put("tags", getHashMapList(tags));
         }
+
         if (propertyDefinition != null){
             definition.put("definitions", propertyDefinition.getDefinition());
         }
