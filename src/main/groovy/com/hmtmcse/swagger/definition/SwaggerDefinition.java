@@ -14,7 +14,7 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
     private SwaggerInfo swaggerInfo = null;
     private SwaggerPropertyDefinition propertyDefinition = null;
 
-    private SwaggerPath paths;
+    private SwaggerPaths paths;
     private String securityDefinitions;
     private String externalDocs;
     private String host;
@@ -37,6 +37,14 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
         return this;
     }
 
+
+    public SwaggerPaths startPaths(String url){
+        if (this.paths == null){
+            this.paths = new SwaggerPaths();
+        }
+        this.paths.start(url);
+        return this.paths;
+    }
 
     public SwaggerInfo info(String title){
         this.swaggerInfo = new SwaggerInfo(title);
@@ -105,6 +113,10 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
         definition.put("schemes", schemes);
         if (tags.size() != 0){
             definition.put("tags", getHashMapList(tags));
+        }
+
+        if (paths != null){
+            definition.put("paths", paths.getDefinition());
         }
 
         if (propertyDefinition != null){

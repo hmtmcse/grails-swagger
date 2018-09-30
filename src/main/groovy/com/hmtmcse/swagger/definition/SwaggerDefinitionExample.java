@@ -31,9 +31,12 @@ public class SwaggerDefinitionExample {
         swaggerPath.summary("Add a new pet to the store");
         swaggerPath.description("");
         swaggerPath.operationId("addPet");
+        swaggerPath.addParameter(parameter);
 
-        swaggerPath.summary("pet");
-        swaggerPath.summary("pet");
+        SwaggerPathResponse response = swaggerDefinition.pathResponse(SwaggerConstant.SUCCESS);
+        response.description("Success").schema("array", "Pet");
+        swaggerPath.addResponse(response);
+        swaggerDefinition.startPaths("/pet").addPath(SwaggerConstant.POST_METHOD, swaggerPath);
 
 
         SwaggerProperty swaggerProperty = swaggerDefinition
@@ -42,6 +45,12 @@ public class SwaggerDefinitionExample {
                 .property("quantity", "integer").format("int64")
                 .property("shipDate", "integer").format("date-time");
         swaggerDefinition.addDefinition("Order", "object").addProperties(swaggerProperty);
+
+
+        swaggerProperty = swaggerDefinition
+                .property("id", "integer").format("int64")
+                .property("name", "string").example("doggie");
+        swaggerDefinition.addDefinition("Pet", "object").addProperties(swaggerProperty);
 
 
         return swaggerDefinition.getDefinition();
