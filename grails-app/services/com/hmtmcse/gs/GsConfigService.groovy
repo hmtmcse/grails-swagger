@@ -19,6 +19,10 @@ class GsConfigService {
         return "Unable to Process Request"
     }
 
+    static String controllerStartWith() {
+        return "Api"
+    }
+
     public static String getUID(){
         return UUID.randomUUID().toString().toUpperCase();
     }

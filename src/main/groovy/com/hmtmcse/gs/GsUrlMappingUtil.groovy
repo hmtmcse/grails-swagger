@@ -8,10 +8,13 @@ class GsUrlMappingUtil {
 
     private static String parentController = "GsRestful"
 
+
     static List<GsApiVersionActionsData> getUrlMappingData() {
         Holders.grailsApplication.controllerClasses.each{ DefaultGrailsControllerClass controller ->
-            println(controller.name)
-            println(controller.actions)
+            if (controller.name.startsWith(GsConfigService.controllerStartWith())){
+                println(controller.name)
+                println(controller.actions)
+            }
         }
         return []
     }
