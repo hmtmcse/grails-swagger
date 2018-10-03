@@ -31,4 +31,8 @@ class GsConfigService {
         return "Invalid API Request"
     }
 
+    static String invalidRequestType() {
+        return "Invalid API Request Type"
+    }
+
 }

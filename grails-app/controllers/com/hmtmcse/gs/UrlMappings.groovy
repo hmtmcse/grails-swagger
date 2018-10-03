@@ -7,7 +7,6 @@ class UrlMappings {
 
 
     static mappings = {
-
         "/gsExceptionHandler"(controller: "gsExceptionHandlerController", action: "invalid")
         "/gsExceptionHandler/**"(controller: "gsExceptionHandlerController", action: "invalid")
         "/${GsUrlMappingUtil.apiPrefix()}"(controller: "gsExceptionHandler", action: "invalid")
@@ -15,7 +14,6 @@ class UrlMappings {
         GsUrlMappingUtil.getUrlMappingData().each { GsControllerActionData urls ->
             String url = "${urls.apiVersion}/${urls.controllerUrlName}"
             urls.actions.each { GsAction gsAction ->
-//                println("/${GsUrlMappingUtil.apiPrefix()}/${url}/${gsAction.name}" + " " + "/${urls.controllerName}/**")
                 "${gsAction.httpMethod}"("/${GsUrlMappingUtil.apiPrefix()}/${url}/${gsAction.name}"(controller:urls.controllerRealName, action: gsAction.actionRealName))
             }
             "/${urls.controllerName}"(controller: "gsExceptionHandler", action: "invalid")

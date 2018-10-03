@@ -16,5 +16,8 @@ class GsExceptionHandlerController extends GsRestProcessor {
         render(GsApiResponseData.failed(GsConfigService.invalidRequest()).toMap() as JSON)
     }
 
+    def invalidRequestType() {
+        render(GsApiResponseData.failed(GsConfigService.invalidRequestType()).toMap() as JSON)
+    }
 
 }

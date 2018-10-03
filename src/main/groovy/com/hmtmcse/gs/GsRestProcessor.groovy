@@ -3,7 +3,7 @@ package com.hmtmcse.gs
 import com.hmtmcse.gs.data.GsApiResponseData
 import grails.converters.JSON
 
-class GsRestProcessor {
+class GsRestProcessor implements GsExceptionHandler{
 
     GsRestfulService gsRestfulService
     Boolean isDefinition = false
@@ -44,6 +44,14 @@ class GsRestProcessor {
 
     def list(GsApiActionDefinition definition){
       return  render(gsRestfulService.gsReadList(definition, params) as JSON)
+    }
+
+    def exception(String message){
+        throw new GsException(message)
+    }
+
+    def exception(){
+        throw new GsException()
     }
 
     def get(GsApiActionDefinition definition){

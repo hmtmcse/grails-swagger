@@ -78,6 +78,4 @@ class GsRestfulService {
             return gsApiResponseProperty.getDefaultValue()
         }
     }
-
-
 }
