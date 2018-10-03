@@ -1,6 +1,7 @@
 package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsApiVersionActionsData
+import com.hmtmcse.gs.data.GsControllerActionData
 import com.hmtmcse.gs.data.GsUrlMappingData
 import grails.util.Holders
 
@@ -19,11 +20,8 @@ class UrlMappings {
 
         })
 
-        GsUrlMappingUtil.getUrlMappingData().each { GsApiVersionActionsData urls ->
-            println(urls.versionPrefix)
-        }
+        GsUrlMappingUtil.getUrlMappingData().each { GsControllerActionData urls ->}
 
-        Holders.grailsApplication.mainContext
 
         "/"(view:"/index")
         "500"(view:'/error')
