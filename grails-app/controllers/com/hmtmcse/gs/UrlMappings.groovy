@@ -1,30 +1,25 @@
 package com.hmtmcse.gs
 
-import com.hmtmcse.gs.data.GsApiVersionActionsData
+import com.hmtmcse.gs.data.GsAction
 import com.hmtmcse.gs.data.GsControllerActionData
-import com.hmtmcse.gs.data.GsUrlMappingData
-import grails.util.Holders
 
 class UrlMappings {
 
 
     static mappings = {
-        "/$controller/$action?/$id?(.$format)?"{
-            constraints {
-                // apply constraints here
+
+        "/gsExceptionHandler"(controller: "gsExceptionHandlerController", action: "invalid")
+        "/gsExceptionHandler/**"(controller: "gsExceptionHandlerController", action: "invalid")
+        "/${GsUrlMappingUtil.apiPrefix()}"(controller: "gsExceptionHandler", action: "invalid")
+        "/${GsUrlMappingUtil.apiPrefix()}/**"(controller: "gsExceptionHandler", action: "invalid")
+        GsUrlMappingUtil.getUrlMappingData().each { GsControllerActionData urls ->
+            String url = "${urls.apiVersion}/${urls.controllerUrlName}"
+            urls.actions.each { GsAction gsAction ->
+//                println("/${GsUrlMappingUtil.apiPrefix()}/${url}/${gsAction.name}" + " " + "/${urls.controllerName}/**")
+                "${gsAction.httpMethod}"("/${GsUrlMappingUtil.apiPrefix()}/${url}/${gsAction.name}"(controller:urls.controllerRealName, action: gsAction.actionRealName))
             }
+            "/${urls.controllerName}"(controller: "gsExceptionHandler", action: "invalid")
+            "/${urls.controllerName}/**"(controller: "gsExceptionHandler", action: "invalid")
         }
-
-
-        group("/api", {
-
-        })
-
-        GsUrlMappingUtil.getUrlMappingData().each { GsControllerActionData urls ->}
-
-
-        "/"(view:"/index")
-        "500"(view:'/error')
-        "404"(view:'/notFound')
     }
 }

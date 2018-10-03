@@ -1,33 +1,36 @@
 package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsAction
-import com.hmtmcse.gs.data.GsApiVersionActionsData
 import com.hmtmcse.gs.data.GsControllerActionData
 import grails.util.Holders
 import org.grails.core.DefaultGrailsControllerClass
-
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class GsUrlMappingUtil {
 
+    private static List<GsControllerActionData> gsUrlMappingHolder = new ArrayList<>()
+
     static List<GsControllerActionData> getUrlMappingData() {
-        List<GsControllerActionData> gsControllerActionDataList = new ArrayList<>()
-        GsControllerActionData gsControllerActionData
-        Holders.grailsApplication.controllerClasses.each{ DefaultGrailsControllerClass controller ->
-            if (controller.name.startsWith(GsConfigService.controllerStartWith())){
-                println(controller.name)
-                println(controller.actions)
-                gsControllerActionData =  processControllerActionRegex(controller)
-                if (gsControllerActionData){
-                    gsControllerActionDataList.add(gsControllerActionData)
+        if (gsUrlMappingHolder.size() == 0){
+            GsControllerActionData gsControllerActionData
+            Holders.grailsApplication.controllerClasses.each{ DefaultGrailsControllerClass controller ->
+                if (controller.name.startsWith(GsConfigService.controllerStartWith())){
+                    gsControllerActionData =  processControllerActionRegex(controller)
+                    if (gsControllerActionData){
+                        gsUrlMappingHolder.add(gsControllerActionData)
+                    }
                 }
             }
         }
-        return gsControllerActionDataList
+        return gsUrlMappingHolder
     }
 
-    static GsControllerActionData processControllerActionRegex(DefaultGrailsControllerClass controller){
+    static String apiPrefix(){
+        return GsConfigService.controllerStartWith()?.uncapitalize()
+    }
+
+    private static GsControllerActionData processControllerActionRegex(DefaultGrailsControllerClass controller){
         Pattern pattern = Pattern.compile(GsConfigService.controllerStartWith() + "(\\w+)(V(\\d+))")
         Matcher matcher = pattern.matcher(controller.name)
         GsControllerActionData gsControllerActionData = null
@@ -35,11 +38,12 @@ class GsUrlMappingUtil {
         if (matcher.find()){
             if (matcher.groupCount()  == 3){
                 gsControllerActionData = new GsControllerActionData()
-                gsControllerActionData.controllerName = controller.name
-                gsControllerActionData.url = matcher.group(1)
-                gsControllerActionData.apiVersion = matcher.group(2)
+                gsControllerActionData.controllerName = controller.name?.uncapitalize()
+                gsControllerActionData.controllerRealName = controller.name
+                gsControllerActionData.url = matcher.group(1)?.uncapitalize()
+                gsControllerActionData.controllerUrlName = matcher.group(1)?.uncapitalize()
+                gsControllerActionData.apiVersion = matcher.group(2)?.uncapitalize()
                 controller.actions.each { String action ->
-                    println(action)
                     if (action.startsWith(GsConstant.GET)){
                         gsAction = parseAction(action, GsConstant.GET)
                     }else if (action.startsWith(GsConstant.POST)){
@@ -62,14 +66,15 @@ class GsUrlMappingUtil {
         return gsControllerActionData
     }
 
-    static GsAction parseAction(String actionName, String method){
+    private static GsAction parseAction(String actionName, String method){
         GsAction gsAction = null
         Pattern pattern = Pattern.compile(method + "([A-Z]\\w+)")
         Matcher matcher = pattern.matcher(actionName)
         if (matcher.find() && matcher.groupCount() == 1){
             gsAction = new GsAction()
             gsAction.httpMethod = method
-            gsAction.name = matcher.group(1)
+            gsAction.actionRealName = actionName
+            gsAction.name = matcher.group(1)?.uncapitalize()
         }
         return gsAction
     }

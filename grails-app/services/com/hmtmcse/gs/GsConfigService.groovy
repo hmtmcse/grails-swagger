@@ -27,5 +27,8 @@ class GsConfigService {
         return UUID.randomUUID().toString().toUpperCase();
     }
 
+    static String invalidRequest() {
+        return "Invalid API Request"
+    }
 
 }

@@ -3,6 +3,8 @@ package com.hmtmcse.gs.data
 class GsControllerActionData {
 
     public String controllerName
+    public String controllerRealName
+    public String controllerUrlName
     public String apiVersion
     public String url
     public List<GsAction> actions = new ArrayList<>()
@@ -43,4 +45,19 @@ class GsControllerActionData {
         this.url = url
     }
 
+    String getControllerRealName() {
+        return controllerRealName
+    }
+
+    void setControllerRealName(String controllerRealName) {
+        this.controllerRealName = controllerRealName
+    }
+
+    String getControllerUrlName() {
+        return controllerUrlName
+    }
+
+    void setControllerUrlName(String controllerUrlName) {
+        this.controllerUrlName = controllerUrlName
+    }
 }
