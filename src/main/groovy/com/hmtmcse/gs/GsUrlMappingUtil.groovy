@@ -18,6 +18,7 @@ class GsUrlMappingUtil {
                 if (controller.name.startsWith(GsConfigService.controllerStartWith())){
                     gsControllerActionData =  processControllerActionRegex(controller)
                     if (gsControllerActionData){
+                        gsControllerActionData.controllerClass = controller
                         gsUrlMappingHolder.add(gsControllerActionData)
                     }
                 }

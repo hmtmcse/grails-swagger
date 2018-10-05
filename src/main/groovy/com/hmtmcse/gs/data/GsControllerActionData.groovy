@@ -1,5 +1,7 @@
 package com.hmtmcse.gs.data
 
+import org.grails.core.DefaultGrailsControllerClass
+
 class GsControllerActionData {
 
     public String controllerName
@@ -8,6 +10,7 @@ class GsControllerActionData {
     public String apiVersion
     public String url
     public List<GsAction> actions = new ArrayList<>()
+    public DefaultGrailsControllerClass controllerClass
 
     String getControllerName() {
         return controllerName
