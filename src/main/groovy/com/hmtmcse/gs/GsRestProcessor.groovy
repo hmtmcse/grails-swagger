@@ -6,9 +6,9 @@ import grails.converters.JSON
 class GsRestProcessor implements GsExceptionHandler{
 
     GsRestfulService gsRestfulService
-    Boolean isDefinition = false
-    String tagName = null
-    String description = null
+    public Boolean isDefinition = false
+    public String tagName = null
+    public String tagDescription = null
 
 
     private jsonResponseTo(GsApiResponseData gsApiResponseData){
@@ -66,5 +66,7 @@ class GsRestProcessor implements GsExceptionHandler{
     }
 
 
+
+    public void swaggerInit(){}
 
 }
