@@ -9,4 +9,5 @@ class GrailsSwagger {
         controller.metaClass.getProperty(controller, "isDefinition")
         controller.metaClass.invokeMethod(controller.newInstance(), "getList")
     }
+
 }

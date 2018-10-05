@@ -23,7 +23,6 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
 
     public SwaggerDefinition(){
         definition = new HashMap<>();
-        schemes.add("http");
     }
 
 

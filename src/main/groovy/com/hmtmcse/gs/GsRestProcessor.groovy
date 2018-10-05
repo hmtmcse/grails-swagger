@@ -7,6 +7,8 @@ class GsRestProcessor implements GsExceptionHandler{
 
     GsRestfulService gsRestfulService
     Boolean isDefinition = false
+    String tagName = null
+    String description = null
 
 
     private jsonResponseTo(GsApiResponseData gsApiResponseData){
