@@ -2,6 +2,7 @@ package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsAction
 import com.hmtmcse.gs.data.GsControllerActionData
+import com.hmtmcse.swagger.definition.SwaggerConstant
 import grails.util.Holders
 import org.grails.core.DefaultGrailsControllerClass
 import org.grails.datastore.mapping.model.MappingContext
@@ -29,29 +30,26 @@ class GsReflectionUtil {
         }
     }
 
-    static def getAllProperty(Class clazz){
+    static PersistentEntity getParsistentEntity(Class clazz){
+        MappingContext concreteMappingContext = Holders.grailsApplication.getMappingContext()
+        return concreteMappingContext.getPersistentEntity(clazz.name)
+    }
 
-//        MappingContext concreteMappingContext = Holders.grailsApplication.getMappingContext()
-//        PersistentEntity persistentEntity = concreteMappingContext.getPersistentEntity(clazz.name)
-//        persistentEntity.getPersistentProperties()
-//        PersistentProperty identity = persistentEntity.getIdentity()
 
+    static Map getDomainToSwaggerDataType(Class clazz){
         Map properties = [:]
-        try {
-            clazz.newInstance().properties.each {
-                properties.put(it.key, true)
-            }
-
-            clazz.declaredFields.each {
-                if (properties.get(it.name)){
-                  println("${it.name} ${it.type} ")
-                }
-            }
-
-
-        }catch(Exception e){
-
+        PersistentEntity persistentEntity = getParsistentEntity(clazz)
+        String dataType
+        persistentEntity?.getPersistentProperties()?.each { PersistentProperty persistentProperty ->
+            dataType = GsConfigHolder.javaToSwaggerDataType.get(persistentProperty.type.name)?: SwaggerConstant.SWAGGER_DT_OBJECT
+            properties.put(persistentProperty.name, dataType)
         }
+        PersistentProperty identity = persistentEntity.getIdentity()
+        if (identity){
+            dataType = GsConfigHolder.javaToSwaggerDataType.get(identity.type.name)?: SwaggerConstant.SWAGGER_DT_OBJECT
+            properties.put(identity.name, dataType)
+        }
+        return properties
     }
 
 

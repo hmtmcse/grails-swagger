@@ -23,11 +23,8 @@ class GsApiActionDefinition<T> {
     }
 
 
-    public Map<String, Object> domainFields(){
-        Map<String, Object> domainAllField = new HashMap<>()
-
-        GsReflectionUtil.getAllProperty(this.domain)
-        return domainAllField
+    public Map domainFields(){
+        return  GsReflectionUtil.getDomainToSwaggerDataType(this.domain)
     }
 
 
