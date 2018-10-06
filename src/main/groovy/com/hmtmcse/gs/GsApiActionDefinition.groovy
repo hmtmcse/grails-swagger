@@ -3,6 +3,8 @@ package com.hmtmcse.gs
 import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsApiResponseProperty
 
+import java.lang.reflect.Modifier
+
 
 class GsApiActionDefinition<T> {
 
@@ -14,13 +16,21 @@ class GsApiActionDefinition<T> {
     public Closure queryConditions = null
     public Boolean enableFilter = true
     public Class<T> domain
-    public T instance
 
 
     public GsApiActionDefinition(Class<T> domain){
         this.domain = domain
-        this.instance = domain.newInstance()
     }
+
+
+    public Map<String, Object> domainFields(){
+        Map<String, Object> domainAllField = new HashMap<>()
+
+        GsReflectionUtil.getAllProperty(this.domain)
+        return domainAllField
+    }
+
+
 
 
     public static GsApiActionDefinition instance(Class<T> domain){

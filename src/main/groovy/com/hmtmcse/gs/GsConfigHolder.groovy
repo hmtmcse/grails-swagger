@@ -1,21 +1,21 @@
 package com.hmtmcse.gs
 
 
-class GsConfigService {
+class GsConfigHolder {
 
-    def itemsPerPage() {
+    public static Integer itemsPerPage() {
         return 20
     }
 
-    String sortColumn() {
+    public static String sortColumn() {
         return "id"
     }
 
-    String sortOrder() {
+    public static String sortOrder() {
         return "desc"
     }
 
-    String failedMessage() {
+    public static String failedMessage() {
         return "Unable to Process Request"
     }
 

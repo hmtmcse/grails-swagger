@@ -1,7 +1,9 @@
-package com.hmtmcse.gs
+package com.hmtmcse.gs.system
 
+import com.hmtmcse.gs.GsUrlMappingUtil
 import com.hmtmcse.gs.data.GsAction
 import com.hmtmcse.gs.data.GsControllerActionData
+
 
 class UrlMappings {
 

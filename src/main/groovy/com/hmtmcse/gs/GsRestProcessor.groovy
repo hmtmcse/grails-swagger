@@ -45,6 +45,9 @@ class GsRestProcessor implements GsExceptionHandler{
     def gsDeleteResponse(GsApiActionDefinition definition){}
 
     def list(GsApiActionDefinition definition){
+        if (isDefinition){
+            return definition
+        }
       return  render(gsRestfulService.gsReadList(definition, params) as JSON)
     }
 
@@ -64,7 +67,6 @@ class GsRestProcessor implements GsExceptionHandler{
         }
         return  render(definition.domain.list() as JSON)
     }
-
 
 
     public void swaggerInit(){}

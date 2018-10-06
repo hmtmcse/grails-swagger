@@ -7,7 +7,6 @@ import grails.converters.JSON
 
 class GsRestfulService {
 
-    GsConfigService gsConfigService
 
     GsApiResponseData gsRead(GsApiActionDefinition definition){
         return GsApiResponseData.failed("Failed")
@@ -15,7 +14,7 @@ class GsRestfulService {
 
 
     def gsReadList(GsApiActionDefinition definition, Map params){
-        GsApiResponseData responseData = GsApiResponseData.failed(gsConfigService.failedMessage())
+        GsApiResponseData responseData = GsApiResponseData.failed(GsConfigHolder.failedMessage())
         try{
             responseData.isSuccess = true
             registerJsonMarshaller(definition)
@@ -26,7 +25,7 @@ class GsRestfulService {
             responseData = GsApiResponseData.successResponse(response)
         }catch(Exception e){
             println(e.getMessage())
-            responseData = GsApiResponseData.failed(gsConfigService.failedMessage())
+            responseData = GsApiResponseData.failed(GsConfigHolder.failedMessage())
         }
         return responseData.toMap()
     }
@@ -52,11 +51,11 @@ class GsRestfulService {
 
     private Map processListParamsData(Map params){
         Map refineParams = [:]
-        refineParams.max = params.max ?: gsConfigService.itemsPerPage()
+        refineParams.max = params.max ?: GsConfigHolder.itemsPerPage()
         refineParams.offset = params.offset ?: 0
         if (!params.sort) {
-            refineParams.sort = gsConfigService.sortColumn()
-            refineParams.order = gsConfigService.sortOrder()
+            refineParams.sort = GsConfigHolder.sortColumn()
+            refineParams.order = GsConfigHolder.sortOrder()
         }
         return refineParams
     }

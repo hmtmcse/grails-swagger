@@ -15,7 +15,7 @@ class GsUrlMappingUtil {
         if (gsUrlMappingHolder.size() == 0){
             GsControllerActionData gsControllerActionData
             Holders.grailsApplication.controllerClasses.each{ DefaultGrailsControllerClass controller ->
-                if (controller.name.startsWith(GsConfigService.controllerStartWith())){
+                if (controller.name.startsWith(GsConfigHolder.controllerStartWith())){
                     gsControllerActionData =  processControllerActionRegex(controller)
                     if (gsControllerActionData){
                         gsControllerActionData.controllerClass = controller
@@ -28,11 +28,11 @@ class GsUrlMappingUtil {
     }
 
     static String apiPrefix(){
-        return GsConfigService.controllerStartWith()?.uncapitalize()
+        return GsConfigHolder.controllerStartWith()?.uncapitalize()
     }
 
     private static GsControllerActionData processControllerActionRegex(DefaultGrailsControllerClass controller){
-        Pattern pattern = Pattern.compile(GsConfigService.controllerStartWith() + "(\\w+)(V(\\d+))")
+        Pattern pattern = Pattern.compile(GsConfigHolder.controllerStartWith() + "(\\w+)(V(\\d+))")
         Matcher matcher = pattern.matcher(controller.name)
         GsControllerActionData gsControllerActionData = null
         GsAction gsAction
