@@ -30,7 +30,7 @@ class GsReflectionUtil {
         }
     }
 
-    static PersistentEntity getParsistentEntity(Class clazz){
+    static PersistentEntity getPersistentEntity(Class clazz){
         MappingContext concreteMappingContext = Holders.grailsApplication.getMappingContext()
         return concreteMappingContext.getPersistentEntity(clazz.name)
     }
@@ -38,7 +38,7 @@ class GsReflectionUtil {
 
     static Map getDomainToSwaggerDataType(Class clazz){
         Map properties = [:]
-        PersistentEntity persistentEntity = getParsistentEntity(clazz)
+        PersistentEntity persistentEntity = getPersistentEntity(clazz)
         String dataType
         persistentEntity?.getPersistentProperties()?.each { PersistentProperty persistentProperty ->
             dataType = GsConfigHolder.javaToSwaggerDataType.get(persistentProperty.type.name)?: SwaggerConstant.SWAGGER_DT_OBJECT
@@ -50,12 +50,6 @@ class GsReflectionUtil {
             properties.put(identity.name, dataType)
         }
         return properties
-    }
-
-
-    static def grailsDomainProperties(Class clazz){
-//        def properties = Holders.grailsApplication.getDomainClass(clazz.name).persistentEntity.propertiesByName
-//        println(properties)
     }
 
     static def getNewObject(DefaultGrailsControllerClass controller){
@@ -73,24 +67,18 @@ class GsReflectionUtil {
     static GsApiActionDefinition apiActionDefinition(GsControllerActionData controllerActionData) {
         def controllerObj = getNewObject(controllerActionData.controllerClass)
         if (controllerObj) {
+            controllerObj.metaClass.render = {null}
             controllerObj.isDefinition = true
             controllerActionData.actions.each { GsAction gsAction ->
-
-                println(gsAction.name)
-
-
                 try {
                     GsApiActionDefinition gsApiActionDefinition = controllerObj."$gsAction.actionRealName"()
-                    println(gsApiActionDefinition.domainFields())
                 } catch (InvocationTargetException e) {
                     println(e.getMessage())
                 } catch (NullPointerException e) {
                     println(e.getMessage())
                 } catch (Exception e) {
                     println(e.getMessage())
-                } catch (Exception e) {
-                } catch (Exception e) {
-                } catch (Exception e) {}
+                }
             }
 
         }

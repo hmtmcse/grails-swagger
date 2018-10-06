@@ -2,13 +2,19 @@ package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsApiResponseData
 import grails.converters.JSON
+import org.grails.web.converters.Converter
 
-class GsRestProcessor implements GsExceptionHandler{
+class GsRestProcessor<T> implements GsExceptionHandler{
 
     GsRestfulService gsRestfulService
+    public T gsApiDefinition
     public Boolean isDefinition = false
     public String tagName = null
     public String tagDescription = null
+
+    public GsRestProcessor(T gsApiDefinition){
+        this.gsApiDefinition = gsApiDefinition
+    }
 
 
     private jsonResponseTo(GsApiResponseData gsApiResponseData){
@@ -48,7 +54,13 @@ class GsRestProcessor implements GsExceptionHandler{
         if (isDefinition){
             return definition
         }
-      return  render(gsRestfulService.gsReadList(definition, params) as JSON)
+      return render(gsRestfulService.gsReadList(definition, params) as JSON)
+    }
+
+    def renderAsJson(def data){
+        if (!isDefinition){
+            return render(data as JSON)
+        }
     }
 
     def exception(String message){
@@ -67,7 +79,6 @@ class GsRestProcessor implements GsExceptionHandler{
         }
         return  render(definition.domain.list() as JSON)
     }
-
 
     public void swaggerInit(){}
 
