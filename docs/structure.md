@@ -44,7 +44,7 @@ Request Processing Mechanism
         
 
 Swagger
-    Access the Definition
-API
-    Definition with Query
-    Definition with Result           
+    Access the Definition (Done)
+    
+    
+API         

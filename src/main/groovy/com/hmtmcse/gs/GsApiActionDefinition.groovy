@@ -16,6 +16,7 @@ class GsApiActionDefinition<T> {
     public String responseType = null
     public Closure queryConditions = null
     public Boolean enableFilter = true
+    public Boolean enableWhere = false
     public Class<T> domain
 
 

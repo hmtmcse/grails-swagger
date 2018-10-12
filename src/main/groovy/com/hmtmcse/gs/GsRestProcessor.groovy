@@ -23,6 +23,7 @@ class GsRestProcessor implements GsExceptionHandler {
 
     def list(GsApiActionDefinition definition){
         definition.responseType = GsConstant.LIST_RESPONSE
+        definition.enableWhere = true
         return "list${returnFor}"(definition)
     }
 
@@ -37,6 +38,7 @@ class GsRestProcessor implements GsExceptionHandler {
     }
 
     def details(GsApiActionDefinition definition){
+        definition.enableWhere = true
         return "details${returnFor}"(definition)
     }
 
@@ -65,6 +67,7 @@ class GsRestProcessor implements GsExceptionHandler {
     }
 
     def update(GsApiActionDefinition definition){
+        definition.enableWhere = true
         return "update${returnFor}"(definition)
     }
 
@@ -79,6 +82,7 @@ class GsRestProcessor implements GsExceptionHandler {
     }
 
     def delete(GsApiActionDefinition definition){
+        definition.enableWhere = true
         return "delete${returnFor}"(definition)
     }
 
