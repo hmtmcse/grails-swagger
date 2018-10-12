@@ -64,27 +64,7 @@ class GsReflectionUtil {
         controller.metaClass.setProperty(controller.newInstance(), name, value)
     }
 
-    static GsApiActionDefinition apiActionDefinition(GsControllerActionData controllerActionData) {
-        def controllerObj = getNewObject(controllerActionData.controllerClass)
-        GsApiActionDefinition gsApiActionDefinition = null
-        if (controllerObj) {
-            controllerObj.metaClass.render = {null}
-            controllerObj.returnFor = GsConstant.RETURN_FOR_DEFINITION
-            controllerActionData.actions.each { GsAction gsAction ->
-                try {
-                    gsApiActionDefinition = controllerObj."$gsAction.actionRealName"()
-                } catch (InvocationTargetException e) {
-                    println(e.getMessage())
-                } catch (NullPointerException e) {
-                    println(e.getMessage())
-                } catch (Exception e) {
-                    println(e.getMessage())
-                }
-            }
 
-        }
-        return gsApiActionDefinition
-    }
 
 
 }
