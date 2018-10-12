@@ -9,6 +9,7 @@ class GsControllerActionData {
     public String controllerUrlName
     public String apiVersion
     public String url
+    public String relativeURL
     public List<GsAction> actions = new ArrayList<>()
     public DefaultGrailsControllerClass controllerClass
 

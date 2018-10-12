@@ -1,22 +1,11 @@
 package com.hmtmcse.gs.data
 
-class GsApiRequestProperty {
+class GsApiRequestProperty extends GsRequestResponseProperty{
 
-    public String name
     public Boolean isRequired = false
-    public String alias = null
     public String errorMessage = null
     public String helpText = null
-    public Closure<String> closure = null
-    public String dataType = null
 
-    String getName() {
-        return name
-    }
-
-    void setName(String name) {
-        this.name = name
-    }
 
     Boolean getIsRequired() {
         return isRequired
@@ -26,13 +15,6 @@ class GsApiRequestProperty {
         this.isRequired = isRequired
     }
 
-    String getAlias() {
-        return alias
-    }
-
-    void setAlias(String alias) {
-        this.alias = alias
-    }
 
     String getErrorMessage() {
         return errorMessage
@@ -50,11 +32,4 @@ class GsApiRequestProperty {
         this.helpText = helpText
     }
 
-    Closure getClosure() {
-        return closure
-    }
-
-    void setClosure(Closure closure) {
-        this.closure = closure
-    }
 }

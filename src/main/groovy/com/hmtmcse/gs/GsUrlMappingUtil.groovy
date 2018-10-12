@@ -19,6 +19,7 @@ class GsUrlMappingUtil {
                     gsControllerActionData =  processControllerActionRegex(controller)
                     if (gsControllerActionData){
                         gsControllerActionData.controllerClass = controller
+                        gsControllerActionData.relativeURL = "/${apiPrefix()}/${gsControllerActionData.apiVersion}/${gsControllerActionData.controllerUrlName}/"
                         gsUrlMappingHolder.add(gsControllerActionData)
                     }
                 }
