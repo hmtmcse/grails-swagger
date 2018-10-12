@@ -66,12 +66,13 @@ class GsReflectionUtil {
 
     static GsApiActionDefinition apiActionDefinition(GsControllerActionData controllerActionData) {
         def controllerObj = getNewObject(controllerActionData.controllerClass)
+        GsApiActionDefinition gsApiActionDefinition = null
         if (controllerObj) {
             controllerObj.metaClass.render = {null}
-            controllerObj.isDefinition = true
+            controllerObj.returnFor = GsConstant.RETURN_FOR_DEFINITION
             controllerActionData.actions.each { GsAction gsAction ->
                 try {
-                    GsApiActionDefinition gsApiActionDefinition = controllerObj."$gsAction.actionRealName"()
+                    gsApiActionDefinition = controllerObj."$gsAction.actionRealName"()
                 } catch (InvocationTargetException e) {
                     println(e.getMessage())
                 } catch (NullPointerException e) {
@@ -82,7 +83,7 @@ class GsReflectionUtil {
             }
 
         }
-        return null
+        return gsApiActionDefinition
     }
 
 

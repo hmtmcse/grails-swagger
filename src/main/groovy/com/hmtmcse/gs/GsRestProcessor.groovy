@@ -7,7 +7,6 @@ import org.grails.web.converters.Converter
 class GsRestProcessor implements GsExceptionHandler {
 
     GsRestfulService gsRestfulService
-    public Boolean isDefinition = false
     public String tagName = null
     public String tagDescription = null
     public String returnFor = GsConstant.RETURN_FOR_API
