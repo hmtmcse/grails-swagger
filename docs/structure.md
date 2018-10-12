@@ -40,4 +40,11 @@ Request Processing Mechanism
         2. Check the content type
         3. Validate or Refine the parameter
         4. Process the parameter
-        5. Process Conditions                
+        5. Process Conditions     
+        
+
+Swagger
+    Access the Definition
+API
+    Definition with Query
+    Definition with Result           

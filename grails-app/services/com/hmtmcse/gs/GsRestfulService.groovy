@@ -36,11 +36,17 @@ class GsRestfulService {
     }
 
 
-    def gsCreate(GsApiActionDefinition definition){}
+    def gsCreate(GsApiActionDefinition definition, Map params){}
 
-    def gsUpdate(GsApiActionDefinition definition){}
+    def gsUpdate(GsApiActionDefinition definition, Map params){}
 
-    def gsDelete(GsApiActionDefinition definition){}
+    def gsDelete(GsApiActionDefinition definition, Map params){}
+
+    def gsDetails(GsApiActionDefinition definition, Map params){}
+
+    def gsCustomQuery(GsApiActionDefinition definition, Map params){}
+
+    def gsCustomQueryAndResponse(GsApiActionDefinition definition, Map params){}
 
 
     private void registerJsonMarshaller(GsApiActionDefinition definition){

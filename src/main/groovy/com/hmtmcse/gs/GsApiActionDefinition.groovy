@@ -13,6 +13,7 @@ class GsApiActionDefinition<T> {
     private Map<String, GsApiRequestProperty> requestProperties = new HashMap<>()
     public String definitionFor = null
     public String description = null
+    public String responseType = null
     public Closure queryConditions = null
     public Boolean enableFilter = true
     public Class<T> domain
