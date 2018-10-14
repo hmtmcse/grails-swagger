@@ -7,6 +7,15 @@ class GsApiRequestProperty extends GsRequestResponseProperty{
     public String helpText = null
 
 
+    GsApiRequestProperty(String name, String alias) {
+        super.name = name
+        super.alias = alias
+    }
+
+    GsApiRequestProperty(String name) {
+        super.name = name
+    }
+
     Boolean getIsRequired() {
         return isRequired
     }
@@ -20,16 +29,59 @@ class GsApiRequestProperty extends GsRequestResponseProperty{
         return errorMessage
     }
 
-    void setErrorMessage(String errorMessage) {
+    GsApiRequestProperty setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage
+        return this
     }
 
     String getHelpText() {
         return helpText
     }
 
-    void setHelpText(String helpText) {
+    GsApiRequestProperty setHelpText(String helpText) {
         this.helpText = helpText
+        return this
     }
+
+    GsApiRequestProperty setName(String name) {
+        super.name = name
+        return this
+    }
+
+    GsApiRequestProperty setAlias(String alias) {
+        super.alias = alias
+        return this
+    }
+
+    GsApiRequestProperty setDataType(String dataType) {
+        super.dataType = dataType
+        return this
+    }
+
+    GsApiRequestProperty setExample(String example) {
+        super.example = example
+        return this
+    }
+
+    GsApiRequestProperty setFormat(String format) {
+        super.format = format
+        return this
+    }
+
+    GsApiRequestProperty setDescription(String description) {
+        super.description = description
+        return this
+    }
+
+    GsApiRequestProperty setDefaultValue(String defaultValue) {
+        super.defaultValue = defaultValue
+        return this
+    }
+
+    GsApiRequestProperty setCustomProcessor(Closure customProcessor) {
+        super.customProcessor = customProcessor
+        return this
+    }
+
 
 }

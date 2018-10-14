@@ -57,6 +57,12 @@ class GsApiActionDefinition<T> {
 
     public addRequestProperty(){}
 
+    public GsApiActionDefinition<T> addRequestProperty(String name, String alias = null, String defaultValue = ""){
+        requestProperties.put(name,
+                new GsApiRequestProperty(name).setAlias(alias).setDefaultValue(defaultValue))
+        return this
+    }
+
 
     public excludeProperty(List<String> fields){
 

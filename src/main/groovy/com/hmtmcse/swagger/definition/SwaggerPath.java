@@ -35,6 +35,10 @@ public class SwaggerPath {
         return this;
     }
 
+    public SwaggerPath parameters(List<Object> parameters) {
+        this.parameters = parameters;
+        return this;
+    }
 
     public SwaggerPath addRequestConsumeType(String type) {
         this.consumes.add(type);

@@ -15,7 +15,13 @@ class GsApiResponseProperty extends GsRequestResponseProperty{
 
 
     GsApiResponseProperty setAlias(String alias) {
-        this.alias = alias
+        super.alias = alias
+        return this
+    }
+
+
+    GsApiResponseProperty setDefaultValue(String defaultValue) {
+        super.defaultValue = alias
         return this
     }
 

@@ -1,17 +1,20 @@
 package com.hmtmcse.swagger.definition;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class SwaggerProperty {
 
 
     private HashMap<String, HashMap<Object, Object>> definition = new HashMap<>();
     private String name;
+    private List<Object> propertyList = new ArrayList<>();
 
 
     public SwaggerProperty property(String name, String type){
         this.name = name;
-        definition.put(name, SwaggerMap.object().setGet("type", type));
+        definition.put(name, SwaggerMap.object().set("name", name).setGet("type", type));
        return this;
     }
 
@@ -35,9 +38,22 @@ public class SwaggerProperty {
         return this;
     }
 
+    public SwaggerProperty in(String inQuery){
+        definition.get(name).put("in", inQuery);
+        return this;
+    }
+
     public SwaggerProperty setEnum(String[] enums){
         definition.get(name).put("enum", enums);
         return this;
+    }
+
+    public List<Object>getPropertyList(){
+        return propertyList;
+    }
+
+    public void addToList(){
+        propertyList.add(definition.get(name));
     }
 
     public HashMap getDefinition(){
