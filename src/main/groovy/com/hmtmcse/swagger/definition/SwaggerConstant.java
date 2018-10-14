@@ -9,6 +9,9 @@ public class SwaggerConstant {
     public final static String IN_QUERY = "query";
     public final static String POST_METHOD = "post";
 
+    public final static String REQUEST = "Request";
+    public final static String RESPONSE = "Response";
+
 
     // Swagger Data Types
     public final static String SWAGGER_DT_INTEGER = "integer";

@@ -12,6 +12,7 @@ class GsApiActionDefinition<T> {
     private Map<String, GsApiResponseProperty> responseProperties = new HashMap<>()
     private Map<String, GsApiRequestProperty> requestProperties = new HashMap<>()
     public String description = null
+    public String modelDefinition = null
     public String summary = null
     public String definitionFor = null
     public String responseType = null
@@ -86,4 +87,7 @@ class GsApiActionDefinition<T> {
         return responseProperties
     }
 
+    public setModelDefinition(String apiVersion, String controller, String action){
+        this.modelDefinition = "${GsUtil.makeHumReadble(apiVersion)}${GsUtil.makeHumReadble(controller)}${GsUtil.makeHumReadble(action)}"
+    }
 }

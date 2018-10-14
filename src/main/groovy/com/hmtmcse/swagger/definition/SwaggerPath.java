@@ -50,6 +50,11 @@ public class SwaggerPath {
         return this;
     }
 
+    public SwaggerPath addConsumeType(String consumeType) {
+        consumes.add(consumeType);
+        return this;
+    }
+
     public SwaggerPath addResponse(SwaggerPathResponse response) {
         definition.put("responses", response.getDefinition());
         return this;
