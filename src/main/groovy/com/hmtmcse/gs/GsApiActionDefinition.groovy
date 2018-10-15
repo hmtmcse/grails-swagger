@@ -1,6 +1,7 @@
 package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsApiRequestProperty
+import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
 
 import java.lang.reflect.Modifier
@@ -23,6 +24,7 @@ class GsApiActionDefinition<T> {
 
     public String parameterDescription = null
     public String parameterName = null
+    public GsApiResponseData defaultFailedResponse = null
 
 
     public GsApiActionDefinition(Class<T> domain){

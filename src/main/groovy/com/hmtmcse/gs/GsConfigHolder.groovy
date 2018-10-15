@@ -1,6 +1,7 @@
 package com.hmtmcse.gs
 
 import com.hmtmcse.swagger.definition.SwaggerConstant
+import com.hmtmcse.swagger.definition.SwaggerProperty
 
 
 class GsConfigHolder {
@@ -48,6 +49,12 @@ class GsConfigHolder {
 
     static String invalidRequestType() {
         return "Invalid API Request Type"
+    }
+
+    static SwaggerProperty defaultFailedResponse() {
+        SwaggerProperty swaggerProperty = new SwaggerProperty()
+        swaggerProperty.property("")
+        return
     }
 
 }

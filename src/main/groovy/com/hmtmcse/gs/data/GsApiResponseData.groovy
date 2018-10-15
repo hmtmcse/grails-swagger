@@ -70,4 +70,6 @@ class GsApiResponseData {
         if (code){responseMap.code = code}
         return responseMap
     }
+
+
 }
