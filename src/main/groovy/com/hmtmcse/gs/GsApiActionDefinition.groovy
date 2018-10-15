@@ -24,7 +24,7 @@ class GsApiActionDefinition<T> {
 
     public String parameterDescription = null
     public String parameterName = null
-    public GsApiResponseData defaultFailedResponse = null
+
 
 
     public GsApiActionDefinition(Class<T> domain){

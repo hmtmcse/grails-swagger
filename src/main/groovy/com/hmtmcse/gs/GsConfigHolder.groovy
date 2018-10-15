@@ -1,5 +1,6 @@
 package com.hmtmcse.gs
 
+import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.swagger.definition.SwaggerConstant
 import com.hmtmcse.swagger.definition.SwaggerProperty
 
@@ -18,6 +19,7 @@ class GsConfigHolder {
             "object" : SwaggerConstant.SWAGGER_DT_OBJECT,
     ]
 
+    public static GsApiResponseData defaultFailedResponse = GsApiResponseData.failed("Error Message", 200)
 
     public static Integer itemsPerPage() {
         return 20
@@ -49,12 +51,6 @@ class GsConfigHolder {
 
     static String invalidRequestType() {
         return "Invalid API Request Type"
-    }
-
-    static SwaggerProperty defaultFailedResponse() {
-        SwaggerProperty swaggerProperty = new SwaggerProperty()
-        swaggerProperty.property("")
-        return
     }
 
 }

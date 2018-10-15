@@ -65,6 +65,19 @@ class GsReflectionUtil {
     }
 
 
+    static Map getMetaClassToSwaggerDataType(MetaClass metaClass){
+        Map properties = [:]
+        String dataType
+        metaClass?.getProperties()?.each { MetaProperty metaProperty ->
+            dataType = GsConfigHolder.javaToSwaggerDataType.get(metaProperty.type.name)?: SwaggerConstant.SWAGGER_DT_OBJECT
+            properties.put(metaProperty.name, dataType)
+        }
+        if (properties.get("class")){
+            properties.remove("class")
+        }
+        return properties
+    }
+
 
 
 }

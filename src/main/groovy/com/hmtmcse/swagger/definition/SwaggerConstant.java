@@ -6,6 +6,7 @@ public class SwaggerConstant {
     public final static String IN_BODY = "body";
     public final static String IN_PATH= "path";
     public final static String SUCCESS = "200";
+    public final static String DEFAULT_FAILED_RESPONSE = "DefaultFailedResponse";
     public final static String IN_QUERY = "query";
     public final static String POST_METHOD = "post";
 

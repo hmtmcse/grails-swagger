@@ -45,11 +45,11 @@ class GsApiResponseData {
     }
 
     static GsApiResponseData failed(String message, Integer code = 0){
-        return new GsApiResponseData(false, message)
+        return new GsApiResponseData(false, message).setCode(code)
     }
 
     static GsApiResponseData successMessage(String message, Integer code = 0){
-        return new GsApiResponseData(true, message)
+        return new GsApiResponseData(true, message).setCode(code)
     }
 
     static GsApiResponseData successResponse(def response, Integer code = 0){

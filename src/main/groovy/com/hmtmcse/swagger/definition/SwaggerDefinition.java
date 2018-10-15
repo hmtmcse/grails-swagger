@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SwaggerDefinition extends SwaggerCommonDefinition{
 
-    private String swagger = "2.0";
+    public String swagger = "2.0";
     private List<String> schemes = new ArrayList<>();
 
     private List<SwaggerTags> tags = new ArrayList<>();

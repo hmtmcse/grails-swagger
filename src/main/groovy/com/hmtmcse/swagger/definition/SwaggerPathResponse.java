@@ -30,6 +30,11 @@ public class SwaggerPathResponse {
         return this;
     }
 
+    public SwaggerPathResponse schemaOnly(String item){
+        definition.get(httpCode).put("schema", SwaggerMap.object().setGet("$ref", "#/definitions/" + item));
+        return this;
+    }
+
     public SwaggerPathResponse schemaAnyOf(String name){
         schemaAnyOf.computeIfAbsent("anyOf", k -> new ArrayList<>());
         schemaAnyOf.get("anyOf").add(SwaggerMap.object().setGet("$ref", "#/definitions/" + name));
