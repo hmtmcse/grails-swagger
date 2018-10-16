@@ -33,7 +33,7 @@ public class SwaggerProperty {
         return this;
     }
 
-    public SwaggerProperty example(String example){
+    public SwaggerProperty example(Object example){
         definition.get(name).put("example", example);
         return this;
     }
