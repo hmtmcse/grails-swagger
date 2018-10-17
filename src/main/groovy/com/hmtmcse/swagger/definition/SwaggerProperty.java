@@ -18,6 +18,12 @@ public class SwaggerProperty {
        return this;
     }
 
+    public SwaggerProperty property(String name){
+        this.name = name;
+        definition.put(name, SwaggerMap.object().setGet("name", name));
+        return this;
+    }
+
     public SwaggerProperty format(String format){
         definition.get(name).put("format", format);
         return this;

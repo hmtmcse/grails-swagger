@@ -9,6 +9,7 @@ class GsRequestResponseProperty {
     public String format = null
     public String description = null
     public String defaultValue = ""
+    public String referenceDefinition = null
     public Closure customProcessor = null
 
     String getName() {
