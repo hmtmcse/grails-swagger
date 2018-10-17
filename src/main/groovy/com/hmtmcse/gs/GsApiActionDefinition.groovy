@@ -24,6 +24,8 @@ class GsApiActionDefinition<T> {
 
     public String parameterDescription = null
     public String parameterName = null
+    public GsApiResponseData successResponseFormat = GsApiResponseData.successResponse("Success Data")
+    public GsApiResponseData failedResponseFormat = GsApiResponseData.failed("Error Message", 200)
 
 
 
