@@ -4,7 +4,7 @@ class GsApiResponseData {
 
     Boolean isSuccess = false
     String message = null
-    def response = null
+    Object response = null
     Integer code = 0
 
     GsApiResponseData(Boolean isSuccess, String message, Integer code = 0) {
@@ -52,7 +52,7 @@ class GsApiResponseData {
         return new GsApiResponseData(true, message).setCode(code)
     }
 
-    static GsApiResponseData successResponse(def response, Integer code = 0){
+    static GsApiResponseData successResponse(Object response, Integer code = 0){
         return instance(true).setCode(code).setResponse(response)
     }
 
