@@ -1,12 +1,13 @@
 package com.hmtmcse.swagger.definition;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class SwaggerCommonDefinition {
 
-    public HashMap<Object, Object> definition = new HashMap<>();
+    public LinkedHashMap<Object, Object> definition = new LinkedHashMap<>();
 
-    public HashMap<Object, Object> getDefinition(){
+    public LinkedHashMap<Object, Object> getDefinition(){
         return this.definition;
     }
 }

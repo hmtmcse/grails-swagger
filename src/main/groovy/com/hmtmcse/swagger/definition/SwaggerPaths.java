@@ -1,16 +1,17 @@
 package com.hmtmcse.swagger.definition;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class SwaggerPaths {
 
-    private HashMap<String, HashMap<Object, Object>> definition = new HashMap<>();
+    private LinkedHashMap<String, LinkedHashMap<Object, Object>> definition = new LinkedHashMap<>();
 
     private String url;
 
     public SwaggerPaths start(String url){
         this.url = url;
-        definition.put(url, new HashMap<>());
+        definition.put(url, new LinkedHashMap<>());
         return this;
     }
 

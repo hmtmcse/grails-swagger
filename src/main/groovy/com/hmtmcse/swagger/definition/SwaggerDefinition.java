@@ -1,9 +1,6 @@
 package com.hmtmcse.swagger.definition;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class SwaggerDefinition extends SwaggerCommonDefinition{
 
@@ -22,7 +19,7 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
 
 
     public SwaggerDefinition(){
-        definition = new HashMap<>();
+        definition = new LinkedHashMap<>();
     }
 
 
@@ -107,7 +104,7 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
         return this;
     }
 
-    public HashMap<Object, Object> getDefinition(){
+    public LinkedHashMap<Object, Object> getDefinition(){
         definition.put("swagger", swagger);
         definition.put("host", host);
         definition.put("basePath", basePath);

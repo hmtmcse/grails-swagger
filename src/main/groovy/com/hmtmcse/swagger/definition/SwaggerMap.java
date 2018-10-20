@@ -1,21 +1,22 @@
 package com.hmtmcse.swagger.definition;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class SwaggerMap<K, V> {
 
-    private HashMap<K, V> hashMap = new HashMap<>();
+    private LinkedHashMap<K, V> hashMap = new LinkedHashMap<>();
 
     public SwaggerMap<K, V> set(K key, V value){
         hashMap.put(key, value);
         return this;
     }
 
-    public HashMap<K, V> get(){
+    public LinkedHashMap<K, V> get(){
         return hashMap;
     }
 
-    public HashMap<K, V> setGet(K key, V value){
+    public LinkedHashMap<K, V> setGet(K key, V value){
         set(key, value);
         return get();
     }

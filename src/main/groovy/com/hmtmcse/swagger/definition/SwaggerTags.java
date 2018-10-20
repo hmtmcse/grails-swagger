@@ -1,6 +1,5 @@
 package com.hmtmcse.swagger.definition;
 
-import java.util.HashMap;
 
 public class SwaggerTags extends SwaggerCommonDefinition{
 

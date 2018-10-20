@@ -2,6 +2,7 @@ package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsAction
 import com.hmtmcse.gs.data.GsControllerActionData
+import grails.util.Environment
 import grails.util.Holders
 import org.grails.core.DefaultGrailsControllerClass
 import java.util.regex.Matcher
@@ -12,12 +13,14 @@ class GsUrlMappingUtil {
     private static List<GsControllerActionData> gsUrlMappingHolder = new ArrayList<>()
 
     static List<GsControllerActionData> getUrlMappingData() {
-        if (gsUrlMappingHolder.size() == 0){
+        if (gsUrlMappingHolder.size() == 0 || Environment.PRODUCTION != Environment.current){
+            gsUrlMappingHolder = new ArrayList<>()
             GsControllerActionData gsControllerActionData
             Holders.grailsApplication.controllerClasses.each{ DefaultGrailsControllerClass controller ->
                 if (controller.name.startsWith(GsConfigHolder.controllerStartWith())){
                     gsControllerActionData =  processControllerActionRegex(controller)
                     if (gsControllerActionData){
+                        gsControllerActionData.setActions(gsControllerActionData.actions.reverse())
                         gsControllerActionData.controllerClass = controller
                         gsControllerActionData.relativeURL = "/${apiPrefix()}/${gsControllerActionData.apiVersion}/${gsControllerActionData.controllerUrlName}/"
                         gsUrlMappingHolder.add(gsControllerActionData)

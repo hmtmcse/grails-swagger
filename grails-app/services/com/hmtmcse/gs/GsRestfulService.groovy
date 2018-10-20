@@ -36,7 +36,9 @@ class GsRestfulService {
     }
 
 
-    def gsCreate(GsApiActionDefinition definition, Map params){}
+    def gsCreate(GsApiActionDefinition definition, Map params){
+
+    }
 
     def gsUpdate(GsApiActionDefinition definition, Map params){}
 

@@ -2,18 +2,19 @@ package com.hmtmcse.swagger.definition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class SwaggerPathResponse {
 
 
-    private HashMap<String, HashMap<Object, Object>> definition = new HashMap<>();
+    private LinkedHashMap<String, LinkedHashMap<Object, Object>> definition = new LinkedHashMap<>();
     private String httpCode;
-    private HashMap<String, List<Object>> schemaAnyOf = new HashMap<>();
+    private LinkedHashMap<String, List<Object>> schemaAnyOf = new LinkedHashMap<>();
 
     public SwaggerPathResponse start(String httpCode){
         this.httpCode = httpCode;
-        definition.put(httpCode, new HashMap<>());
+        definition.put(httpCode, new LinkedHashMap<>());
         return this;
     }
 

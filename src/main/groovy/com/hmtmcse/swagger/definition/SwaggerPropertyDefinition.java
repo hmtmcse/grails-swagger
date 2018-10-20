@@ -1,12 +1,13 @@
 package com.hmtmcse.swagger.definition;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class SwaggerPropertyDefinition {
 
 
 
-    public HashMap<String, HashMap<Object, Object>> definition = new HashMap<>();
+    public LinkedHashMap<String, LinkedHashMap<Object, Object>> definition = new LinkedHashMap<>();
     private String name;
 
     public SwaggerPropertyDefinition addDefinition(String name, String type){

@@ -1,13 +1,10 @@
 package com.hmtmcse.swagger.definition;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class SwaggerPath {
 
-    private HashMap<String, Object> definition = new HashMap<>();
+    private LinkedHashMap<String, Object> definition = new LinkedHashMap<>();
 
     private List<String> produces = Arrays.asList(SwaggerConstant.APPLICATION_JSON);
     private List<String> consumes = new ArrayList<>();
