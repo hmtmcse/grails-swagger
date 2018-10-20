@@ -9,8 +9,8 @@ import com.hmtmcse.gs.data.GsApiResponseProperty
 class GsApiActionDefinition<T> {
 
 
-    private Map<String, GsApiResponseProperty> responseProperties = new HashMap<>()
-    private Map<String, GsApiRequestProperty> requestProperties = new HashMap<>()
+    private Map<String, GsApiResponseProperty> responseProperties = new LinkedHashMap<>()
+    private Map<String, GsApiRequestProperty> requestProperties = new LinkedHashMap<>()
     public String description = null
     public String modelDefinition = null
     public String summary = null

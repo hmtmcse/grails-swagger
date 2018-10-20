@@ -7,10 +7,11 @@ import com.hmtmcse.swagger.definition.SwaggerProperty
 
 class GsApiResponseData {
 
-    Boolean isSuccess = false
-    String message = null
+
     Object response = null
+    String message = null
     Integer code = null
+    Boolean isSuccess = false
 
     GsApiResponseData(Boolean isSuccess, String message, Integer code = null) {
         this.isSuccess = isSuccess
@@ -67,7 +68,7 @@ class GsApiResponseData {
     }
 
     Map toMap(){
-        Map<String, Object> responseMap = [
+        LinkedHashMap<String, Object> responseMap = [
                 "isSuccess" : isSuccess,
         ]
         if (message){responseMap.message = message}
@@ -82,7 +83,7 @@ class GsApiResponseData {
     static SwaggerProperty swaggerResponseProperty(GsApiResponseData apiResponseData, Boolean isExample = true) {
         SwaggerProperty swaggerProperty = null
         if (apiResponseData) {
-            Map dataTypes = GsReflectionUtil.getMetaClassToSwaggerDataType(apiResponseData.metaClass)
+            LinkedHashMap dataTypes = GsReflectionUtil.getMetaClassToSwaggerDataType(apiResponseData.metaClass)
             swaggerProperty = new SwaggerProperty()
             dataTypes?.each {
                 try {
