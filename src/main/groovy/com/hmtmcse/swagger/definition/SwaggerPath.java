@@ -67,7 +67,7 @@ public class SwaggerPath {
         return this;
     }
 
-    public HashMap getDefinition(){
+    public LinkedHashMap getDefinition(){
         if (consumes.size() != 0){
             definition.put("consumes", consumes);
         }

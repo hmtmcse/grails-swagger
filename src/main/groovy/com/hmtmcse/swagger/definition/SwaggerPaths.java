@@ -1,6 +1,5 @@
 package com.hmtmcse.swagger.definition;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class SwaggerPaths {
@@ -15,6 +14,11 @@ public class SwaggerPaths {
         return this;
     }
 
+    public SwaggerPaths startAgain(String url){
+        this.url = url;
+        return this;
+    }
+
     public SwaggerPaths addPath(String method, SwaggerPath swaggerPath){
         definition.get(url).put(method, swaggerPath.getDefinition());
         return this;
@@ -24,7 +28,7 @@ public class SwaggerPaths {
         return definition.get(url) != null;
     }
 
-    public HashMap getDefinition(){
+    public LinkedHashMap getDefinition(){
         return this.definition;
     }
 

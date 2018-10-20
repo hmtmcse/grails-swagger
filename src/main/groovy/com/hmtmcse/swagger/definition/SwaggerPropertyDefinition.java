@@ -1,6 +1,5 @@
 package com.hmtmcse.swagger.definition;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class SwaggerPropertyDefinition {
@@ -23,7 +22,7 @@ public class SwaggerPropertyDefinition {
     }
 
 
-    public HashMap getDefinition(){
+    public LinkedHashMap getDefinition(){
         return this.definition;
     }
 }

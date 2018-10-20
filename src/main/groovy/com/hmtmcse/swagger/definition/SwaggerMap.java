@@ -1,6 +1,5 @@
 package com.hmtmcse.swagger.definition;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class SwaggerMap<K, V> {

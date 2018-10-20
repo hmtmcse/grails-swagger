@@ -40,7 +40,7 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
         }
 
         if (this.paths.isExist(url)) {
-            return this.paths;
+            return this.paths.startAgain(url);
         }
 
         this.paths.start(url);

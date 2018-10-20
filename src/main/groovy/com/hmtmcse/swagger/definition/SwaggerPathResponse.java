@@ -1,7 +1,6 @@
 package com.hmtmcse.swagger.definition;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class SwaggerPathResponse {
         return this;
     }
 
-    public HashMap getDefinition(){
+    public LinkedHashMap getDefinition(){
         return this.definition;
     }
 }
