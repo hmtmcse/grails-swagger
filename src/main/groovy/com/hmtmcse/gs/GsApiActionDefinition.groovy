@@ -1,5 +1,6 @@
 package com.hmtmcse.gs
 
+import com.hmtmcse.gs.data.GsAction
 import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
@@ -93,7 +94,7 @@ class GsApiActionDefinition<T> {
         return responseProperties
     }
 
-    public setModelDefinition(String apiVersion, String controller, String action){
-        this.modelDefinition = "${GsUtil.makeHumReadble(apiVersion)}${GsUtil.makeHumReadble(controller)}${GsUtil.makeHumReadble(action)}"
+    public setModelDefinition(String apiVersion, String controller, GsAction gsAction){
+        this.modelDefinition = "${GsUtil.makeHumReadble(apiVersion)}${GsUtil.makeHumReadble(controller)}${GsUtil.makeHumReadble(gsAction.httpMethod)}${GsUtil.makeHumReadble(gsAction.name)}"
     }
 }

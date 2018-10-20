@@ -10,15 +10,15 @@ class GsApiResponseData {
     Boolean isSuccess = false
     String message = null
     Object response = null
-    Integer code = 0
+    Integer code = null
 
-    GsApiResponseData(Boolean isSuccess, String message, Integer code = 0) {
+    GsApiResponseData(Boolean isSuccess, String message, Integer code = null) {
         this.isSuccess = isSuccess
         this.message = message
         this.code = code
     }
 
-    GsApiResponseData(Boolean isSuccess, Integer code = 0) {
+    GsApiResponseData(Boolean isSuccess, Integer code = null) {
         this.isSuccess = isSuccess
         this.code = code
     }
@@ -49,15 +49,15 @@ class GsApiResponseData {
         return this
     }
 
-    static GsApiResponseData failed(String message, Integer code = 0){
+    static GsApiResponseData failed(String message, Integer code = null){
         return new GsApiResponseData(false, message).setCode(code)
     }
 
-    static GsApiResponseData successMessage(String message, Integer code = 0){
+    static GsApiResponseData successMessage(String message, Integer code = null){
         return new GsApiResponseData(true, message).setCode(code)
     }
 
-    static GsApiResponseData successResponse(Object response, Integer code = 0){
+    static GsApiResponseData successResponse(Object response, Integer code = null){
         return instance(true).setCode(code).setResponse(response)
     }
 

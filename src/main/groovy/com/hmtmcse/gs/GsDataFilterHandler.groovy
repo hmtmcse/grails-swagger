@@ -91,8 +91,7 @@ class GsDataFilterHandler {
         }
 
         conditions.objectProperty(name, property)
-
-        where.objectProperty(GsConstant.WHERE, where)
+        where.objectProperty(GsConstant.WHERE, conditions)
         return where
     }
 

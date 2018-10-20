@@ -2,7 +2,6 @@ package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.swagger.definition.SwaggerConstant
-import com.hmtmcse.swagger.definition.SwaggerProperty
 
 
 class GsConfigHolder {
@@ -19,7 +18,7 @@ class GsConfigHolder {
             "object" : SwaggerConstant.SWAGGER_DT_OBJECT,
     ]
 
-    public static GsApiResponseData defaultFailedResponse = GsApiResponseData.failed("Error Message", 200)
+    public static GsApiResponseData defaultFailedResponse = GsApiResponseData.failed("Error Message")
 
     public static Integer itemsPerPage() {
         return 20

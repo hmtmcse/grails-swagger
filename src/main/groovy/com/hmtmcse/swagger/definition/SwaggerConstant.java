@@ -12,6 +12,9 @@ public class SwaggerConstant {
 
     public final static String REQUEST = "Request";
     public final static String RESPONSE = "Response";
+    public final static String FAILED = "Failed";
+    public final static String SUCCESS_RESPONSE = "Success" + RESPONSE;
+    public final static String FAILED_RESPONSE = FAILED + RESPONSE;
 
 
     // Swagger Data Types
