@@ -80,6 +80,13 @@ public class SwaggerProperty {
         propertyList.add(definition.get(name));
     }
 
+    public void addToListWithType(String type){
+        if (type != null){
+            in(type);
+        }
+        propertyList.add(definition.get(name));
+    }
+
     public HashMap getDefinition(){
         return this.definition;
     }

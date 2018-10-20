@@ -32,8 +32,8 @@ public class SwaggerPath {
         return this;
     }
 
-    public SwaggerPath parameters(List<Object> parameters) {
-        this.parameters = parameters;
+    public SwaggerPath parameters(List<Object> allParameters) {
+        parameters = allParameters;
         return this;
     }
 

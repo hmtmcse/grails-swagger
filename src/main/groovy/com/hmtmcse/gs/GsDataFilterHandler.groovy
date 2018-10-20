@@ -6,6 +6,8 @@ import com.hmtmcse.swagger.definition.SwaggerProperty
 
 class GsDataFilterHandler {
 
+    private static String inType = null
+
     public Map paginations(Map params){
         Map refineParams = [:]
         refineParams[GsConstant.MAX] = params[GsConstant.MAX] ?: GsConfigHolder.itemsPerPage()
@@ -42,17 +44,17 @@ class GsDataFilterHandler {
     public static SwaggerProperty getRequestParams(Boolean isList = true, Boolean isJson = false , List allowedProperty = []){
         SwaggerProperty swaggerProperty = new SwaggerProperty()
         if (isList){
-            swaggerProperty.property(GsConstant.OFFSET, SwaggerConstant.SWAGGER_DT_INTEGER)
-            swaggerProperty.property(GsConstant.MAX, SwaggerConstant.SWAGGER_DT_INTEGER)
+            swaggerProperty.property(GsConstant.OFFSET, SwaggerConstant.SWAGGER_DT_INTEGER).addToListWithType(inType)
+            swaggerProperty.property(GsConstant.MAX, SwaggerConstant.SWAGGER_DT_INTEGER).addToListWithType(inType)
+            swaggerProperty.property(GsConstant.ORDER_PROPERTY, SwaggerConstant.SWAGGER_DT_STRING).addToListWithType(inType)
+            swaggerProperty.property(GsConstant.ORDER, SwaggerConstant.SWAGGER_DT_STRING).addToListWithType(inType)
         }
         if (!isJson){
-            swaggerProperty.property(GsConstant.ORDER_PROPERTY, SwaggerConstant.SWAGGER_DT_STRING)
-            swaggerProperty.property(GsConstant.ORDER, SwaggerConstant.SWAGGER_DT_STRING)
-            swaggerProperty.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING)
-            swaggerProperty.property(GsConstant.PROPERTY_VALUE, SwaggerConstant.SWAGGER_DT_STRING)
+            swaggerProperty.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING).addToListWithType(inType)
+            swaggerProperty.property(GsConstant.PROPERTY_VALUE, SwaggerConstant.SWAGGER_DT_STRING).addToListWithType(inType)
 
             if (allowedProperty.size()) {
-                swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, allowedProperty.join(", "))
+                swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, allowedProperty.join(", ")).addToListWithType(inType)
             }
         }
         return swaggerProperty
@@ -73,7 +75,7 @@ class GsDataFilterHandler {
         name += "|" + GsConstant.OR
 
 
-        SwaggerProperty where = new SwaggerProperty()
+        SwaggerProperty where = new SwaggerProperty().property(GsConstant.WHERE)
         if (isList){
             where = getRequestParams(isList, true)
 
@@ -101,6 +103,7 @@ class GsDataFilterHandler {
     }
 
     public static SwaggerProperty swaggerGetReadRequest(Boolean isList = true, List allowedProperty = []) {
+        inType = SwaggerConstant.IN_QUERY
         return getRequestParams(isList, false, allowedProperty)
     }
 
