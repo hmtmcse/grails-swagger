@@ -39,17 +39,21 @@ class GsDataFilterHandler {
     }
 
 
-    public static SwaggerProperty getRequestParams(Boolean isList = true, String json = null){
+    public static SwaggerProperty getRequestParams(Boolean isList = true, Boolean isJson = false , List allowedProperty = []){
         SwaggerProperty swaggerProperty = new SwaggerProperty()
         if (isList){
             swaggerProperty.property(GsConstant.OFFSET, SwaggerConstant.SWAGGER_DT_INTEGER)
             swaggerProperty.property(GsConstant.MAX, SwaggerConstant.SWAGGER_DT_INTEGER)
         }
-        if (json == null){
+        if (!isJson){
             swaggerProperty.property(GsConstant.ORDER_PROPERTY, SwaggerConstant.SWAGGER_DT_STRING)
             swaggerProperty.property(GsConstant.ORDER, SwaggerConstant.SWAGGER_DT_STRING)
             swaggerProperty.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING)
             swaggerProperty.property(GsConstant.PROPERTY_VALUE, SwaggerConstant.SWAGGER_DT_STRING)
+
+            if (allowedProperty.size()) {
+                swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, allowedProperty.join(", "))
+            }
         }
         return swaggerProperty
     }
@@ -71,7 +75,7 @@ class GsDataFilterHandler {
 
         SwaggerProperty where = new SwaggerProperty()
         if (isList){
-            where = getRequestParams(isList, "Yes")
+            where = getRequestParams(isList, true)
 
             name += "|" + GsConstant.ORDER
             name += "|" + GsConstant.BETWEEN
@@ -94,11 +98,16 @@ class GsDataFilterHandler {
 
 
     public static SwaggerProperty swaggerPostReadRequest(Boolean isList = true, List allowedProperty = []) {
-
+        return swaggerWhere(isList, allowedProperty)
     }
 
-    public static SwaggerProperty swaggerPostWriteRequest(List allowedProperty = []) {
+    public static SwaggerProperty swaggerGetReadRequest(Boolean isList = true, List allowedProperty = []) {
+        return getRequestParams(isList, false, allowedProperty)
+    }
 
+
+    public static SwaggerProperty swaggerPostWriteRequest(List allowedProperty = []) {
+        return swaggerWhere(false, allowedProperty)
     }
 
 }
