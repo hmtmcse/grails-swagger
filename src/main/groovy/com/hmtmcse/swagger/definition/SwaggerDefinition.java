@@ -37,10 +37,15 @@ public class SwaggerDefinition extends SwaggerCommonDefinition{
     }
 
 
-    public SwaggerPaths startPaths(String url){
-        if (this.paths == null){
+    public SwaggerPaths startPaths(String url) {
+        if (this.paths == null) {
             this.paths = new SwaggerPaths();
         }
+
+        if (this.paths.isExist(url)) {
+            return this.paths;
+        }
+
         this.paths.start(url);
         return this.paths;
     }

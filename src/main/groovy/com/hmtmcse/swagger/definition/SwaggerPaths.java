@@ -19,6 +19,9 @@ public class SwaggerPaths {
         return this;
     }
 
+    public Boolean isExist(String url) {
+        return definition.get(url) != null;
+    }
 
     public HashMap getDefinition(){
         return this.definition;
