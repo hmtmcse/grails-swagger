@@ -1,0 +1,1033 @@
+{
+  "swagger": "2.0",
+  "schemes": [
+    "https"
+  ],
+  "host": "bm-cps.webcommander.com",
+  "basePath": "\/manage-operator",
+  "securityDefinitions": {
+    "swagger_api_authentication": {
+      "type": "oauth2",
+      "authorizationUrl": "http:\/\/petstore.swagger.io\/oauth\/dialog",
+      "flow": "password",
+      "scopes": [],
+      "api_key": {
+        "type": "",
+        "name": "access-token",
+        "in": "header"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Name Of Operator",
+      "description": "This will Provide Operator Manipulation API.",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https:\/\/bm-cps.webcommander.com\/wiki\/manage-operator"
+      }
+    }
+  ],
+  "paths": {
+    "\/api\/v1\/read\/operator\/list": {
+      "get": {
+        "operationId": "request_api_v1_read_operator_list",
+        "summary": "Provide list of object result",
+        "produces": [
+          "application\/json"
+        ],
+        "tags": [
+          "Name Of Operator"
+        ],
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Put the offset Integer (1 to n) value of the query. (Optional)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "max",
+            "in": "query",
+            "description": "Put the max Integer (1 to n) value for the number of result. (Optional)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "description": "You can sort result by this field.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "id",
+              "name",
+              "operator_role_id",
+              "email",
+              "app_type",
+              "partner_uuid",
+              "partner_name"
+            ]
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "description": "Chose the sort order Ascending and Descending (Default) ",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "desc",
+              "asc"
+            ]
+          }
+        ],
+        "responses": {
+          "error": {
+            "description": "Error Response",
+            "schema": {
+              "$ref": "#\/definitions\/default_error"
+            }
+          },
+          "success": {
+            "description": "Success Response",
+            "schema": {
+              "$ref": "#\/definitions\/response_api_v1_read_operator_list"
+            }
+          }
+        }
+      }
+    },
+    "\/api\/v1\/read\/operator\/get": {
+      "get": {
+        "operationId": "request_api_v1_read_operator_get",
+        "summary": "Provide object result",
+        "produces": [
+          "application\/json"
+        ],
+        "tags": [
+          "Name Of Operator"
+        ],
+        "parameters": [
+          {
+            "name": "filed",
+            "in": "query",
+            "description": "Select field Name.",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "name",
+              "operator_role_id",
+              "email",
+              "app_type",
+              "partner_uuid",
+              "partner_name",
+              "uuid"
+            ]
+          },
+          {
+            "name": "value",
+            "in": "query",
+            "description": "Fill the field Value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "error": {
+            "description": "Error Response",
+            "schema": {
+              "$ref": "#\/definitions\/default_error"
+            }
+          },
+          "success": {
+            "description": "Success Response",
+            "schema": {
+              "$ref": "#\/definitions\/response_api_v1_read_operator_get"
+            }
+          }
+        }
+      }
+    },
+    "\/api\/v1\/read\/operator\/filtered-get": {
+      "post": {
+        "operationId": "request_api_v1_read_operator_filtered-get",
+        "summary": "Provide Filtered object result",
+        "produces": [
+          "application\/json"
+        ],
+        "tags": [
+          "Name Of Operator"
+        ],
+        "consumes": [
+          "application\/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Action Description",
+            "required": true,
+            "schema": {
+              "$ref": "#\/definitions\/request_api_v1_read_operator_filtered-get"
+            }
+          }
+        ],
+        "responses": {
+          "error": {
+            "description": "Error Response",
+            "schema": {
+              "$ref": "#\/definitions\/default_error"
+            }
+          },
+          "success": {
+            "description": "Success Response",
+            "schema": {
+              "$ref": "#\/definitions\/response_api_v1_read_operator_filtered-get"
+            }
+          }
+        }
+      }
+    },
+    "\/api\/v1\/read\/operator\/filtered-list": {
+      "post": {
+        "operationId": "request_api_v1_read_operator_filtered-list",
+        "summary": "Provide Filtered object list result",
+        "produces": [
+          "application\/json"
+        ],
+        "tags": [
+          "Name Of Operator"
+        ],
+        "consumes": [
+          "application\/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Action Description",
+            "required": true,
+            "schema": {
+              "$ref": "#\/definitions\/request_api_v1_read_operator_filtered-list"
+            }
+          }
+        ],
+        "responses": {
+          "error": {
+            "description": "Error Response",
+            "schema": {
+              "$ref": "#\/definitions\/default_error"
+            }
+          },
+          "success": {
+            "description": "Success Response",
+            "schema": {
+              "$ref": "#\/definitions\/response_api_v1_read_operator_filtered-list"
+            }
+          }
+        }
+      }
+    },
+    "\/api\/v1\/write\/operator\/create": {
+      "post": {
+        "operationId": "request_api_v1_write_operator_create",
+        "summary": "Create New Object",
+        "produces": [
+          "application\/json"
+        ],
+        "tags": [
+          "Name Of Operator"
+        ],
+        "consumes": [
+          "application\/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Action Description",
+            "required": true,
+            "schema": {
+              "$ref": "#\/definitions\/request_api_v1_write_operator_create"
+            }
+          }
+        ],
+        "responses": {
+          "error": {
+            "description": "Error Response",
+            "schema": {
+              "$ref": "#\/definitions\/default_error"
+            }
+          },
+          "success": {
+            "description": "Success Response",
+            "schema": {
+              "$ref": "#\/definitions\/response_api_v1_write_operator_create"
+            }
+          }
+        }
+      }
+    },
+    "\/api\/v1\/write\/operator\/update": {
+      "post": {
+        "operationId": "request_api_v1_write_operator_update",
+        "summary": "Update Existing Object",
+        "produces": [
+          "application\/json"
+        ],
+        "tags": [
+          "Name Of Operator"
+        ],
+        "consumes": [
+          "application\/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Action Description",
+            "required": true,
+            "schema": {
+              "$ref": "#\/definitions\/request_api_v1_write_operator_update"
+            }
+          }
+        ],
+        "responses": {
+          "error": {
+            "description": "Error Response",
+            "schema": {
+              "$ref": "#\/definitions\/default_error"
+            }
+          },
+          "success": {
+            "description": "Success Response",
+            "schema": {
+              "$ref": "#\/definitions\/response_api_v1_write_operator_update"
+            }
+          }
+        }
+      }
+    },
+    "\/api\/v1\/read\/operator\/verify-by-email-and-password": {
+      "post": {
+        "operationId": "request_api_v1_read_operator_verify-by-email-and-password",
+        "summary": "Verify Operator By Operator Email Address and password",
+        "produces": [
+          "application\/json"
+        ],
+        "tags": [
+          "Name Of Operator"
+        ],
+        "consumes": [
+          "application\/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Action Description",
+            "required": true,
+            "schema": {
+              "$ref": "#\/definitions\/request_api_v1_read_operator_verify-by-email-and-password"
+            }
+          }
+        ],
+        "responses": {
+          "error": {
+            "description": "Error Response",
+            "schema": {
+              "$ref": "#\/definitions\/default_error"
+            }
+          },
+          "success": {
+            "description": "Success Response",
+            "schema": {
+              "$ref": "#\/definitions\/response_api_v1_read_operator_verify-by-email-and-password"
+            }
+          }
+        }
+      }
+    },
+    "\/api\/v1\/read\/operator\/operator-details-by-uuid": {
+      "get": {
+        "operationId": "request_api_v1_read_operator_operator-details-by-uuid",
+        "summary": "Get Entity Details By UUID",
+        "produces": [
+          "application\/json"
+        ],
+        "tags": [
+          "Name Of Operator"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "Fill the field Uuid",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "error": {
+            "description": "Error Response",
+            "schema": {
+              "$ref": "#\/definitions\/default_error"
+            }
+          },
+          "success": {
+            "description": "Success Response",
+            "schema": {
+              "$ref": "#\/definitions\/response_api_v1_read_operator_operator-details-by-uuid"
+            }
+          }
+        }
+      }
+    },
+    "\/api\/v1\/write\/operator\/operator-active-inactive-by-uuid": {
+      "post": {
+        "operationId": "request_api_v1_write_operator_operator-active-inactive-by-uuid",
+        "summary": "Activate or Inactivate Operator By UUID",
+        "produces": [
+          "application\/json"
+        ],
+        "tags": [
+          "Name Of Operator"
+        ],
+        "consumes": [
+          "application\/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Action Description",
+            "required": true,
+            "schema": {
+              "$ref": "#\/definitions\/request_api_v1_write_operator_operator-active-inactive-by-uuid"
+            }
+          }
+        ],
+        "responses": {
+          "error": {
+            "description": "Error Response",
+            "schema": {
+              "$ref": "#\/definitions\/default_error"
+            }
+          },
+          "success": {
+            "description": "Success Response",
+            "schema": {
+              "$ref": "#\/definitions\/response_api_v1_write_operator_operator-active-inactive-by-uuid"
+            }
+          }
+        }
+      }
+    },
+    "\/api\/v1\/write\/operator\/delete": {
+      "delete": {
+        "operationId": "request_api_v1_write_operator_delete",
+        "summary": "Delete Existing Object",
+        "produces": [
+          "application\/json"
+        ],
+        "tags": [
+          "Name Of Operator"
+        ],
+        "consumes": [
+          "application\/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Action Description",
+            "required": true,
+            "schema": {
+              "$ref": "#\/definitions\/request_api_v1_write_operator_delete"
+            }
+          }
+        ],
+        "responses": {
+          "error": {
+            "description": "Error Response",
+            "schema": {
+              "$ref": "#\/definitions\/default_error"
+            }
+          },
+          "success": {
+            "description": "Success Response",
+            "schema": {
+              "$ref": "#\/definitions\/response_api_v1_write_operator_delete"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "response_api_v1_read_operator_list": {
+      "type": "object",
+      "properties": {
+        "isSuccess": {
+          "type": "boolean",
+          "example": true
+        },
+        "statusCode": {
+          "type": "string",
+          "example": 1200
+        },
+        "responseData": {
+          "type": "object",
+          "properties": {
+            "total": {
+              "type": "integer"
+            },
+            "list": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "operator_role_id": {
+                    "type": "integer"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "app_type": {
+                    "type": "string"
+                  },
+                  "partner_uuid": {
+                    "type": "string"
+                  },
+                  "partner_name": {
+                    "type": "string"
+                  },
+                  "uuid": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "request_api_v1_read_operator_list": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "integer",
+          "description": "Put the offset Integer (1 to n) value of the query. (Optional)"
+        },
+        "max": {
+          "type": "integer",
+          "description": "Put the max Integer (1 to n) value for the number of result. (Optional)"
+        },
+        "sortField": {
+          "type": "string",
+          "description": "You can sort result by this field."
+        },
+        "sortOrder": {
+          "type": "string",
+          "description": "Chose the sort order Ascending and Descending (Default) "
+        }
+      }
+    },
+    "response_api_v1_read_operator_get": {
+      "type": "object",
+      "properties": {
+        "isSuccess": {
+          "type": "boolean",
+          "example": true
+        },
+        "statusCode": {
+          "type": "string",
+          "example": 1200
+        },
+        "responseData": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "operator_role_id": {
+              "type": "integer"
+            },
+            "email": {
+              "type": "string"
+            },
+            "app_type": {
+              "type": "string"
+            },
+            "partner_uuid": {
+              "type": "string"
+            },
+            "partner_name": {
+              "type": "string"
+            },
+            "uuid": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "request_api_v1_read_operator_get": {
+      "type": "object",
+      "properties": {
+        "filed": {
+          "type": "string",
+          "required": true,
+          "description": "Select field Name."
+        },
+        "value": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field Value"
+        }
+      }
+    },
+    "response_api_v1_read_operator_filtered-get": {
+      "type": "object",
+      "properties": {
+        "isSuccess": {
+          "type": "boolean",
+          "example": true
+        },
+        "statusCode": {
+          "type": "string",
+          "example": 1200
+        },
+        "responseData": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "operator_role_id": {
+              "type": "integer"
+            },
+            "email": {
+              "type": "string"
+            },
+            "app_type": {
+              "type": "string"
+            },
+            "partner_uuid": {
+              "type": "string"
+            },
+            "partner_name": {
+              "type": "string"
+            },
+            "uuid": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "request_api_v1_read_operator_filtered-get": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "object",
+          "properties": {
+            "EQ\/NOT-EQ\/GT\/LT\/GTE\/LTE\/AND\/OR\/LIKE\/IN": {
+              "type": "object",
+              "properties": {
+                "fieldName": {
+                  "type": "string",
+                  "example": "fieldValue",
+                  "allowedFieldNames": "name,operator_role_id,email,app_type,partner_uuid,partner_name,uuid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "response_api_v1_read_operator_filtered-list": {
+      "type": "object",
+      "properties": {
+        "isSuccess": {
+          "type": "boolean",
+          "example": true
+        },
+        "statusCode": {
+          "type": "string",
+          "example": 1200
+        },
+        "responseData": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "operator_role_id": {
+              "type": "integer"
+            },
+            "email": {
+              "type": "string"
+            },
+            "app_type": {
+              "type": "string"
+            },
+            "partner_uuid": {
+              "type": "string"
+            },
+            "partner_name": {
+              "type": "string"
+            },
+            "uuid": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "request_api_v1_read_operator_filtered-list": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "integer"
+        },
+        "max": {
+          "type": "integer"
+        },
+        "sortFiled": {
+          "type": "integer"
+        },
+        "sortOrder": {
+          "type": "string",
+          "example": "asc\/dsc"
+        },
+        "conditions": {
+          "type": "object",
+          "properties": {
+            "EQ\/NOT-EQ\/GT\/LT\/GTE\/LTE\/AND\/OR\/LIKE\/IN": {
+              "type": "object",
+              "properties": {
+                "fieldName": {
+                  "type": "string",
+                  "example": "fieldValue",
+                  "allowedFieldNames": "name,operator_role_id,email,app_type,partner_uuid,partner_name,uuid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "response_api_v1_write_operator_create": {
+      "type": "object",
+      "properties": {
+        "isSuccess": {
+          "type": "boolean",
+          "example": true
+        },
+        "statusCode": {
+          "type": "string",
+          "example": 1200
+        },
+        "responseData": {
+          "type": "object",
+          "properties": {
+            "total": {
+              "type": "integer"
+            },
+            "list": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "uuid": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "request_api_v1_write_operator_create": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field Name"
+        },
+        "operator_role_id": {
+          "type": "integer",
+          "required": true,
+          "description": "Fill the field Operator_role_id"
+        },
+        "email": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field Email"
+        },
+        "password": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field Password"
+        },
+        "app_type": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field App_type"
+        },
+        "partner_uuid": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field Partner_uuid"
+        }
+      }
+    },
+    "response_api_v1_write_operator_update": {
+      "type": "object",
+      "properties": {
+        "isSuccess": {
+          "type": "boolean",
+          "example": true
+        },
+        "statusCode": {
+          "type": "string",
+          "example": 1200
+        },
+        "responseData": {
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "request_api_v1_write_operator_update": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field Name"
+        },
+        "operator_role_id": {
+          "type": "integer",
+          "required": true,
+          "description": "Fill the field Operator_role_id"
+        },
+        "email": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field Email"
+        },
+        "app_type": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field App_type"
+        },
+        "partner_uuid": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field Partner_uuid"
+        },
+        "uuid": {
+          "type": "string",
+          "required": true,
+          "description": "Please Provide the Proper UUID"
+        }
+      }
+    },
+    "response_api_v1_read_operator_verify-by-email-and-password": {
+      "type": "object",
+      "properties": {
+        "isSuccess": {
+          "type": "boolean",
+          "example": true
+        },
+        "statusCode": {
+          "type": "string",
+          "example": 1200
+        },
+        "responseData": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "uuid": {
+              "type": "string"
+            },
+            "appType": {
+              "type": "string"
+            },
+            "partnerUUID": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "request_api_v1_read_operator_verify-by-email-and-password": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field Email"
+        },
+        "password": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field Password"
+        }
+      }
+    },
+    "response_api_v1_read_operator_operator-details-by-uuid": {
+      "type": "object",
+      "properties": {
+        "isSuccess": {
+          "type": "boolean",
+          "example": true
+        },
+        "statusCode": {
+          "type": "string",
+          "example": 1200
+        },
+        "responseData": {
+          "type": "object",
+          "properties": {
+            "total": {
+              "type": "integer"
+            },
+            "list": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "operator_role_id": {
+                    "type": "string"
+                  },
+                  "app_type": {
+                    "type": "string"
+                  },
+                  "partner_uuid": {
+                    "type": "string"
+                  },
+                  "partner_name": {
+                    "type": "string"
+                  },
+                  "is_active": {
+                    "type": "boolean"
+                  },
+                  "uuid": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "request_api_v1_read_operator_operator-details-by-uuid": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field Uuid"
+        }
+      }
+    },
+    "response_api_v1_write_operator_operator-active-inactive-by-uuid": {
+      "type": "object",
+      "properties": {
+        "isSuccess": {
+          "type": "boolean",
+          "example": true
+        },
+        "statusCode": {
+          "type": "string",
+          "example": 1200
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "request_api_v1_write_operator_operator-active-inactive-by-uuid": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "required": true,
+          "description": "Fill the field Uuid"
+        },
+        "activeStatus": {
+          "type": "boolean",
+          "required": true,
+          "description": "Fill the field ActiveStatus"
+        }
+      }
+    },
+    "response_api_v1_write_operator_delete": {
+      "type": "object",
+      "properties": {
+        "isSuccess": {
+          "type": "boolean",
+          "example": true
+        },
+        "statusCode": {
+          "type": "string",
+          "example": 1200
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "request_api_v1_write_operator_delete": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "required": true,
+          "description": "Please Provide the Proper UUID"
+        }
+      }
+    },
+    "default_error": {
+      "type": "object",
+      "properties": {
+        "isSuccess": {
+          "type": "boolean",
+          "example": false
+        },
+        "statusCode": {
+          "type": "string",
+          "example": 1500
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -18,6 +18,18 @@ public class SwaggerProperty {
        return this;
     }
 
+    public SwaggerProperty objectProperty(String name, SwaggerProperty swaggerProperty){
+        this.name = name;
+        definition.put(name,
+                SwaggerMap.object().set("name", name)
+                        .set("type", SwaggerConstant.SWAGGER_DT_OBJECT)
+                        .setGet("properties", swaggerProperty.getDefinition())
+        );
+        return this;
+    }
+
+
+
     public SwaggerProperty property(String name){
         this.name = name;
         definition.put(name, SwaggerMap.object().setGet("name", name));
@@ -51,6 +63,11 @@ public class SwaggerProperty {
 
     public SwaggerProperty setEnum(String[] enums){
         definition.get(name).put("enum", enums);
+        return this;
+    }
+
+    public SwaggerProperty otherProperty(String key, String value){
+        definition.get(name).put(key, value);
         return this;
     }
 

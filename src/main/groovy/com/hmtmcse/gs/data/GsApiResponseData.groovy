@@ -1,5 +1,10 @@
 package com.hmtmcse.gs.data
 
+import com.hmtmcse.gs.GsConfigHolder
+import com.hmtmcse.gs.GsReflectionUtil
+import com.hmtmcse.swagger.definition.SwaggerConstant
+import com.hmtmcse.swagger.definition.SwaggerProperty
+
 class GsApiResponseData {
 
     Boolean isSuccess = false
@@ -62,14 +67,36 @@ class GsApiResponseData {
     }
 
     Map toMap(){
-        Map responseMap = [
+        Map<String, Object> responseMap = [
                 "isSuccess" : isSuccess,
         ]
         if (message){responseMap.message = message}
-        if (response){responseMap.response = response}
+        if (response){
+            responseMap.put(GsConfigHolder.responseKey(), response)
+        }
         if (code){responseMap.code = code}
         return responseMap
     }
 
+
+    static SwaggerProperty swaggerResponseProperty(GsApiResponseData apiResponseData, Boolean isExample = true) {
+        SwaggerProperty swaggerProperty = null
+        if (apiResponseData) {
+            Map dataTypes = GsReflectionUtil.getMetaClassToSwaggerDataType(apiResponseData.metaClass)
+            swaggerProperty = new SwaggerProperty()
+            dataTypes?.each {
+                try {
+                    if (apiResponseData[it.key] != null) {
+                        swaggerProperty.property(it.key.toString(), it.value.toString())
+                        if (isExample) {
+                            swaggerProperty.example(apiResponseData[it.key])
+                        }
+                    }
+                } catch (Exception e) {
+                }
+            }
+        }
+        return swaggerProperty
+    }
 
 }

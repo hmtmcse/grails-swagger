@@ -17,4 +17,35 @@ class GsConstant {
     public final static String DELETE_RESPONSE = "DELETE_RESPONSE"
     public final static String CUSTOM_QUERY_RESPONSE = "CUSTOM_QUERY_RESPONSE"
     public final static String CUSTOM_QUERY_AND_RESPONSE = "CUSTOM_QUERY_AND_RESPONSE"
+
+
+    // Data Filter
+    public final static String OFFSET = "offset"
+    public final static String MAX = "max"
+    public final static String SORT = "sort"
+    public final static String ORDER = "order"
+    public final static String ASC = "asc"
+    public final static String DESC = "desc"
+    public final static String SELECT = "select"
+    public final static String WHERE = "where"
+
+    public final static String EQUAL = "equal"
+    public final static String NOT_EQUAL = "notEqual"
+    public final static String LESS_THAN = "lessThan"
+    public final static String LESS_THAN_EQUAL = "lessThanEqual"
+    public final static String GETTER_THAN = "getterThan"
+    public final static String GETTER_THAN_EQUAL = "getterThanEqual"
+    public final static String IN_LIST = "inList"
+    public final static String BETWEEN = "between"
+    public final static String AND = "and"
+    public final static String OR = "or"
+    public final static String LIKE = "like"
+
+    public final static String PROPERTY_NAME = "propertyName"
+    public final static String ORDER_PROPERTY= "orderProperty"
+    public final static String PROPERTY_VALUE = "propertyValue"
+    public final static String ALLOWED_PROPERTY = "allowedProperty"
+
+
+    // End of Data Filter
 }

@@ -53,4 +53,12 @@ class GsConfigHolder {
         return "Invalid API Request Type"
     }
 
+    static String multipleMatchInDetails() {
+        return "If Multiple Match Found then will return first one"
+    }
+
+    static String responseKey() {
+        return "response"
+    }
+
 }
