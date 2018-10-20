@@ -60,6 +60,23 @@ class GsReflectionUtil {
         }
     }
 
+    static def getNewObjectWithServiceInstance(DefaultGrailsControllerClass controller){
+        try {
+            Object object = getNewObject(controller)
+            if (object){
+                object.metaClass.getProperties().each { MetaProperty metaProperty ->
+                    if (metaProperty.name.endsWith("Service")){
+                        Class clazz = Class.forName(metaProperty.type.name)
+                        object[metaProperty.name] = clazz.newInstance()
+                    }
+                }
+            }
+            return object
+        }catch(Exception e){
+            return null
+        }
+    }
+
     static def setPropertyValue(DefaultGrailsControllerClass controller, String name, Object value){
         controller.metaClass.setProperty(controller.newInstance(), name, value)
     }
