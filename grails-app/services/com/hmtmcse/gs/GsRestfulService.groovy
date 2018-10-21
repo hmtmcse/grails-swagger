@@ -43,7 +43,7 @@ class GsRestfulService {
         if (domain.hasErrors()) {
             return gsInternalResponse.processDomainError(domain.errors.allErrors)
         } else {
-            domain.save(flush: true)
+            gsInternalResponse.domain = domain.save(flush: true)
         }
         return gsInternalResponse.setIsSuccess(true)
     }

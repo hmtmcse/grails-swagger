@@ -10,6 +10,8 @@ class GsInternalResponse {
     Integer code = null
     Closure where = null
     Boolean isSuccess = false
+    Object domain = null
+    Object response = null
 
 
     static GsInternalResponse instance(){
