@@ -2,7 +2,6 @@ package com.hmtmcse.gs.data
 
 import com.hmtmcse.gs.GsConfigHolder
 import com.hmtmcse.gs.GsReflectionUtil
-import com.hmtmcse.swagger.definition.SwaggerConstant
 import com.hmtmcse.swagger.definition.SwaggerProperty
 
 class GsApiResponseData {
@@ -11,6 +10,7 @@ class GsApiResponseData {
     Object response = null
     String message = null
     Integer code = null
+    Integer total = null
     Boolean isSuccess = false
 
     GsApiResponseData(Boolean isSuccess, String message, Integer code = null) {
@@ -76,6 +76,7 @@ class GsApiResponseData {
             responseMap.put(GsConfigHolder.responseKey(), response)
         }
         if (code){responseMap.code = code}
+        if (total){responseMap.total = total}
         return responseMap
     }
 

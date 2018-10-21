@@ -37,7 +37,8 @@ class GsRestfulService {
 
 
     def gsCreate(GsApiActionDefinition definition, Map params){
-
+        println("test")
+        return [:]
     }
 
     def gsUpdate(GsApiActionDefinition definition, Map params){}

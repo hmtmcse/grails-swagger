@@ -1,5 +1,10 @@
 package com.hmtmcse.gs
 
+import com.hmtmcse.swagger.definition.SwaggerConstant
+import grails.web.servlet.mvc.GrailsParameterMap
+
+import javax.servlet.http.HttpServletRequest
+
 class GsUtil {
 
     public static String makeHumReadble(String text){
@@ -15,5 +20,12 @@ class GsUtil {
 
     public static String toSnakeCase( String text ) {
         text.replaceAll( /([A-Z])/, /_$1/ ).toLowerCase().replaceAll( /^_/, '' )
+    }
+
+    static def setJsonToParams(HttpServletRequest request, GrailsParameterMap params) {
+        String contentType = request.getContentType()
+        if (contentType && contentType.equals(SwaggerConstant.APPLICATION_JSON) && request.JSON){
+            params.gsApiData = request.JSON
+        }
     }
 }
