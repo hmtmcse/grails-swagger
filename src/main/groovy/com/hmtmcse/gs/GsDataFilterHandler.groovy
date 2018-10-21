@@ -1,12 +1,47 @@
 package com.hmtmcse.gs
 
-import com.hmtmcse.gs.data.GsApiResponseData
+import com.hmtmcse.gs.data.GsApiRequestProperty
+import com.hmtmcse.gs.data.GsApiResponseProperty
 import com.hmtmcse.swagger.definition.SwaggerConstant
 import com.hmtmcse.swagger.definition.SwaggerProperty
 
 class GsDataFilterHandler {
 
     private static String inType = null
+
+    public Map getParamsPair(Map params) {
+        if (params.gsHttpRequestMethod) {
+            switch (params.gsHttpRequestMethod.toLowerCase()) {
+                case GsConstant.POST:
+                    return params.gsApiData ?: [:]
+                case GsConstant.GET:
+                    return params
+            }
+        }
+        return [:]
+    }
+
+
+    public GsInternalResponse saveUpdateDataFilter(GsApiActionDefinition definition, Map params) {
+        GsInternalResponse internalResponse = GsInternalResponse.instance()
+        Map paramsData = getParamsPair(params)
+        definition.getRequestProperties().each { String name, GsApiRequestProperty properties ->
+            if (paramsData.containsKey(name)) {
+                internalResponse.params(name, paramsData[name])
+            } else {
+                if (properties.isRequired) {
+                    internalResponse.addErrorDetail(name, properties.errorMessage ?: GsConfigHolder.requiredFieldMissing())
+                    return internalResponse
+                }
+            }
+        }
+        internalResponse.isSuccess = true
+        return internalResponse
+    }
+
+    public static GsDataFilterHandler instance(){
+        return new GsDataFilterHandler()
+    }
 
     public Map paginations(Map params){
         Map refineParams = [:]
@@ -96,6 +131,7 @@ class GsDataFilterHandler {
         where.objectProperty(GsConstant.WHERE, conditions)
         return where
     }
+
 
 
     public static SwaggerProperty swaggerPostReadRequest(Boolean isList = true, List allowedProperty = []) {

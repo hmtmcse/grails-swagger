@@ -1,6 +1,8 @@
 package com.hmtmcse.gs.data
 
+import com.hmtmcse.gs.GsApiActionDefinition
 import com.hmtmcse.gs.GsConfigHolder
+import com.hmtmcse.gs.GsInternalResponse
 import com.hmtmcse.gs.GsReflectionUtil
 import com.hmtmcse.swagger.definition.SwaggerProperty
 
@@ -9,6 +11,7 @@ class GsApiResponseData {
 
     Object response = null
     String message = null
+    List errorDetails = null
     Integer code = null
     Integer total = null
     Boolean isSuccess = false
@@ -54,6 +57,10 @@ class GsApiResponseData {
         return new GsApiResponseData(false, message).setCode(code)
     }
 
+    static GsApiResponseData failedWithDetails(String message, List errorDetails, Integer code = null){
+        return new GsApiResponseData(false, message).setCode(code).setErrorDetails(errorDetails)
+    }
+
     static GsApiResponseData successMessage(String message, Integer code = null){
         return new GsApiResponseData(true, message).setCode(code)
     }
@@ -67,6 +74,12 @@ class GsApiResponseData {
         return new GsApiResponseData(isSuccess)
     }
 
+    GsApiResponseData setErrorDetails(List errorDetails) {
+        this.errorDetails = errorDetails
+        return this
+
+    }
+
     Map toMap(){
         LinkedHashMap<String, Object> responseMap = [
                 "isSuccess" : isSuccess,
@@ -77,9 +90,13 @@ class GsApiResponseData {
         }
         if (code){responseMap.code = code}
         if (total){responseMap.total = total}
+        if (errorDetails){responseMap.errorDetails = errorDetails}
         return responseMap
     }
 
+    List getErrorDetails() {
+        return errorDetails
+    }
 
     static SwaggerProperty swaggerResponseProperty(GsApiResponseData apiResponseData, Boolean isExample = true) {
         SwaggerProperty swaggerProperty = null
@@ -99,6 +116,23 @@ class GsApiResponseData {
             }
         }
         return swaggerProperty
+    }
+
+    static Map processAPIResponse(GsApiActionDefinition gsApiActionDefinition, GsInternalResponse gsInternalResponse) {
+        if (gsInternalResponse.isSuccess) {
+
+        } else {
+            GsApiResponseData failedResponseFormat = gsApiActionDefinition.failedResponseFormat ?: GsConfigHolder.defaultFailedResponse
+            failedResponseFormat.isSuccess = false
+            if (failedResponseFormat.message && gsInternalResponse.message){
+                failedResponseFormat.message =  gsInternalResponse.message
+            }
+            if (failedResponseFormat.errorDetails != null && gsInternalResponse.errorDetails != null){
+                failedResponseFormat.errorDetails =  gsInternalResponse.errorDetails
+            }
+            return failedResponseFormat.toMap()
+        }
+        return null
     }
 
 }

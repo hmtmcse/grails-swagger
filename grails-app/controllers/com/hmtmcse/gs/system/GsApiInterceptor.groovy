@@ -1,6 +1,5 @@
 package com.hmtmcse.gs.system
 
-import com.hmtmcse.gs.GsConfigHolder
 import com.hmtmcse.gs.GsUrlMappingUtil
 import com.hmtmcse.gs.GsUtil
 

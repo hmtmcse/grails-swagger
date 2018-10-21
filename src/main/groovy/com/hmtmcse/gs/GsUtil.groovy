@@ -27,5 +27,6 @@ class GsUtil {
         if (contentType && contentType.equals(SwaggerConstant.APPLICATION_JSON) && request.JSON){
             params.gsApiData = request.JSON
         }
+        params.gsHttpRequestMethod = request.method
     }
 }

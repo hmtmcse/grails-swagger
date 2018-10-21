@@ -36,9 +36,26 @@ class GsRestfulService {
     }
 
 
+    private GsInternalResponse saveUpdate(Object domain, Map params) {
+        GsInternalResponse gsInternalResponse = GsInternalResponse.instance()
+        domain.properties = params
+        domain.validate()
+        if (domain.hasErrors()) {
+            return gsInternalResponse.processDomainError(domain.errors.allErrors)
+        } else {
+            domain.save(flush: true)
+        }
+        return gsInternalResponse.setIsSuccess(true)
+    }
+
+
     def gsCreate(GsApiActionDefinition definition, Map params){
-        println("test")
-        return [:]
+        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
+        GsInternalResponse gsInternalResponse = gsDataFilterHandler.saveUpdateDataFilter(definition, params)
+        if (gsInternalResponse.isSuccess){
+            gsInternalResponse = saveUpdate(definition.domain.newInstance(), gsInternalResponse.filteredParams)
+        }
+        return GsApiResponseData.processAPIResponse(definition, gsInternalResponse)
     }
 
     def gsUpdate(GsApiActionDefinition definition, Map params){}
