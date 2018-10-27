@@ -1,6 +1,7 @@
 window.onload = function() {
     const ui = SwaggerUIBundle({
-        url: "https://petstore.swagger.io/v2/swagger.json",
+        url: "http://localhost:8080/dashboard/swagger",
+        // url: "https://petstore.swagger.io/v2/swagger.json",
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [

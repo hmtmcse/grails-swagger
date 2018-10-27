@@ -120,7 +120,12 @@ class GsApiResponseData {
 
     static Map processAPIResponse(GsApiActionDefinition gsApiActionDefinition, GsInternalResponse gsInternalResponse) {
         if (gsInternalResponse.isSuccess) {
-
+            GsApiResponseData successResponseFormat = gsApiActionDefinition.successResponseFormat ?: GsConfigHolder.defaultSuccessResponse
+            successResponseFormat.isSuccess = true
+            if (successResponseFormat.message && gsInternalResponse.message){
+                successResponseFormat.message =  gsInternalResponse.message
+            }
+            return successResponseFormat.toMap()
         } else {
             GsApiResponseData failedResponseFormat = gsApiActionDefinition.failedResponseFormat ?: GsConfigHolder.defaultFailedResponse
             failedResponseFormat.isSuccess = false

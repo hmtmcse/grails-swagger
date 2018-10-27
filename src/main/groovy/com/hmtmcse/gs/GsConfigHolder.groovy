@@ -18,7 +18,8 @@ class GsConfigHolder {
             "object" : SwaggerConstant.SWAGGER_DT_OBJECT,
     ]
 
-    public static GsApiResponseData defaultFailedResponse = GsApiResponseData.failedWithDetails("Error Message", [])
+    public static GsApiResponseData defaultFailedResponse = GsApiResponseData.failedWithDetails("Operation Failed", [])
+    public static GsApiResponseData defaultSuccessResponse = GsApiResponseData.successMessage("Operation Success")
 
     public static Integer itemsPerPage() {
         return 20
@@ -65,6 +66,6 @@ class GsConfigHolder {
     }
 
     static String invalidFieldData() {
-        return "Invalid Field Data"
+        return "Invalid/Missing Field Or Data"
     }
 }
