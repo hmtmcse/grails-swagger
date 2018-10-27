@@ -25,21 +25,13 @@ class GsRestfulService {
 
             GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params)
             Map pagination = gsDataFilterHandler.readPaginationWithSortProcessor(gsParamsPairData)
-            Map allowedFields = gsDataFilterHandler.filterAllowedField(definition.whereAllowedPropertyList, gsParamsPairData.params)
+          //  gsParamsPairData.params = gsDataFilterHandler.filterAllowedField(definition.whereAllowedPropertyList, gsParamsPairData.params)
 
-            Closure listCriteria = null
+            Closure listCriteria = gsDataFilterHandler.readCriteriaProcessor(gsParamsPairData)
             responseData.isSuccess = true
-            responseData.total = definition.domain.createCriteria().count() {
-                if (listCriteria) {
-                    criteria listCriteria
-                }
-            }
+            responseData.total = definition.domain.createCriteria().count(listCriteria)
+            def queryResult = definition.domain.createCriteria().list(pagination, listCriteria)
 
-            def queryResult = definition.domain.createCriteria().list(pagination) {
-                if (listCriteria) {
-                    criteria listCriteria
-                }
-            }
             responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult)
             if (definition.successResponseFormat == null){
                 definition.successResponseFormat = GsApiResponseData.successResponseWithTotal([], 0)
@@ -47,7 +39,7 @@ class GsRestfulService {
         }catch(Exception e){
             println(e.getMessage())
             responseData.isSuccess = false
-            responseData = GsApiResponseData.failed(GsConfigHolder.failedMessage())
+            responseData.message = GsConfigHolder.failedMessage()
         }
         return GsApiResponseData.processAPIResponse(definition, responseData)
     }

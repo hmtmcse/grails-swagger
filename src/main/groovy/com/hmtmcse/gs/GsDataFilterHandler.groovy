@@ -2,6 +2,7 @@ package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsApiResponseProperty
+import com.hmtmcse.gs.data.GsMapKeyValue
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.swagger.definition.SwaggerConstant
 import com.hmtmcse.swagger.definition.SwaggerProperty
@@ -13,7 +14,17 @@ class GsDataFilterHandler {
 
 
 
-    Closure readCriteriaProcessor(){}
+    Closure readCriteriaProcessor(GsParamsPairData gsParamsPairData){
+        switch (gsParamsPairData.httpMethod) {
+            case GsConstant.POST:
+                if (gsParamsPairData.params && gsParamsPairData.params.where){
+                    return createCriteriaBuilder(gsParamsPairData.params.where)
+                }
+                return {}
+            case GsConstant.GET:
+                return readGetMethodCriteriaProcessor(gsParamsPairData)
+        }
+    }
 
 
     Closure readGetMethodCriteriaProcessor(GsParamsPairData gsParamsPairData) {
@@ -23,7 +34,7 @@ class GsDataFilterHandler {
                 eq(params.propertyName, params.propertyValue)
             }
         }
-        return null
+        return {}
     }
 
 
@@ -94,28 +105,92 @@ class GsDataFilterHandler {
         return new GsDataFilterHandler()
     }
 
-    public Map paginations(Map params){
-        Map refineParams = [:]
-        refineParams[GsConstant.MAX] = params[GsConstant.MAX] ?: GsConfigHolder.itemsPerPage()
-        refineParams[GsConstant.OFFSET] = params[GsConstant.OFFSET] ?: 0
-        return refineParams
-    }
 
-
-    public Closure createCriteriaBuilder(Map params){
+    public Closure createCriteriaBuilder(Map where, Boolean andOr = false) {
+        GsMapKeyValue gsMapKeyValue
         Closure criteria = {
-            if (params[GsConstant.ORDER_COLUMN] && params[GsConstant.ORDER] && (params[GsConstant.ORDER].equals(GsConstant.ASC) || params[GsConstant.ORDER].equals(GsConstant.DESC))){
-                order(params[GsConstant.ORDER_COLUMN], params[GsConstant.ORDER])
+            if (where[GsConstant.ORDER_PROPERTY] && where[GsConstant.ORDER] && (where[GsConstant.ORDER].equals(GsConstant.ASC) || where[GsConstant.ORDER].equals(GsConstant.DESC))) {
+                order(where[GsConstant.ORDER_PROPERTY], where[GsConstant.ORDER])
+            } else {
+                order(GsConfigHolder.sortColumn(), GsConfigHolder.sortOrder())
             }
-            if (params[GsConstant.SELECT]){
-                projections {
-                    params[GsConstant.SELECT]?.each {
-                        property(it)
+
+            if (!andOr) {
+                if (where[GsConstant.SELECT]) {
+                    projections {
+                        where[GsConstant.SELECT]?.each {
+                            property(it)
+                        }
+                    }
+                }
+
+                if (where[GsConstant.AND]) {
+                    and {
+                        createCriteriaBuilder(where[GsConstant.AND], true)
+                    }
+                }
+
+                if (where[GsConstant.OR]) {
+                    or {
+                        createCriteriaBuilder(where[GsConstant.OR], true)
                     }
                 }
             }
+
+            gsMapKeyValue = getMapKeyValue(where, GsConstant.EQUAL)
+            if (gsMapKeyValue) {
+                eq(gsMapKeyValue.key, gsMapKeyValue.value)
+            }
+
+            gsMapKeyValue = getMapKeyValue(where, GsConstant.NOT_EQUAL)
+            if (gsMapKeyValue) {
+                ne(gsMapKeyValue.key, gsMapKeyValue.value)
+            }
+
+            gsMapKeyValue = getMapKeyValue(where, GsConstant.LESS_THAN)
+            if (gsMapKeyValue) {
+                lt(gsMapKeyValue.key, gsMapKeyValue.value)
+            }
+
+
+            gsMapKeyValue = getMapKeyValue(where, GsConstant.LESS_THAN_EQUAL)
+            if (gsMapKeyValue) {
+                le(gsMapKeyValue.key, gsMapKeyValue.value)
+            }
+
+
+            gsMapKeyValue = getMapKeyValue(where, GsConstant.GETTER_THAN)
+            if (gsMapKeyValue) {
+                gt(gsMapKeyValue.key, gsMapKeyValue.value)
+            }
+
+
+            gsMapKeyValue = getMapKeyValue(where, GsConstant.GETTER_THAN_EQUAL)
+            if (gsMapKeyValue) {
+                ge(gsMapKeyValue.key, gsMapKeyValue.value)
+            }
+
+            gsMapKeyValue = getMapKeyValue(where, GsConstant.LIKE)
+            if (gsMapKeyValue) {
+                like(gsMapKeyValue.key, gsMapKeyValue.value)
+            }
+
         }
         return criteria
+    }
+
+
+    GsMapKeyValue getMapKeyValue(Map map, String key){
+        GsMapKeyValue gsMapKeyValue = new GsMapKeyValue()
+        if (!map[key]){
+            return null
+        }
+        map = map[key]
+        map.keySet().each {
+            gsMapKeyValue.key = it
+        }
+        gsMapKeyValue.value = map.get(gsMapKeyValue.key)
+        return gsMapKeyValue
     }
 
     public Closure conditonBuilder(Map params){
@@ -166,13 +241,13 @@ class GsDataFilterHandler {
             where = getRequestParams(isList, true)
 
             name += "|" + GsConstant.ORDER
-            name += "|" + GsConstant.BETWEEN
+//            name += "|" + GsConstant.BETWEEN
             name += "|" + GsConstant.NOT_EQUAL
             name += "|" + GsConstant.LESS_THAN
             name += "|" + GsConstant.LESS_THAN_EQUAL
             name += "|" + GsConstant.GETTER_THAN
             name += "|" + GsConstant.GETTER_THAN_EQUAL
-            name += "|" + GsConstant.IN_LIST
+//            name += "|" + GsConstant.IN_LIST
             name += "|" + GsConstant.LIKE
         }else{
             where.description(GsConfigHolder.multipleMatchInDetails())
