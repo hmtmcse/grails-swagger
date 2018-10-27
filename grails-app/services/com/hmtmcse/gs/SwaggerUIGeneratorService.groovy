@@ -21,7 +21,7 @@ class SwaggerUIGeneratorService {
                 addDefaultFailedResponse()
             }
         }catch(Exception e){
-           println(e.getMessage())
+           println("Generate: " + e.getMessage())
         }
         return swaggerDefinition.getDefinition()
     }
@@ -77,11 +77,11 @@ class SwaggerUIGeneratorService {
                         swaggerPath.addResponse(response)
                     }
                 } catch (InvocationTargetException e) {
-                    println(e.getMessage())
+                    println("processApiActionDefinition: " + e.getMessage())
                 } catch (NullPointerException e) {
-                    println(e.getMessage())
+                    println("processApiActionDefinition: " + e.getMessage())
                 } catch (Exception e) {
-                    println(e.getMessage())
+                    println("processApiActionDefinition: " + e.getMessage())
                 }
             }
         }
