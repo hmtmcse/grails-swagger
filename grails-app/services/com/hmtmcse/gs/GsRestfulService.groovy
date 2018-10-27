@@ -13,6 +13,13 @@ class GsRestfulService {
         return GsApiResponseData.failed("Failed")
     }
 
+    private def valueFromDomain(String key, def domain, GsApiResponseProperty gsApiResponseProperty){
+        try{
+            return domain[key]
+        }catch(Exception e){
+            return gsApiResponseProperty.getDefaultValue()
+        }
+    }
 
     def readRequestProcessor(GsApiActionDefinition definition, Map params){
         switch (definition.responseType){
@@ -136,38 +143,6 @@ class GsRestfulService {
     def gsCustomQueryAndResponse(GsApiActionDefinition definition, Map params){}
 
 
-    private void registerJsonMarshaller(GsApiActionDefinition definition){
-        JSON.registerObjectMarshaller(definition.domain){
-            return mapDomainDataToDefinition(it, definition.getResponseProperties())
-        }
-    }
-
-    private Map processListParamsData(Map params){
-        Map refineParams = [:]
-        refineParams.max = params.max ?: GsConfigHolder.itemsPerPage()
-        refineParams.offset = params.offset ?: 0
-        if (!params.sort) {
-            refineParams.sort = GsConfigHolder.sortColumn()
-            refineParams.order = GsConfigHolder.sortOrder()
-        }
-        return refineParams
-    }
 
 
-    private Map mapDomainDataToDefinition(def domain, Map<String, GsApiResponseProperty> responseProperties){
-        def map = [:]
-        responseProperties.each {String key, GsApiResponseProperty property ->
-            map.put(property.getMapKey(), valueFromDomain(key, domain, property))
-        }
-        return map
-    }
-
-
-    private def valueFromDomain(String key, def domain, GsApiResponseProperty gsApiResponseProperty){
-        try{
-          return domain[key]
-        }catch(Exception e){
-            return gsApiResponseProperty.getDefaultValue()
-        }
-    }
 }

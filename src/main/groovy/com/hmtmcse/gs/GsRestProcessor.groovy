@@ -114,13 +114,6 @@ class GsRestProcessor implements GsExceptionHandler {
     }
 
 
-
-
-
-
-
-
-
     private jsonResponseTo(GsApiResponseData gsApiResponseData){
         return render(gsApiResponseData.toMap() as JSON)
     }
@@ -128,56 +121,6 @@ class GsRestProcessor implements GsExceptionHandler {
 
     private def responseTo(GsApiResponseData gsApiResponseData){
         return jsonResponseTo(gsApiResponseData)
-    }
-
-    def gsSuccessMessage(String message){
-    }
-
-    def gsFailedMessage(String message){
-
-    }
-
-
-    def gsSuccessResponse(String message){
-
-    }
-
-    def gsReadResponse(GsApiActionDefinition definition) {
-        return isDefinition ? definition : responseTo(gsRestfulService.gsRead(definition))
-    }
-
-    def gsReadListResponse(GsApiActionDefinition definition){}
-
-    def gsCreateResponse(GsApiActionDefinition definition){}
-
-    def gsUpdateResponse(GsApiActionDefinition definition){}
-
-    def gsDeleteResponse(GsApiActionDefinition definition){}
-
-
-
-
-    def renderAsJson(def data){
-        if (!isDefinition){
-            return render(data as JSON)
-        }
-    }
-
-    def exception(String message){
-        throw new GsException(message)
-    }
-
-    def exception(){
-        throw new GsException()
-    }
-
-    def get(GsApiActionDefinition definition){
-        JSON.registerObjectMarshaller(definition.domain){
-            def output = [:]
-            output['name'] = it.name
-            return output
-        }
-        return  render(definition.domain.list() as JSON)
     }
 
     public void swaggerInit(){}

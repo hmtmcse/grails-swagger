@@ -123,9 +123,7 @@ class GsDataFilterHandler {
                 }
 
                 if (where[GsConstant.AND]) {
-                    and {
-                        createCriteriaBuilder(where[GsConstant.AND], true, details)
-                    }
+                    and createCriteriaBuilder(where[GsConstant.AND], true, details)
                 }
 
                 if (where[GsConstant.OR]) {
