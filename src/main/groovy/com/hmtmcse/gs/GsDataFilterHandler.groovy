@@ -2,6 +2,7 @@ package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsApiResponseProperty
+import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.swagger.definition.SwaggerConstant
 import com.hmtmcse.swagger.definition.SwaggerProperty
 
@@ -9,22 +10,72 @@ class GsDataFilterHandler {
 
     private static String inType = null
 
-    public Map getParamsPair(Map params) {
+
+
+
+    Closure readCriteriaProcessor(){}
+
+
+    Closure readGetMethodCriteriaProcessor(GsParamsPairData gsParamsPairData) {
+        Map params = gsParamsPairData.params
+        if (params && params.propertyName && params.propertyValue) {
+            return {
+                eq(params.propertyName, params.propertyValue)
+            }
+        }
+        return null
+    }
+
+
+    Map readPaginationWithSortProcessor(GsParamsPairData gsParamsPairData) {
+        Map refineParams = [:]
+        Map params = gsParamsPairData.params
+        refineParams.max = params.max ?: GsConfigHolder.itemsPerPage()
+        refineParams.offset = params.offset ?: 0
+        if (!gsParamsPairData.httpMethod.equals(GsConstant.GET)) {
+            return refineParams
+        }
+        if (!params.orderProperty || !params.order) {
+            refineParams.sort = GsConfigHolder.sortColumn()
+            refineParams.order = GsConfigHolder.sortOrder()
+        } else {
+            refineParams.sort = params.orderProperty
+            refineParams.order = params.order
+        }
+        return refineParams
+    }
+
+
+    public GsParamsPairData getParamsPair(Map params) {
+        GsParamsPairData gsParamsPairData = new GsParamsPairData()
         if (params.gsHttpRequestMethod) {
             switch (params.gsHttpRequestMethod.toLowerCase()) {
                 case GsConstant.POST:
-                    return params.gsApiData ?: [:]
+                    gsParamsPairData.httpMethod = GsConstant.POST
+                    gsParamsPairData.params = params.gsApiData ?: [:]
+                    return gsParamsPairData
                 case GsConstant.GET:
-                    return params
+                    gsParamsPairData.httpMethod = GsConstant.GET
+                    gsParamsPairData.params = params
+                    return gsParamsPairData
             }
         }
-        return [:]
+        return gsParamsPairData
+    }
+
+    public Map filterAllowedField(List allowedFields, Map params) {
+        Map refineParams = [:]
+        allowedFields.each { String fieldName ->
+            refineParams.put(fieldName, params[fieldName])
+        }
+        return refineParams
     }
 
 
     public GsInternalResponse saveUpdateDataFilter(GsApiActionDefinition definition, Map params) {
         GsInternalResponse internalResponse = GsInternalResponse.instance()
-        Map paramsData = getParamsPair(params)
+        GsParamsPairData gsParamsPairData = getParamsPair(params)
+        Map paramsData = gsParamsPairData.params
         definition.getRequestProperties().each { String name, GsApiRequestProperty properties ->
             if (paramsData.containsKey(name)) {
                 internalResponse.params(name, paramsData[name])

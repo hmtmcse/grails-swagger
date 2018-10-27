@@ -12,6 +12,7 @@ class GsInternalResponse {
     Boolean isSuccess = false
     Object domain = null
     Object response = null
+    Integer total = null
 
 
     static GsInternalResponse instance(){

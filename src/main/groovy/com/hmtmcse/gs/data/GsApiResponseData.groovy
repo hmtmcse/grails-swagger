@@ -69,6 +69,10 @@ class GsApiResponseData {
         return instance(true).setCode(code).setResponse(response)
     }
 
+    static GsApiResponseData successResponseWithTotal(Object response, Integer total, Integer code = null){
+        return instance(true).setCode(code).setResponse(response).setTotal(total)
+    }
+
 
     static GsApiResponseData instance(Boolean isSuccess){
         return new GsApiResponseData(isSuccess)
@@ -84,12 +88,14 @@ class GsApiResponseData {
         LinkedHashMap<String, Object> responseMap = [
                 "isSuccess" : isSuccess,
         ]
+
+        if (code){responseMap.code = code}
+        if (total){responseMap.total = total}
+
         if (message){responseMap.message = message}
         if (response){
             responseMap.put(GsConfigHolder.responseKey(), response)
         }
-        if (code){responseMap.code = code}
-        if (total){responseMap.total = total}
         if (errorDetails){responseMap.errorDetails = errorDetails}
         return responseMap
     }
@@ -119,25 +125,39 @@ class GsApiResponseData {
     }
 
     static Map processAPIResponse(GsApiActionDefinition gsApiActionDefinition, GsInternalResponse gsInternalResponse) {
+        GsApiResponseData gsApiResponseData
         if (gsInternalResponse.isSuccess) {
-            GsApiResponseData successResponseFormat = gsApiActionDefinition.successResponseFormat ?: GsConfigHolder.defaultSuccessResponse
-            successResponseFormat.isSuccess = true
-            if (successResponseFormat.message && gsInternalResponse.message){
-                successResponseFormat.message =  gsInternalResponse.message
-            }
-            return successResponseFormat.toMap()
+            gsApiResponseData = gsApiActionDefinition.successResponseFormat ?: GsConfigHolder.defaultSuccessResponse
+            gsApiResponseData.isSuccess = true
         } else {
-            GsApiResponseData failedResponseFormat = gsApiActionDefinition.failedResponseFormat ?: GsConfigHolder.defaultFailedResponse
-            failedResponseFormat.isSuccess = false
-            if (failedResponseFormat.message && gsInternalResponse.message){
-                failedResponseFormat.message =  gsInternalResponse.message
-            }
-            if (failedResponseFormat.errorDetails != null && gsInternalResponse.errorDetails != null){
-                failedResponseFormat.errorDetails =  gsInternalResponse.errorDetails
-            }
-            return failedResponseFormat.toMap()
+            gsApiResponseData = gsApiActionDefinition.failedResponseFormat ?: GsConfigHolder.defaultFailedResponse
+            gsApiResponseData.isSuccess = false
         }
-        return null
+
+        if (gsApiResponseData.message  != null && gsInternalResponse.message != null) {
+            gsApiResponseData.message = gsInternalResponse.message
+        }
+
+        if (gsApiResponseData.total != null && gsInternalResponse.total != null) {
+            gsApiResponseData.total = gsInternalResponse.total
+        }
+
+        if (gsApiResponseData.response != null && gsInternalResponse.response != null) {
+            gsApiResponseData.response = gsInternalResponse.response
+        }
+
+        if (gsApiResponseData.errorDetails != null && gsInternalResponse.errorDetails != null) {
+            gsApiResponseData.errorDetails = gsInternalResponse.errorDetails
+        }
+        return gsApiResponseData.toMap()
     }
 
+    Integer getTotal() {
+        return total
+    }
+
+    GsApiResponseData setTotal(Integer total) {
+        this.total = total
+        return this
+    }
 }

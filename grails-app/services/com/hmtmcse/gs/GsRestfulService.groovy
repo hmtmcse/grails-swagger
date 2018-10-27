@@ -2,6 +2,7 @@ package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
+import com.hmtmcse.gs.data.GsParamsPairData
 import grails.converters.JSON
 
 
@@ -13,7 +14,50 @@ class GsRestfulService {
     }
 
 
+    void readRequestProcessor(GsApiActionDefinition definition, Map params){
+
+    }
+
+    def readListProcessor(GsApiActionDefinition definition, Map params) {
+        GsInternalResponse responseData = GsInternalResponse.instance()
+        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
+        try{
+
+            GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params)
+            Map pagination = gsDataFilterHandler.readPaginationWithSortProcessor(gsParamsPairData)
+            Map allowedFields = gsDataFilterHandler.filterAllowedField(definition.whereAllowedPropertyList, gsParamsPairData.params)
+
+            Closure listCriteria = null
+            responseData.isSuccess = true
+            responseData.total = definition.domain.createCriteria().count() {
+                if (listCriteria) {
+                    criteria listCriteria
+                }
+            }
+
+            def queryResult = definition.domain.createCriteria().list(pagination) {
+                if (listCriteria) {
+                    criteria listCriteria
+                }
+            }
+            responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult)
+            if (definition.successResponseFormat == null){
+                definition.successResponseFormat = GsApiResponseData.successResponseWithTotal([], 0)
+            }
+        }catch(Exception e){
+            println(e.getMessage())
+            responseData.isSuccess = false
+            responseData = GsApiResponseData.failed(GsConfigHolder.failedMessage())
+        }
+        return GsApiResponseData.processAPIResponse(definition, responseData)
+    }
+
+    void readDetailsProcessor(GsApiActionDefinition definition, Map params){
+
+    }
+
     def gsReadList(GsApiActionDefinition definition, Map params){
+        return readListProcessor(definition, params)
         GsApiResponseData responseData = GsApiResponseData.failed(GsConfigHolder.failedMessage())
         try{
             responseData.isSuccess = true
@@ -31,8 +75,24 @@ class GsRestfulService {
     }
 
 
-    def resolveCondition(){
-
+    def responseMapGenerator(Map<String, GsApiResponseProperty> responseProperties, def queryResult) {
+        List resultList = []
+        Map resultMap = [:]
+        if (queryResult instanceof List) {
+            queryResult.each { data ->
+                resultMap = [:]
+                responseProperties.each { String fieldName, GsApiResponseProperty response ->
+                    resultMap.put(response.getMapKey(), valueFromDomain(fieldName, data, response))
+                }
+                resultList.add(resultMap)
+            }
+            return resultList
+        } else {
+            responseProperties.each { String fieldName, GsApiResponseProperty response ->
+                resultMap.put(response.getMapKey(), valueFromDomain(fieldName, queryResult, response))
+            }
+            return resultMap
+        }
     }
 
 

@@ -23,7 +23,7 @@ class GsApiActionDefinition<T> {
 
     public String parameterDescription = null
     public String parameterName = null
-    public GsApiResponseData successResponseFormat = GsConfigHolder.defaultSuccessResponse
+    public GsApiResponseData successResponseFormat = null
     public GsApiResponseData failedResponseFormat = null
     public List whereAllowedPropertyList = []
     public Map whereAllowedPropertyMap = [:]
