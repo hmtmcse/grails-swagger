@@ -1,14 +1,15 @@
 package com.hmtmcse.gs.controllers
 
-import com.hmtmcse.swagger.SwaggerUIGenerator
-import com.hmtmcse.swagger.definition.SwaggerDefinitionExample
+import com.hmtmcse.gs.SwaggerUIGeneratorService
 import grails.converters.JSON
 
 class SwaggerUiController {
 
+    SwaggerUIGeneratorService swaggerUIGeneratorService
+
     def index() { }
 
     def definition() {
-        render(SwaggerUIGenerator.generate() as JSON)
+        render(swaggerUIGeneratorService.generate() as JSON)
     }
 }
