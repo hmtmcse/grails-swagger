@@ -89,14 +89,14 @@ class GsApiResponseData {
                 "isSuccess" : isSuccess,
         ]
 
-        if (code){responseMap.code = code}
-        if (total){responseMap.total = total}
+        if (code != null){responseMap.code = code}
+        if (total != null){responseMap.total = total}
 
-        if (message){responseMap.message = message}
-        if (response){
+        if (message != null){responseMap.message = message}
+        if (response != null){
             responseMap.put(GsConfigHolder.responseKey(), response)
         }
-        if (errorDetails){responseMap.errorDetails = errorDetails}
+        if (errorDetails != null){responseMap.errorDetails = errorDetails}
         return responseMap
     }
 

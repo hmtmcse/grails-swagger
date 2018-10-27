@@ -48,4 +48,11 @@ class GsInternalResponse {
         this.isSuccess = isSuccess
         return this
     }
+
+    GsInternalResponse processNonUniqueResult(List errors){
+        errors?.each { FieldError fieldError ->
+            addErrorDetail(fieldError.field, GsConfigHolder.invalidFieldData())
+        }
+        return this
+    }
 }

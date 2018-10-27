@@ -92,7 +92,9 @@ class SwaggerUIGeneratorService {
 
     SwaggerPathResponse responseGenerator(GsAction gsAction, GsApiActionDefinition gsApiActionDefinition){
         SwaggerPathResponse response = new SwaggerPathResponse()
-
+        if (gsApiActionDefinition.successResponseFormat == null){
+            gsApiActionDefinition.successResponseFormat = GsConfigHolder.defaultSuccessResponse
+        }
         String successResponseDefinition = "${SwaggerConstant.SUCCESS_RESPONSE}${gsApiActionDefinition.modelDefinition}"
         if (gsApiActionDefinition.successResponseFormat.response){
             SwaggerProperty swaggerProperty = propertiesProcessor(gsApiActionDefinition.getResponseProperties(), null, gsApiActionDefinition.domainFields())

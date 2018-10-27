@@ -22,17 +22,14 @@ class GsRestfulService {
         GsInternalResponse responseData = GsInternalResponse.instance()
         GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
         try{
-
             GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params)
             Map pagination = gsDataFilterHandler.readPaginationWithSortProcessor(gsParamsPairData)
-          //  gsParamsPairData.params = gsDataFilterHandler.filterAllowedField(definition.whereAllowedPropertyList, gsParamsPairData.params)
-
             Closure listCriteria = gsDataFilterHandler.readCriteriaProcessor(gsParamsPairData)
             responseData.isSuccess = true
             responseData.total = definition.domain.createCriteria().count(listCriteria)
             def queryResult = definition.domain.createCriteria().list(pagination, listCriteria)
 
-            responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult)
+            responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult, [])
             if (definition.successResponseFormat == null){
                 definition.successResponseFormat = GsApiResponseData.successResponseWithTotal([], 0)
             }
@@ -44,8 +41,24 @@ class GsRestfulService {
         return GsApiResponseData.processAPIResponse(definition, responseData)
     }
 
-    void readDetailsProcessor(GsApiActionDefinition definition, Map params){
-
+    def readDetailsProcessor(GsApiActionDefinition definition, Map params){
+        GsInternalResponse responseData = GsInternalResponse.instance()
+        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
+        try{
+            GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params)
+            Closure listCriteria = gsDataFilterHandler.readCriteriaProcessor(gsParamsPairData, false, "details")
+            responseData.isSuccess = true
+            def queryResult = definition.domain.createCriteria().get(listCriteria)
+            responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult)
+            if (definition.successResponseFormat == null){
+                definition.successResponseFormat = GsApiResponseData.successResponse([])
+            }
+        }catch(Exception e){
+            println(e.getMessage())
+            responseData.isSuccess = false
+            responseData.message = responseData.message = e.getMessage()
+        }
+        return GsApiResponseData.processAPIResponse(definition, responseData)
     }
 
     def gsReadList(GsApiActionDefinition definition, Map params){
@@ -67,24 +80,27 @@ class GsRestfulService {
     }
 
 
-    def responseMapGenerator(Map<String, GsApiResponseProperty> responseProperties, def queryResult) {
+    def responseMapGenerator(Map<String, GsApiResponseProperty> responseProperties, def queryResult, def defaultResponse = [:]) {
         List resultList = []
         Map resultMap = [:]
-        if (queryResult instanceof List) {
-            queryResult.each { data ->
-                resultMap = [:]
-                responseProperties.each { String fieldName, GsApiResponseProperty response ->
-                    resultMap.put(response.getMapKey(), valueFromDomain(fieldName, data, response))
+        if (queryResult) {
+            if (queryResult instanceof List) {
+                queryResult.each { data ->
+                    resultMap = [:]
+                    responseProperties.each { String fieldName, GsApiResponseProperty response ->
+                        resultMap.put(response.getMapKey(), valueFromDomain(fieldName, data, response))
+                    }
+                    resultList.add(resultMap)
                 }
-                resultList.add(resultMap)
+                return resultList
+            } else {
+                responseProperties.each { String fieldName, GsApiResponseProperty response ->
+                    resultMap.put(response.getMapKey(), valueFromDomain(fieldName, queryResult, response))
+                }
+                return resultMap
             }
-            return resultList
-        } else {
-            responseProperties.each { String fieldName, GsApiResponseProperty response ->
-                resultMap.put(response.getMapKey(), valueFromDomain(fieldName, queryResult, response))
-            }
-            return resultMap
         }
+        return defaultResponse
     }
 
 
@@ -107,6 +123,9 @@ class GsRestfulService {
         if (gsInternalResponse.isSuccess){
             gsInternalResponse = saveUpdate(definition.domain.newInstance(), gsInternalResponse.filteredParams)
         }
+        if (definition.successResponseFormat == null){
+            definition.successResponseFormat = GsConfigHolder.defaultSuccessResponse
+        }
         return GsApiResponseData.processAPIResponse(definition, gsInternalResponse)
     }
 
@@ -114,7 +133,10 @@ class GsRestfulService {
 
     def gsDelete(GsApiActionDefinition definition, Map params){}
 
-    def gsDetails(GsApiActionDefinition definition, Map params){}
+
+    def gsDetails(GsApiActionDefinition definition, Map params){
+        return readDetailsProcessor(definition, params)
+    }
 
     def gsCustomQuery(GsApiActionDefinition definition, Map params){}
 

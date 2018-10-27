@@ -12,11 +12,11 @@ class GsDataFilterHandler {
     private static String inType = null
 
 
-    Closure readCriteriaProcessor(GsParamsPairData gsParamsPairData){
+    Closure readCriteriaProcessor(GsParamsPairData gsParamsPairData, Boolean andOr = false, String details = null){
         switch (gsParamsPairData.httpMethod) {
             case GsConstant.POST:
                 if (gsParamsPairData.params && gsParamsPairData.params.where){
-                    return createCriteriaBuilder(gsParamsPairData.params.where)
+                    return createCriteriaBuilder(gsParamsPairData.params.where, andOr, details)
                 }
                 return {}
             case GsConstant.GET:
