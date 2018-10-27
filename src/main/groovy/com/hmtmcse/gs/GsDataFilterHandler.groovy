@@ -12,8 +12,6 @@ class GsDataFilterHandler {
     private static String inType = null
 
 
-
-
     Closure readCriteriaProcessor(GsParamsPairData gsParamsPairData){
         switch (gsParamsPairData.httpMethod) {
             case GsConstant.POST:
