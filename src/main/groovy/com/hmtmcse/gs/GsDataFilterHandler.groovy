@@ -106,7 +106,7 @@ class GsDataFilterHandler {
     }
 
 
-    public Closure createCriteriaBuilder(Map where, Boolean andOr = false) {
+    public Closure createCriteriaBuilder(Map where, Boolean andOr = false, String details = null) {
         GsMapKeyValue gsMapKeyValue
         Closure criteria = {
             if (where[GsConstant.ORDER_PROPERTY] && where[GsConstant.ORDER] && (where[GsConstant.ORDER].equals(GsConstant.ASC) || where[GsConstant.ORDER].equals(GsConstant.DESC))) {
@@ -126,13 +126,13 @@ class GsDataFilterHandler {
 
                 if (where[GsConstant.AND]) {
                     and {
-                        createCriteriaBuilder(where[GsConstant.AND], true)
+                        createCriteriaBuilder(where[GsConstant.AND], true, details)
                     }
                 }
 
                 if (where[GsConstant.OR]) {
                     or {
-                        createCriteriaBuilder(where[GsConstant.OR], true)
+                        createCriteriaBuilder(where[GsConstant.OR], true, details)
                     }
                 }
             }
@@ -142,39 +142,40 @@ class GsDataFilterHandler {
                 eq(gsMapKeyValue.key, gsMapKeyValue.value)
             }
 
-            gsMapKeyValue = getMapKeyValue(where, GsConstant.NOT_EQUAL)
-            if (gsMapKeyValue) {
-                ne(gsMapKeyValue.key, gsMapKeyValue.value)
+            if (details == null){
+                gsMapKeyValue = getMapKeyValue(where, GsConstant.NOT_EQUAL)
+                if (gsMapKeyValue) {
+                    ne(gsMapKeyValue.key, gsMapKeyValue.value)
+                }
+
+                gsMapKeyValue = getMapKeyValue(where, GsConstant.LESS_THAN)
+                if (gsMapKeyValue) {
+                    lt(gsMapKeyValue.key, gsMapKeyValue.value)
+                }
+
+
+                gsMapKeyValue = getMapKeyValue(where, GsConstant.LESS_THAN_EQUAL)
+                if (gsMapKeyValue) {
+                    le(gsMapKeyValue.key, gsMapKeyValue.value)
+                }
+
+
+                gsMapKeyValue = getMapKeyValue(where, GsConstant.GETTER_THAN)
+                if (gsMapKeyValue) {
+                    gt(gsMapKeyValue.key, gsMapKeyValue.value)
+                }
+
+
+                gsMapKeyValue = getMapKeyValue(where, GsConstant.GETTER_THAN_EQUAL)
+                if (gsMapKeyValue) {
+                    ge(gsMapKeyValue.key, gsMapKeyValue.value)
+                }
+
+                gsMapKeyValue = getMapKeyValue(where, GsConstant.LIKE)
+                if (gsMapKeyValue) {
+                    like(gsMapKeyValue.key, gsMapKeyValue.value)
+                }
             }
-
-            gsMapKeyValue = getMapKeyValue(where, GsConstant.LESS_THAN)
-            if (gsMapKeyValue) {
-                lt(gsMapKeyValue.key, gsMapKeyValue.value)
-            }
-
-
-            gsMapKeyValue = getMapKeyValue(where, GsConstant.LESS_THAN_EQUAL)
-            if (gsMapKeyValue) {
-                le(gsMapKeyValue.key, gsMapKeyValue.value)
-            }
-
-
-            gsMapKeyValue = getMapKeyValue(where, GsConstant.GETTER_THAN)
-            if (gsMapKeyValue) {
-                gt(gsMapKeyValue.key, gsMapKeyValue.value)
-            }
-
-
-            gsMapKeyValue = getMapKeyValue(where, GsConstant.GETTER_THAN_EQUAL)
-            if (gsMapKeyValue) {
-                ge(gsMapKeyValue.key, gsMapKeyValue.value)
-            }
-
-            gsMapKeyValue = getMapKeyValue(where, GsConstant.LIKE)
-            if (gsMapKeyValue) {
-                like(gsMapKeyValue.key, gsMapKeyValue.value)
-            }
-
         }
         return criteria
     }
