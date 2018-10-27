@@ -3,15 +3,9 @@ package com.hmtmcse.gs
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
 import com.hmtmcse.gs.data.GsParamsPairData
-import grails.converters.JSON
 
 
 class GsRestfulService {
-
-
-    GsApiResponseData gsRead(GsApiActionDefinition definition){
-        return GsApiResponseData.failed("Failed")
-    }
 
     private def valueFromDomain(String key, def domain, GsApiResponseProperty gsApiResponseProperty){
         try{
@@ -21,16 +15,6 @@ class GsRestfulService {
         }
     }
 
-    def readRequestProcessor(GsApiActionDefinition definition, Map params){
-        switch (definition.responseType){
-            case GsConstant.LIST_RESPONSE:
-                return readListProcessor(definition, params)
-            case GsConstant.DETAILS_RESPONSE:
-                return readDetailsProcessor(definition, params)
-            default:
-                return GsApiResponseData.failed(GsConfigHolder.failedMessage()).toMap()
-        }
-    }
 
     def readListProcessor(GsApiActionDefinition definition, Map params) {
         GsInternalResponse responseData = GsInternalResponse.instance()
@@ -76,7 +60,7 @@ class GsRestfulService {
     }
 
     def gsReadList(GsApiActionDefinition definition, Map params){
-        return readRequestProcessor(definition, params)
+        return readListProcessor(definition, params)
     }
 
 
@@ -130,7 +114,7 @@ class GsRestfulService {
     }
 
     def gsDetails(GsApiActionDefinition definition, Map params){
-        return readRequestProcessor(definition, params)
+        return readDetailsProcessor(definition, params)
     }
 
     def gsUpdate(GsApiActionDefinition definition, Map params){}
