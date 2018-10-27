@@ -11,7 +11,6 @@ class GsDataFilterHandler {
 
     private static String inType = null
 
-
     Closure readCriteriaProcessor(GsParamsPairData gsParamsPairData, Boolean andOr = false, String details = null){
         switch (gsParamsPairData.httpMethod) {
             case GsConstant.POST:
@@ -104,9 +103,23 @@ class GsDataFilterHandler {
     }
 
 
+
+
     public Closure createCriteriaBuilder(Map where, Boolean andOr = false, String details = null) {
         GsMapKeyValue gsMapKeyValue
+
+
+
         Closure criteria = {
+
+            def nestedCriteria = { Map nestedWhere ->
+                gsMapKeyValue = getMapKeyValue(nestedWhere, GsConstant.EQUAL)
+                if (gsMapKeyValue) {
+                    eq(gsMapKeyValue.key, gsMapKeyValue.value)
+                }
+            }
+
+
             if (where[GsConstant.ORDER_PROPERTY] && where[GsConstant.ORDER] && (where[GsConstant.ORDER].equals(GsConstant.ASC) || where[GsConstant.ORDER].equals(GsConstant.DESC))) {
                 order(where[GsConstant.ORDER_PROPERTY], where[GsConstant.ORDER])
             } else {
@@ -123,20 +136,29 @@ class GsDataFilterHandler {
                 }
 
                 if (where[GsConstant.AND]) {
-                    and createCriteriaBuilder(where[GsConstant.AND], true, details)
+                    and {
+                        where[GsConstant.AND].each {
+                            nestedCriteria.call(it)
+                        }
+
+                    }
                 }
 
                 if (where[GsConstant.OR]) {
                     or {
-                        createCriteriaBuilder(where[GsConstant.OR], true, details)
+                        where[GsConstant.OR].each {
+                            createCriteriaBuilder(it, true, details)
+                        }
                     }
                 }
             }
 
-            gsMapKeyValue = getMapKeyValue(where, GsConstant.EQUAL)
-            if (gsMapKeyValue) {
-                eq(gsMapKeyValue.key, gsMapKeyValue.value)
-            }
+//            gsMapKeyValue = getMapKeyValue(where, GsConstant.EQUAL)
+//            if (gsMapKeyValue) {
+//                eq(gsMapKeyValue.key, gsMapKeyValue.value)
+//            }
+
+            nestedCriteria.call(where)
 
             if (details == null){
                 gsMapKeyValue = getMapKeyValue(where, GsConstant.NOT_EQUAL)
