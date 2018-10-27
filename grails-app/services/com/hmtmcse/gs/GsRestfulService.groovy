@@ -14,8 +14,15 @@ class GsRestfulService {
     }
 
 
-    void readRequestProcessor(GsApiActionDefinition definition, Map params){
-
+    def readRequestProcessor(GsApiActionDefinition definition, Map params){
+        switch (definition.responseType){
+            case GsConstant.LIST_RESPONSE:
+                return readListProcessor(definition, params)
+            case GsConstant.DETAILS_RESPONSE:
+                return readDetailsProcessor(definition, params)
+            default:
+                return GsApiResponseData.failed(GsConfigHolder.failedMessage()).toMap()
+        }
     }
 
     def readListProcessor(GsApiActionDefinition definition, Map params) {
@@ -62,21 +69,7 @@ class GsRestfulService {
     }
 
     def gsReadList(GsApiActionDefinition definition, Map params){
-        return readListProcessor(definition, params)
-        GsApiResponseData responseData = GsApiResponseData.failed(GsConfigHolder.failedMessage())
-        try{
-            responseData.isSuccess = true
-            registerJsonMarshaller(definition)
-            params = processListParamsData(params)
-            Map response = [:]
-            response.total = definition.domain.createCriteria().count(){}
-            response.data = definition.domain.createCriteria().list(params){}
-            responseData = GsApiResponseData.successResponse(response)
-        }catch(Exception e){
-            println(e.getMessage())
-            responseData = GsApiResponseData.failed(GsConfigHolder.failedMessage())
-        }
-        return responseData.toMap()
+        return readRequestProcessor(definition, params)
     }
 
 
@@ -129,14 +122,14 @@ class GsRestfulService {
         return GsApiResponseData.processAPIResponse(definition, gsInternalResponse)
     }
 
+    def gsDetails(GsApiActionDefinition definition, Map params){
+        return readRequestProcessor(definition, params)
+    }
+
     def gsUpdate(GsApiActionDefinition definition, Map params){}
 
     def gsDelete(GsApiActionDefinition definition, Map params){}
 
-
-    def gsDetails(GsApiActionDefinition definition, Map params){
-        return readDetailsProcessor(definition, params)
-    }
 
     def gsCustomQuery(GsApiActionDefinition definition, Map params){}
 
