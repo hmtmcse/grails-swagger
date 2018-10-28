@@ -109,41 +109,41 @@ class GsDataFilterHandler {
         GsMapKeyValue gsMapKeyValue
         Closure criteria = {
             def keyValueCriteriaBuilder = { Map nestedWhere ->
-                gsMapKeyValue = getMapKeyValue(where, GsConstant.EQUAL)
+                gsMapKeyValue = getMapKeyValue(nestedWhere, GsConstant.EQUAL)
                 if (gsMapKeyValue) {
                     eq(gsMapKeyValue.key, gsMapKeyValue.value)
                 }
 
                 if (details == null){
-                    gsMapKeyValue = getMapKeyValue(where, GsConstant.NOT_EQUAL)
+                    gsMapKeyValue = getMapKeyValue(nestedWhere, GsConstant.NOT_EQUAL)
                     if (gsMapKeyValue) {
                         ne(gsMapKeyValue.key, gsMapKeyValue.value)
                     }
 
-                    gsMapKeyValue = getMapKeyValue(where, GsConstant.LESS_THAN)
+                    gsMapKeyValue = getMapKeyValue(nestedWhere, GsConstant.LESS_THAN)
                     if (gsMapKeyValue) {
                         lt(gsMapKeyValue.key, gsMapKeyValue.value)
                     }
 
 
-                    gsMapKeyValue = getMapKeyValue(where, GsConstant.LESS_THAN_EQUAL)
+                    gsMapKeyValue = getMapKeyValue(nestedWhere, GsConstant.LESS_THAN_EQUAL)
                     if (gsMapKeyValue) {
                         le(gsMapKeyValue.key, gsMapKeyValue.value)
                     }
 
 
-                    gsMapKeyValue = getMapKeyValue(where, GsConstant.GETTER_THAN)
+                    gsMapKeyValue = getMapKeyValue(nestedWhere, GsConstant.GETTER_THAN)
                     if (gsMapKeyValue) {
                         gt(gsMapKeyValue.key, gsMapKeyValue.value)
                     }
 
 
-                    gsMapKeyValue = getMapKeyValue(where, GsConstant.GETTER_THAN_EQUAL)
+                    gsMapKeyValue = getMapKeyValue(nestedWhere, GsConstant.GETTER_THAN_EQUAL)
                     if (gsMapKeyValue) {
                         ge(gsMapKeyValue.key, gsMapKeyValue.value)
                     }
 
-                    gsMapKeyValue = getMapKeyValue(where, GsConstant.LIKE)
+                    gsMapKeyValue = getMapKeyValue(nestedWhere, GsConstant.LIKE)
                     if (gsMapKeyValue) {
                         like(gsMapKeyValue.key, gsMapKeyValue.value)
                     }
