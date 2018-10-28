@@ -116,10 +116,32 @@ class GsRestfulService {
         return readDetailsProcessor(definition, params)
     }
 
-    def gsUpdate(GsApiActionDefinition definition, Map params){}
+
+    def readGetByCondition(GsApiActionDefinition definition, Map params){
+        def queryResult = null
+        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
+        try{
+            GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params)
+            Closure listCriteria = gsDataFilterHandler.readCriteriaProcessor(gsParamsPairData, false, "details")
+            queryResult = definition.domain.createCriteria().get(listCriteria)
+        }catch(Exception e){
+            println(e.getMessage())
+        }
+        return queryResult
+    }
+
+
+
+    def gsUpdate(GsApiActionDefinition definition, Map params){
+
+    }
 
     def gsDelete(GsApiActionDefinition definition, Map params){}
 
+
+    def gsBulkUpdate(GsApiActionDefinition definition, Map params){}
+
+    def gsBulkDelete(GsApiActionDefinition definition, Map params){}
 
     def gsCustomQuery(GsApiActionDefinition definition, Map params){}
 
