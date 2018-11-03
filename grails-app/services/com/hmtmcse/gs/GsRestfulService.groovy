@@ -19,7 +19,7 @@ class GsRestfulService {
         GsInternalResponse responseData = GsInternalResponse.instance()
         GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
         try {
-            GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params)
+            GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params, definition.domainFields())
             Map pagination = gsDataFilterHandler.readPaginationWithSortProcessor(gsParamsPairData)
             Closure listCriteria = gsDataFilterHandler.readCriteriaProcessor(gsParamsPairData)
             responseData.isSuccess = true
@@ -120,7 +120,7 @@ class GsRestfulService {
         def queryResult = null
         GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
         try{
-            GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params)
+            GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params, definition.domainFields())
             Closure listCriteria = gsDataFilterHandler.readCriteriaProcessor(gsParamsPairData, false, "details")
             queryResult = definition.domain.createCriteria().get(listCriteria)
         }catch(Exception e){

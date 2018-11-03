@@ -52,6 +52,32 @@ class GsReflectionUtil {
         return properties
     }
 
+
+    private static def castToGSObject(String dataType, def data){
+        switch (dataType){
+            case SwaggerConstant.SWAGGER_DT_BOOLEAN:
+                return data?.toBoolean()
+            case SwaggerConstant.SWAGGER_DT_INTEGER:
+                return data?.toInteger()
+            case SwaggerConstant.SWAGGER_DT_INTEGER_64:
+                return data?.toLong()
+        }
+        return data
+    }
+
+    static def castFromDomainSwaggerMap(Map params, Map domainFieldsType){
+        domainFieldsType?.each { String name, String dataType ->
+            if (params.containsKey(name)){
+                params[name] = castToGSObject(dataType, params[name])
+            }
+        }
+        if (params.containsKey(GsConstant.PROPERTY_NAME) && params.containsKey(GsConstant.PROPERTY_VALUE)){
+            String fieldName = params[GsConstant.PROPERTY_NAME]
+            params.put(GsConstant.PROPERTY_VALUE, castToGSObject(domainFieldsType[fieldName], params[GsConstant.PROPERTY_VALUE]))
+        }
+        return params
+    }
+
     static def getNewObject(DefaultGrailsControllerClass controller){
         try {
             return controller.newInstance()

@@ -26,7 +26,7 @@ class GsDataFilterHandler {
 
     Closure readGetMethodCriteriaProcessor(GsParamsPairData gsParamsPairData) {
         Map params = gsParamsPairData.params
-        if (params && params.propertyName && params.propertyValue) {
+        if (params && params.propertyName && params.propertyValue != null) {
             return {
                 eq(params.propertyName, params.propertyValue)
             }
@@ -54,7 +54,7 @@ class GsDataFilterHandler {
     }
 
 
-    public GsParamsPairData getParamsPair(Map params) {
+    public GsParamsPairData getParamsPair(Map params, Map domainFieldsType = null) {
         GsParamsPairData gsParamsPairData = new GsParamsPairData()
         if (params.gsHttpRequestMethod) {
             switch (params.gsHttpRequestMethod.toLowerCase()) {
@@ -64,7 +64,7 @@ class GsDataFilterHandler {
                     return gsParamsPairData
                 case GsConstant.GET:
                     gsParamsPairData.httpMethod = GsConstant.GET
-                    gsParamsPairData.params = params
+                    gsParamsPairData.params = domainFieldsType == null ? params : GsReflectionUtil.castFromDomainSwaggerMap(params, domainFieldsType)
                     return gsParamsPairData
             }
         }
@@ -82,7 +82,7 @@ class GsDataFilterHandler {
 
     public GsInternalResponse saveUpdateDataFilter(GsApiActionDefinition definition, Map params) {
         GsInternalResponse internalResponse = GsInternalResponse.instance()
-        GsParamsPairData gsParamsPairData = getParamsPair(params)
+        GsParamsPairData gsParamsPairData = getParamsPair(params, definition.domainFields())
         Map paramsData = gsParamsPairData.params
         definition.getRequestProperties().each { String name, GsApiRequestProperty properties ->
             if (paramsData.containsKey(name)) {
