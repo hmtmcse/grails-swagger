@@ -4,7 +4,6 @@ import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
 import com.hmtmcse.gs.data.GsParamsPairData
 
-
 class GsRestfulService {
 
     private def valueFromDomain(String key, def domain, GsApiResponseProperty gsApiResponseProperty){
@@ -40,20 +39,20 @@ class GsRestfulService {
 
     def readDetailsProcessor(GsApiActionDefinition definition, Map params){
         GsInternalResponse responseData = GsInternalResponse.instance()
-        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
         try{
-            GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params)
-            Closure listCriteria = gsDataFilterHandler.readCriteriaProcessor(gsParamsPairData, false, "details")
-            responseData.isSuccess = true
-            def queryResult = definition.domain.createCriteria().get(listCriteria)
-            responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult)
-            if (definition.successResponseFormat == null){
-                definition.successResponseFormat = GsApiResponseData.successResponse([])
+            def queryResult = readGetByCondition(definition, params)
+            if (queryResult){
+                responseData.isSuccess = true
+                responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult)
+                if (definition.successResponseFormat == null){
+                    definition.successResponseFormat = GsApiResponseData.successResponse([])
+                }
+            }else{
+                responseData.message = GsConfigHolder.failedMessage()
             }
-        }catch(Exception e){
-            println(e.getMessage())
+        }catch(GrailsSwaggerException e){
             responseData.isSuccess = false
-            responseData.message = responseData.message = e.getMessage()
+            responseData.message = e.getMessage()
         }
         return GsApiResponseData.processAPIResponse(definition, responseData)
     }
@@ -117,7 +116,7 @@ class GsRestfulService {
     }
 
 
-    def readGetByCondition(GsApiActionDefinition definition, Map params){
+    def readGetByCondition(GsApiActionDefinition definition, Map params) throws GrailsSwaggerException{
         def queryResult = null
         GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
         try{
@@ -125,7 +124,8 @@ class GsRestfulService {
             Closure listCriteria = gsDataFilterHandler.readCriteriaProcessor(gsParamsPairData, false, "details")
             queryResult = definition.domain.createCriteria().get(listCriteria)
         }catch(Exception e){
-            println(e.getMessage())
+            String message = GsExceptionParser.exceptionMessage(e)
+            throw new GrailsSwaggerException(message)
         }
         return queryResult
     }
