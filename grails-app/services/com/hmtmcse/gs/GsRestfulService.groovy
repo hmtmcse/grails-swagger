@@ -41,14 +41,10 @@ class GsRestfulService {
         GsInternalResponse responseData = GsInternalResponse.instance()
         try{
             def queryResult = readGetByCondition(definition, params)
-            if (queryResult){
-                responseData.isSuccess = true
-                responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult)
-                if (definition.successResponseFormat == null){
-                    definition.successResponseFormat = GsApiResponseData.successResponse([])
-                }
-            }else{
-                responseData.message = GsConfigHolder.failedMessage()
+            responseData.isSuccess = true
+            responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult)
+            if (definition.successResponseFormat == null){
+                definition.successResponseFormat = GsApiResponseData.successResponse([])
             }
         }catch(GrailsSwaggerException e){
             responseData.isSuccess = false
