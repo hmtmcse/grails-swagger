@@ -68,4 +68,8 @@ class GsConfigHolder {
     static String invalidFieldData() {
         return "Invalid/Missing Field Or Data"
     }
+
+    static String requestedConditionEmpty() {
+        return "Requested Condition Empty"
+    }
 }

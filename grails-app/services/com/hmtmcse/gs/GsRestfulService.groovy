@@ -96,10 +96,14 @@ class GsRestfulService {
 
 
     def gsCreate(GsApiActionDefinition definition, Map params){
+        return saveUpdateProcessor(definition, params, definition.domain.newInstance())
+    }
+
+    def saveUpdateProcessor(GsApiActionDefinition definition, Map params, def domain){
         GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
         GsInternalResponse gsInternalResponse = gsDataFilterHandler.saveUpdateDataFilter(definition, params)
         if (gsInternalResponse.isSuccess){
-            gsInternalResponse = saveUpdate(definition.domain.newInstance(), gsInternalResponse.filteredParams)
+            gsInternalResponse = saveUpdate(domain, gsInternalResponse.filteredParams)
         }
         if (definition.successResponseFormat == null){
             definition.successResponseFormat = GsConfigHolder.defaultSuccessResponse
@@ -129,10 +133,37 @@ class GsRestfulService {
 
 
     def gsUpdate(GsApiActionDefinition definition, Map params){
-
+        GsInternalResponse responseData = GsInternalResponse.instance()
+        try{
+            def queryResult = readGetByCondition(definition, params)
+            if (queryResult == null){
+                responseData.message = GsConfigHolder.requestedConditionEmpty()
+            }else{
+                return saveUpdateProcessor(definition, params, queryResult)
+            }
+        }catch(GrailsSwaggerException e){
+            responseData.isSuccess = false
+            responseData.message = e.getMessage()
+        }
+        return GsApiResponseData.processAPIResponse(definition, responseData)
     }
 
-    def gsDelete(GsApiActionDefinition definition, Map params){}
+
+    def gsDelete(GsApiActionDefinition definition, Map params){
+        GsInternalResponse responseData = GsInternalResponse.instance()
+        try{
+            def queryResult = readGetByCondition(definition, params)
+            if (queryResult == null){
+                responseData.message = GsConfigHolder.requestedConditionEmpty()
+            }else{
+                queryResult.delete()
+            }
+        }catch(GrailsSwaggerException e){
+            responseData.isSuccess = false
+            responseData.message = e.getMessage()
+        }
+        return GsApiResponseData.processAPIResponse(definition, responseData)
+    }
 
 
     def gsBulkUpdate(GsApiActionDefinition definition, Map params){}

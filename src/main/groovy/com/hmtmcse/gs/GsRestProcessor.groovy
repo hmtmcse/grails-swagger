@@ -72,7 +72,7 @@ class GsRestProcessor implements GsExceptionHandler {
 
 
     private deleteForApi(GsApiActionDefinition definition){
-        return render(gsRestfulService.gsDetails(definition, params) as JSON)
+        return render(gsRestfulService.gsDelete(definition, params) as JSON)
     }
 
     private deleteForDefinition(GsApiActionDefinition definition){
