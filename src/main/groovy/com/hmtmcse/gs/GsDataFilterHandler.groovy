@@ -13,6 +13,7 @@ class GsDataFilterHandler {
 
     Closure readCriteriaProcessor(GsParamsPairData gsParamsPairData, Boolean andOr = false, String details = null){
         switch (gsParamsPairData.httpMethod) {
+            case GsConstant.DELETE:
             case GsConstant.POST:
                 if (gsParamsPairData.params && gsParamsPairData.params.where){
                     return createCriteriaBuilder(gsParamsPairData.params.where, andOr, details)
@@ -60,6 +61,14 @@ class GsDataFilterHandler {
             switch (params.gsHttpRequestMethod.toLowerCase()) {
                 case GsConstant.POST:
                     gsParamsPairData.httpMethod = GsConstant.POST
+                    gsParamsPairData.params = params.gsApiData ?: [:]
+                    return gsParamsPairData
+                case GsConstant.DELETE:
+                    gsParamsPairData.httpMethod = GsConstant.DELETE
+                    gsParamsPairData.params = params.gsApiData ?: [:]
+                    return gsParamsPairData
+                case GsConstant.PUT:
+                    gsParamsPairData.httpMethod = GsConstant.PUT
                     gsParamsPairData.params = params.gsApiData ?: [:]
                     return gsParamsPairData
                 case GsConstant.GET:

@@ -156,11 +156,15 @@ class GsRestfulService {
             if (queryResult == null){
                 responseData.message = GsConfigHolder.requestedConditionEmpty()
             }else{
-                queryResult.delete()
+                queryResult.delete(flush: true)
+                responseData.isSuccess = true
             }
         }catch(GrailsSwaggerException e){
             responseData.isSuccess = false
             responseData.message = e.getMessage()
+        }catch(Exception e){
+            responseData.isSuccess = false
+            responseData.message = GsConfigHolder.failedMessage()
         }
         return GsApiResponseData.processAPIResponse(definition, responseData)
     }
