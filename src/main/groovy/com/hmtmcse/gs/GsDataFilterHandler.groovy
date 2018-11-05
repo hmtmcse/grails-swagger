@@ -160,7 +160,7 @@ class GsDataFilterHandler {
             }
 
             gsMapKeyValue = getMapKeyValue(where, GsConstant.ORDER)
-            if (gsMapKeyValue) {
+            if (gsMapKeyValue && (gsMapKeyValue.value.equals(GsConstant.ASC) || gsMapKeyValue.value.equals(GsConstant.DESC))) {
                 order(gsMapKeyValue.key, gsMapKeyValue.value)
             }else {
                 order(GsConfigHolder.sortColumn(), GsConfigHolder.sortOrder())

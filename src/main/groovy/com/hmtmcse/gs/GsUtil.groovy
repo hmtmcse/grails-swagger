@@ -23,10 +23,15 @@ class GsUtil {
     }
 
     static def setJsonToParams(HttpServletRequest request, GrailsParameterMap params) {
-        String contentType = request.getContentType()
-        if (contentType && contentType.equals(SwaggerConstant.APPLICATION_JSON) && request.JSON){
-            params.gsApiData = request.JSON
+        try{
+            String contentType = request.getContentType()
+            if (contentType && contentType.equals(SwaggerConstant.APPLICATION_JSON) && request.JSON){
+                params.gsApiData = request.JSON
+            }
+            params.gsHttpRequestMethod = request.method
+        }catch(Exception e){
+            return false
         }
-        params.gsHttpRequestMethod = request.method
+        return true
     }
 }
