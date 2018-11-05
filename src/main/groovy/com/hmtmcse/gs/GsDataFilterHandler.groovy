@@ -159,10 +159,10 @@ class GsDataFilterHandler {
                 }
             }
 
-
-            if (where[GsConstant.ORDER_PROPERTY] && where[GsConstant.ORDER] && (where[GsConstant.ORDER].equals(GsConstant.ASC) || where[GsConstant.ORDER].equals(GsConstant.DESC))) {
-                order(where[GsConstant.ORDER_PROPERTY], where[GsConstant.ORDER])
-            } else {
+            gsMapKeyValue = getMapKeyValue(where, GsConstant.ORDER)
+            if (gsMapKeyValue) {
+                order(gsMapKeyValue.key, gsMapKeyValue.value)
+            }else {
                 order(GsConfigHolder.sortColumn(), GsConfigHolder.sortOrder())
             }
 
