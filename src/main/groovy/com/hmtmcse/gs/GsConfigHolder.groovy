@@ -1,6 +1,7 @@
 package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsApiResponseData
+import com.hmtmcse.gs.data.GsUrlMappingConfig
 import com.hmtmcse.swagger.definition.SwaggerConstant
 
 
@@ -71,5 +72,9 @@ class GsConfigHolder {
 
     static String requestedConditionEmpty() {
         return "Requested Condition Empty"
+    }
+
+    static GsUrlMappingConfig getUrlMappingCongit() {
+        return new GsUrlMappingConfig()
     }
 }
