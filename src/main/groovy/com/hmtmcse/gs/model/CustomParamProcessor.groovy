@@ -1,5 +1,7 @@
 package com.hmtmcse.gs.model
 
-interface CustomParamProcessor {
+import com.hmtmcse.gs.data.GsApiResponseProperty
 
+interface CustomParamProcessor {
+    public Object process(String fieldName, Object domainRow, GsApiResponseProperty propertyDefinition)
 }
