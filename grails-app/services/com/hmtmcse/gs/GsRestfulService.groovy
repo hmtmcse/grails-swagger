@@ -169,6 +169,9 @@ class GsRestfulService {
         return GsApiResponseData.processAPIResponse(definition, responseData)
     }
 
+    def validateInputs(GsApiActionDefinition definition, Map params){
+        return true
+    }
 
     def gsBulkUpdate(GsApiActionDefinition definition, Map params){}
 
@@ -177,6 +180,11 @@ class GsRestfulService {
     def gsCustomQuery(GsApiActionDefinition definition, Map params){}
 
     def gsCustomQueryAndResponse(GsApiActionDefinition definition, Map params){}
+
+
+    def gsCustomProcessor(GsApiActionDefinition definition, Map params){
+        validateInputs(definition, params)
+    }
 
 
 

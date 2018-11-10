@@ -4,6 +4,7 @@ import com.hmtmcse.gs.data.GsAction
 import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
+import com.hmtmcse.gs.model.CustomProcessor
 
 
 class GsApiActionDefinition<T> {
@@ -16,7 +17,7 @@ class GsApiActionDefinition<T> {
     public String summary = null
     public String definitionFor = null
     public String responseType = null
-    public Closure queryConditions = null
+    public CustomProcessor customProcessor = null
     public Boolean enableFilter = true
     public Boolean enableWhere = false
     public Class<T> domain
