@@ -47,6 +47,7 @@ class GsUrlMappingUtil {
                 gsControllerActionData.controllerRealName = controller.name
                 gsControllerActionData.url = matcher.group(1)?.uncapitalize()
                 gsControllerActionData.controllerUrlName = matcher.group(1)?.uncapitalize()
+                gsControllerActionData.url = controllerCustomUrl(gsControllerActionData.url)
                 gsControllerActionData.apiVersion = matcher.group(2)?.uncapitalize()
                 controller.actions.each { String action ->
                     if (action.startsWith(GsConstant.GET)){
@@ -69,6 +70,22 @@ class GsUrlMappingUtil {
             }
         }
         return gsControllerActionData
+    }
+
+
+    private static String controllerCustomUrl(String controller) {
+        if (GsConfigHolder.controllerCustomUrlRegex() != null) {
+            Pattern pattern = Pattern.compile(GsConfigHolder.controllerCustomUrlRegex())
+            Matcher matcher = pattern.matcher(controller)
+            String url = ""
+            while (matcher.find()) {
+                for (int i = 1; i <= matcher.groupCount(); i++) {
+                    url += matcher.group(i)?.uncapitalize() + "/"
+                }
+            }
+            return !url.equals("") ? GsUtil.removeLastChar(url, "/") : controller
+        }
+        return controller
     }
 
     private static GsAction parseAction(String actionName, String method){

@@ -77,4 +77,8 @@ class GsConfigHolder {
     static GsUrlMappingConfig getUrlMappingCongit() {
         return new GsUrlMappingConfig()
     }
+
+    static String controllerCustomUrlRegex() {
+        return "(store|admin)([A-Z]\\w+)"
+    }
 }

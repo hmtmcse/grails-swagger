@@ -34,4 +34,12 @@ class GsUtil {
         }
         return true
     }
+
+    static String removeLastChar(String string, String lastChar) {
+        if(string.endsWith(lastChar)) {
+            return string.substring(0, string.lastIndexOf(lastChar));
+        } else {
+            return string
+        }
+    }
 }
