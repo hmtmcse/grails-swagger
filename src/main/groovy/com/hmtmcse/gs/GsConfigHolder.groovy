@@ -79,6 +79,6 @@ class GsConfigHolder {
     }
 
     static String controllerCustomUrlRegex() {
-        return "(store|admin)([A-Z]\\w+)"
+        return "(site|admin)([A-Z]\\w+)"
     }
 }
