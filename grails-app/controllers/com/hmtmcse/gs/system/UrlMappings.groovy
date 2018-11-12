@@ -9,6 +9,7 @@ class UrlMappings {
 
 
     static mappings = {
+        "/swaggerUi"(controller: "swaggerUi", action: "index")
         "/gsExceptionHandler"(controller: "gsExceptionHandlerController", action: "invalid")
         "/gsExceptionHandler/**"(controller: "gsExceptionHandlerController", action: "invalid")
         "/${GsUrlMappingUtil.apiPrefix()}"(controller: "gsExceptionHandler", action: "invalid")
