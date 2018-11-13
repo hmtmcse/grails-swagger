@@ -1,7 +1,5 @@
 package com.hmtmcse.gs
 
-import com.hmtmcse.gs.data.GsAction
-import com.hmtmcse.gs.data.GsControllerActionData
 import com.hmtmcse.swagger.definition.SwaggerConstant
 import grails.util.Holders
 import org.grails.core.DefaultGrailsControllerClass
@@ -9,7 +7,6 @@ import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
 
-import java.lang.reflect.InvocationTargetException
 
 class GsReflectionUtil {
 

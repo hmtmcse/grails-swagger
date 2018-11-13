@@ -30,6 +30,7 @@ class GsApiActionDefinition<T> {
     public Map whereAllowedPropertyMap = [:]
 
 
+    public GsApiActionDefinition(){}
 
     public GsApiActionDefinition(Class<T> domain){
         this.domain = domain

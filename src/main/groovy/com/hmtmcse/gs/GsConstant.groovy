@@ -15,8 +15,7 @@ class GsConstant {
     public final static String CREATE_RESPONSE = "CREATE_RESPONSE"
     public final static String UPDATE_RESPONSE = "UPDATE_RESPONSE"
     public final static String DELETE_RESPONSE = "DELETE_RESPONSE"
-    public final static String CUSTOM_QUERY_RESPONSE = "CUSTOM_QUERY_RESPONSE"
-    public final static String CUSTOM_QUERY_AND_RESPONSE = "CUSTOM_QUERY_AND_RESPONSE"
+    public final static String CUSTOM_PROCESSOR = "CUSTOM_PROCESSOR"
 
 
     // Data Filter

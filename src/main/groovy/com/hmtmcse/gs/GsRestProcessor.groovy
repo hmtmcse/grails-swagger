@@ -92,7 +92,7 @@ class GsRestProcessor implements GsExceptionHandler {
 
 
     private customProcessorForDefinition(GsApiActionDefinition definition){
-        definition.responseType = GsConstant.DELETE_RESPONSE
+        definition.responseType = GsConstant.CUSTOM_PROCESSOR
         return definition
     }
 

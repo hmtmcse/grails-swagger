@@ -77,6 +77,7 @@ class GsDataFilterHandler {
                     return gsParamsPairData
             }
         }
+        gsParamsPairData.rawParams = params
         return gsParamsPairData
     }
 

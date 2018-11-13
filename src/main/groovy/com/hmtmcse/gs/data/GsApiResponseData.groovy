@@ -16,6 +16,8 @@ class GsApiResponseData {
     Integer total = null
     Boolean isSuccess = false
 
+    GsApiResponseData(){}
+
     GsApiResponseData(Boolean isSuccess, String message, Integer code = null) {
         this.isSuccess = isSuccess
         this.message = message

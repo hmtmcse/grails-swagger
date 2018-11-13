@@ -4,4 +4,5 @@ class GsParamsPairData {
 
     public String httpMethod
     public Map params = [:]
+    public Map rawParams = [:]
 }

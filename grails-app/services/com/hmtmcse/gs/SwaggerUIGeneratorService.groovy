@@ -137,6 +137,10 @@ class SwaggerUIGeneratorService {
                 case GsConstant.DETAILS_RESPONSE:
                     swaggerPath.parameters(GsDataFilterHandler.swaggerGetReadRequest(false, gsApiActionDefinition.whereAllowedPropertyList).getPropertyList())
                     break
+                case GsConstant.CUSTOM_PROCESSOR:
+                    swaggerProperty = propertiesProcessor(gsApiActionDefinition.getRequestProperties(), SwaggerConstant.IN_QUERY, [:])
+                    swaggerPath.parameters(swaggerProperty.getPropertyList())
+                    break
             }
         } else if (gsAction.httpMethod && gsAction.httpMethod.equals(GsConstant.POST)) {
             message = "Please Use Http POST Request for "
@@ -158,6 +162,10 @@ class SwaggerUIGeneratorService {
                 case GsConstant.UPDATE_RESPONSE:
                     swaggerProperty = propertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, gsApiActionDefinition.domainFields())
                     swaggerProperty.addFromExistingObjectProperty(GsConstant.WHERE, GsDataFilterHandler.swaggerPostReadRequest(false, gsApiActionDefinition.whereAllowedPropertyList))
+                    swaggerDefinition.addDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT).addProperties(swaggerProperty)
+                    break
+                case GsConstant.CUSTOM_PROCESSOR:
+                    swaggerProperty = propertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, [:])
                     swaggerDefinition.addDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT).addProperties(swaggerProperty)
                     break
             }

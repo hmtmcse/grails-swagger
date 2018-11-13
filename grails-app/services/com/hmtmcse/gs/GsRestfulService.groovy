@@ -1,5 +1,6 @@
 package com.hmtmcse.gs
 
+import com.hmtmcse.gs.data.ApiHelper
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
 import com.hmtmcse.gs.data.GsParamsPairData
@@ -96,6 +97,7 @@ class GsRestfulService {
     }
 
 
+
     def gsCreate(GsApiActionDefinition definition, Map params){
         return saveUpdateProcessor(definition, params, definition.domain.newInstance())
     }
@@ -190,19 +192,30 @@ class GsRestfulService {
     }
 
 
+    def responseToApi(GsApiActionDefinition definition, def queryResult, def defaultResponse = [:]){
+        return GsApiResponseData.successResponse(responseMapGenerator(definition.getResponseProperties(), queryResult, defaultResponse))
+    }
+
     def gsCustomProcessor(GsApiActionDefinition definition, Map params) {
         requestValidate(definition, params)
         resolveConditions(definition, params)
+        processDefault(definition, params)
 
         GsApiResponseData gsApiResponseData = null
+        ApiHelper apiHelper = new ApiHelper()
+        apiHelper.help = this
+
+
+        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
+        GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params, null)
         if (definition.customProcessor != null && definition.customProcessor instanceof CustomProcessor) {
-            gsApiResponseData = definition.customProcessor.process(definition, params)
+            gsApiResponseData = definition.customProcessor.process(definition, gsParamsPairData, apiHelper)
         }
 
         if (gsApiResponseData) {
             return gsApiResponseData.toMap()
         }
-        return GsApiResponseData.failed(GsConfigHolder.failedMessage())
+        return GsApiResponseData.failed(GsConfigHolder.failedMessage()).toMap()
     }
 
 
