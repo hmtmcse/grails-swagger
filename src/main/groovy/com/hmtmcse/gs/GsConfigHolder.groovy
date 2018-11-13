@@ -7,6 +7,26 @@ import com.hmtmcse.swagger.definition.SwaggerConstant
 
 class GsConfigHolder {
 
+
+    public static Integer defaultItemsPerPage = 20
+    public static String defaultSortColumn = "id"
+    public static String defaultSortOrder = "desc"
+    public static String defaultResponseKey = "response"
+
+
+    public static String controllerStartWithDefault = "Api"
+    public static String controllerCustomUrlRegex = null
+
+    public static String defaultFailedMessage = "Unable to Process Request"
+    public static String invalidRequestDefaultMessage = "Invalid API Request"
+    public static String invalidRequestTypeDefaultMessage = "Invalid API Request Type"
+    public static String multipleMatchInDetailsDefaultMessage = "If Multiple Match Found then will return first one"
+    public static String requiredFieldMissingDefaultMessage = "Required Field Missing"
+    public static String invalidFieldDataDefaultMessage = "Invalid/Missing Field Or Data"
+    public static String requestedConditionEmptyDefaultMessage = "Requested Condition Empty"
+
+
+
     public static Map javaToSwaggerDataType = [
             "java.lang.Integer" : SwaggerConstant.SWAGGER_DT_INTEGER,
             "java.lang.Long" : SwaggerConstant.SWAGGER_DT_INTEGER_64,
@@ -23,23 +43,23 @@ class GsConfigHolder {
     public static GsApiResponseData defaultSuccessResponse = GsApiResponseData.successMessage("Operation Success")
 
     public static Integer itemsPerPage() {
-        return 20
+        return defaultItemsPerPage
     }
 
     public static String sortColumn() {
-        return "id"
+        return defaultSortColumn
     }
 
     public static String sortOrder() {
-        return "desc"
+        return defaultSortOrder
     }
 
     public static String failedMessage() {
-        return "Unable to Process Request"
+        return defaultFailedMessage
     }
 
     static String controllerStartWith() {
-        return "Api"
+        return controllerStartWithDefault
     }
 
     public static String getUID(){
@@ -47,31 +67,31 @@ class GsConfigHolder {
     }
 
     static String invalidRequest() {
-        return "Invalid API Request"
+        return invalidRequestDefaultMessage
     }
 
     static String invalidRequestType() {
-        return "Invalid API Request Type"
+        return invalidRequestTypeDefaultMessage
     }
 
     static String multipleMatchInDetails() {
-        return "If Multiple Match Found then will return first one"
+        return multipleMatchInDetailsDefaultMessage
     }
 
     static String responseKey() {
-        return "response"
+        return defaultResponseKey
     }
 
     static String requiredFieldMissing() {
-        return "Required Field Missing"
+        return requiredFieldMissingDefaultMessage
     }
 
     static String invalidFieldData() {
-        return "Invalid/Missing Field Or Data"
+        return invalidFieldDataDefaultMessage
     }
 
     static String requestedConditionEmpty() {
-        return "Requested Condition Empty"
+        return requestedConditionEmptyDefaultMessage
     }
 
     static GsUrlMappingConfig getUrlMappingCongit() {
@@ -79,6 +99,6 @@ class GsConfigHolder {
     }
 
     static String controllerCustomUrlRegex() {
-        return "(site|admin)([A-Z]\\w+)"
+        return controllerCustomUrlRegex
     }
 }
