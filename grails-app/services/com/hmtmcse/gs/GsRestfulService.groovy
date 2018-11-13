@@ -3,6 +3,7 @@ package com.hmtmcse.gs
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
 import com.hmtmcse.gs.data.GsParamsPairData
+import com.hmtmcse.gs.model.CustomProcessor
 
 class GsRestfulService {
 
@@ -169,21 +170,39 @@ class GsRestfulService {
         return GsApiResponseData.processAPIResponse(definition, responseData)
     }
 
-    def validateInputs(GsApiActionDefinition definition, Map params){
-        return true
-    }
+
 
     def gsBulkUpdate(GsApiActionDefinition definition, Map params){}
 
     def gsBulkDelete(GsApiActionDefinition definition, Map params){}
 
-    def gsCustomQuery(GsApiActionDefinition definition, Map params){}
 
-    def gsCustomQueryAndResponse(GsApiActionDefinition definition, Map params){}
+    def requestValidate(GsApiActionDefinition definition, Map params){
+        return true
+    }
+
+    def processDefault(GsApiActionDefinition definition, Map params){
+        return true
+    }
+
+    def resolveConditions(GsApiActionDefinition definition, Map params){
+        return true
+    }
 
 
-    def gsCustomProcessor(GsApiActionDefinition definition, Map params){
-        validateInputs(definition, params)
+    def gsCustomProcessor(GsApiActionDefinition definition, Map params) {
+        requestValidate(definition, params)
+        resolveConditions(definition, params)
+
+        GsApiResponseData gsApiResponseData = null
+        if (definition.customProcessor != null && definition.customProcessor instanceof CustomProcessor) {
+            gsApiResponseData = definition.customProcessor.process(definition, params)
+        }
+
+        if (gsApiResponseData) {
+            return gsApiResponseData.toMap()
+        }
+        return GsApiResponseData.failed(GsConfigHolder.failedMessage())
     }
 
 

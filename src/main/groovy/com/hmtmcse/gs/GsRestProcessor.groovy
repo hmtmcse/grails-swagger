@@ -86,31 +86,20 @@ class GsRestProcessor implements GsExceptionHandler {
     }
 
 
-    private customQueryForApi(GsApiActionDefinition definition){
-        return render(gsRestfulService.gsCustomQuery(definition, params) as JSON)
+    private customProcessorForApi(GsApiActionDefinition definition){
+        return render(gsRestfulService.gsCustomProcessor(definition, params) as JSON)
     }
 
-    private customQueryForDefinition(GsApiActionDefinition definition){
-        definition.responseType = GsConstant.CUSTOM_QUERY_RESPONSE
+
+    private customProcessorForDefinition(GsApiActionDefinition definition){
+        definition.responseType = GsConstant.DELETE_RESPONSE
         return definition
     }
 
-    def customQuery(GsApiActionDefinition definition){
-        return "customQuery${returnFor}"(definition)
-    }
 
-
-    private customQueryAndResponseForApi(GsApiActionDefinition definition){
-        return render(gsRestfulService.gsCustomQueryAndResponse(definition, params) as JSON)
-    }
-
-    private customQueryAndResponseForDefinition(GsApiActionDefinition definition){
-        definition.responseType = GsConstant.CUSTOM_QUERY_AND_RESPONSE
-        return definition
-    }
-
-    def customQueryAndResponse(GsApiActionDefinition definition){
-        return "customQueryAndResponse${returnFor}"(definition)
+    def customProcessor(GsApiActionDefinition definition){
+        definition.enableWhere = true
+        return "customProcessor${returnFor}"(definition)
     }
 
 
