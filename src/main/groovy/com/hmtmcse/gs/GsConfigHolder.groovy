@@ -15,7 +15,7 @@ class GsConfigHolder {
 
 
     public static String controllerStartWithDefault = "Api"
-    public static String controllerCustomUrlRegex = null
+    public static String controllerCustomUrlRegexDefault = "(site|admin)([A-Z]\\w+)"
 
     public static String defaultFailedMessage = "Unable to Process Request"
     public static String invalidRequestDefaultMessage = "Invalid API Request"
@@ -99,6 +99,6 @@ class GsConfigHolder {
     }
 
     static String controllerCustomUrlRegex() {
-        return controllerCustomUrlRegex
+        return controllerCustomUrlRegexDefault
     }
 }
