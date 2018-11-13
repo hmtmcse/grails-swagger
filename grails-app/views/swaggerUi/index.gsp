@@ -25,6 +25,9 @@
         background: #fafafa;
     }
     </style>
+    <script>
+        window.GrailsSwaggerDefinitionURL = ${com.hmtmcse.gs.GsConfigHolder.swaggerDefinitionUrl}
+    </script>
     <asset:stylesheet src="swagger/swagger-ui.css"/>
     <asset:javascript src="swagger/swagger-ui-bundle.js"/>
     <asset:javascript src="swagger/swagger-ui-standalone-preset.js"/>

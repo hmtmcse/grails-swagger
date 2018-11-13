@@ -8,6 +8,10 @@ import com.hmtmcse.swagger.definition.SwaggerConstant
 class GsConfigHolder {
 
 
+    public static String hostnameWithPort = "localhost:8080"
+    public static String swaggerDefinitionUrl = "http://localhost:8080/swaggerUi/definition"
+
+
     public static Integer defaultItemsPerPage = 20
     public static String defaultSortColumn = "id"
     public static String defaultSortOrder = "desc"

@@ -1,6 +1,6 @@
 window.onload = function() {
     const ui = SwaggerUIBundle({
-        url: "http://localhost:8080/swaggerUi/definition",
+        url: window.GrailsSwaggerDefinitionURL ,
         // url: "https://petstore.swagger.io/v2/swagger.json",
         dom_id: '#swagger-ui',
         deepLinking: true,

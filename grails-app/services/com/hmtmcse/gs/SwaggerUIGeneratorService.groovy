@@ -15,7 +15,7 @@ class SwaggerUIGeneratorService {
 
     def generate() {
         try{
-            startSwagger("localhost:8080", GsUrlMappingUtil.apiPrefix())
+            startSwagger(GsConfigHolder.hostnameWithPort, GsUrlMappingUtil.apiPrefix())
             GsUrlMappingUtil.getUrlMappingData().each { GsControllerActionData controllerActionData ->
                 swaggerJsonByControllerData(controllerActionData)
                 addDefaultFailedResponse()
