@@ -18,9 +18,18 @@ class GsReflectionUtil {
         }
     }
 
-    static def isExistProperty(Class clazz, String name){
+    static Boolean isExistProperty(Class clazz, String name){
         try {
             clazz.metaClass.getProperty(clazz.newInstance(), name)
+            return true
+        }catch(Exception e){
+            return false
+        }
+    }
+
+    static Boolean isExistMethod(Class clazz, String method){
+        try {
+            clazz.metaClass.getMetaMethod(method)
             return true
         }catch(Exception e){
             return false

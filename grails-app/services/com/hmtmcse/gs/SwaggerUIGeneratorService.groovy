@@ -36,16 +36,22 @@ class SwaggerUIGeneratorService {
     }
 
 
-
-
-    void swaggerJsonByControllerData(GsControllerActionData controllerActionData){
-        String tagName = ""
+    void swaggerJsonByControllerData(GsControllerActionData controllerActionData) {
+        String tagName = GsUtil.makeHumReadble(controllerActionData.controllerUrlName)
         String description = ""
         def controllerObj = GsReflectionUtil.getNewObject(controllerActionData.controllerClass)
-        if (controllerObj){
-            controllerObj?.swaggerInit()
-            tagName = controllerObj?.tagName ?: GsUtil.makeHumReadble(controllerActionData.controllerUrlName)
-            description = controllerObj?.tagDescription
+        if (controllerObj) {
+            if (GsReflectionUtil.isExistMethod(controllerObj.getClass(), "swaggerInit")) {
+                controllerObj?.swaggerInit()
+            }
+
+            if (GsReflectionUtil.isExistProperty(controllerObj.getClass(), "tagName")) {
+                tagName = controllerObj?.tagName ?: ""
+            }
+
+            if (GsReflectionUtil.isExistProperty(controllerObj.getClass(), "tagDescription")) {
+                description = controllerObj?.tagDescription ?: ""
+            }
         }
         processApiActionDefinition(controllerActionData, tagName)
         swaggerDefinition.addTag(tagName, description)
