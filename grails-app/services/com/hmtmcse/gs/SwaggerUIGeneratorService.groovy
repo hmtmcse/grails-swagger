@@ -37,24 +37,26 @@ class SwaggerUIGeneratorService {
 
 
     void swaggerJsonByControllerData(GsControllerActionData controllerActionData) {
-        String tagName = GsUtil.makeHumReadble(controllerActionData.controllerUrlName)
-        String description = ""
-        def controllerObj = GsReflectionUtil.getNewObject(controllerActionData.controllerClass)
-        if (controllerObj) {
-            if (GsReflectionUtil.isExistMethod(controllerObj.getClass(), "swaggerInit")) {
-                controllerObj?.swaggerInit()
-            }
+        try{
+            String tagName = GsUtil.makeHumReadble(controllerActionData.controllerUrlName)
+            String description = ""
+            def controllerObj = GsReflectionUtil.getNewObject(controllerActionData.controllerClass)
+            if (controllerObj) {
+                try{ controllerObj?.swaggerInit() }catch(Exception e){}
 
-            if (GsReflectionUtil.isExistProperty(controllerObj.getClass(), "tagName")) {
-                tagName = controllerObj?.tagName ?: ""
-            }
+                if (GsReflectionUtil.isExistProperty(controllerObj.getClass(), "tagName")) {
+                    tagName = controllerObj?.tagName ?: ""
+                }
 
-            if (GsReflectionUtil.isExistProperty(controllerObj.getClass(), "tagDescription")) {
-                description = controllerObj?.tagDescription ?: ""
+                if (GsReflectionUtil.isExistProperty(controllerObj.getClass(), "tagDescription")) {
+                    description = controllerObj?.tagDescription ?: ""
+                }
             }
+            processApiActionDefinition(controllerActionData, tagName)
+            swaggerDefinition.addTag(tagName, description)
+        }catch(Exception e){
+            println("Invalid Controller Or Action: " + e.getMessage())
         }
-        processApiActionDefinition(controllerActionData, tagName)
-        swaggerDefinition.addTag(tagName, description)
     }
 
 
