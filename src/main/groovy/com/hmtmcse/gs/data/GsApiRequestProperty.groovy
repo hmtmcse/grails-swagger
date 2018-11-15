@@ -1,6 +1,6 @@
 package com.hmtmcse.gs.data
 
-class GsApiRequestProperty extends GsRequestResponseProperty{
+class GsApiRequestProperty extends GsRequestResponseProperty {
 
     public Boolean isRequired = false
     public String errorMessage = null
@@ -77,6 +77,7 @@ class GsApiRequestProperty extends GsRequestResponseProperty{
         super.defaultValue = defaultValue
         return this
     }
+
 
     GsApiRequestProperty setCustomProcessor(Closure customProcessor) {
         super.customProcessor = customProcessor

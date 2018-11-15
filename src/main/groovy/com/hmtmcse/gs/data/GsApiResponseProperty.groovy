@@ -1,7 +1,6 @@
 package com.hmtmcse.gs.data
 
-class GsApiResponseProperty extends GsRequestResponseProperty{
-
+class GsApiResponseProperty extends GsRequestResponseProperty {
 
 
     GsApiResponseProperty(String name, String alias) {
@@ -12,7 +11,6 @@ class GsApiResponseProperty extends GsRequestResponseProperty{
     GsApiResponseProperty(String name) {
         this.name = name
     }
-
 
 
     GsApiResponseProperty setAlias(String alias) {
@@ -27,7 +25,7 @@ class GsApiResponseProperty extends GsRequestResponseProperty{
     }
 
 
-    String getMapKey(){
+    String getMapKey() {
         return alias != null ? alias : name
     }
 }

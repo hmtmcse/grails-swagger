@@ -15,7 +15,6 @@ class GsApiActionDefinition<T> {
     public String description = null
     public String modelDefinition = null
     public String summary = null
-    public String definitionFor = null
     public String responseType = null
     public CustomProcessor customProcessor = null
     public Boolean enableFilter = true
@@ -42,38 +41,43 @@ class GsApiActionDefinition<T> {
     }
 
 
-
-
     public static GsApiActionDefinition instance(Class<T> domain){
         return new GsApiActionDefinition(domain)
     }
 
-    public GsApiActionDefinition<T> addResponseProperty(String name, String alias = null, String defaultValue = ""){
-        responseProperties.put(name,
-                new GsApiResponseProperty(name).setAlias(alias).setDefaultValue(defaultValue))
+
+    public GsApiResponseProperty addResponseProperty(String name, String alias = null, String defaultValue = ""){
+        responseProperties.put(name, new GsApiResponseProperty(name).setAlias(alias).setDefaultValue(defaultValue))
+        return responseProperties.get(name)
+    }
+
+
+    public GsApiRequestProperty addRequestProperty(String name, String dataType = null, String defaultValue = "") {
+        requestProperties.put(name, new GsApiRequestProperty(name).setDataType(dataType).setDefaultValue(defaultValue))
+        return requestProperties.get(name)
+    }
+
+
+    public GsApiActionDefinition<T> conditionAllowedProperty(List<String> fields){
+        fields?.each { String field ->
+            whereAllowedPropertyMap.put(field, true)
+        }
+        whereAllowedPropertyList = fields
         return this
     }
 
-    public GsApiActionDefinition<T> addResponseProperty(GsApiResponseProperty responseProperty){
-        responseProperties.put(responseProperty.getName(), responseProperty)
+
+    public GsApiActionDefinition<T> excludeProperty(List<String> fields){
+        Map exclude = [:]
+        fields?.each { String field ->
+            exclude.put(field, true)
+        }
+        String key
+        domainFields()?.each { field ->
+            key = field.getKey() as String
+            responseProperties.put(key, new GsApiResponseProperty(key))
+        }
         return this
-    }
-
-    public GsApiResponseProperty responsePropertyDefine(String name){
-        return new GsApiResponseProperty(name)
-    }
-
-    public addRequestProperty(){}
-
-    public GsApiActionDefinition<T> addRequestProperty(String name, String alias = null, String defaultValue = ""){
-        requestProperties.put(name,
-                new GsApiRequestProperty(name).setAlias(alias).setDefaultValue(defaultValue))
-        return this
-    }
-
-
-    public excludeProperty(List<String> fields){
-
     }
 
 
