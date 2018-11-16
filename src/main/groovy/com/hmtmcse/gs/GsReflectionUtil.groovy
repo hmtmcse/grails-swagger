@@ -80,9 +80,11 @@ class GsReflectionUtil {
     }
 
     static def castFromDomainSwaggerMap(Map params, Map domainFieldsType){
-        domainFieldsType?.each { String name, String dataType ->
+        domainFieldsType?.each { String name, def dataType ->
             if (params.containsKey(name)){
-                params[name] = castToGSObject(dataType, params[name])
+                if (dataType instanceof String){
+                    params[name] = castToGSObject(dataType, params[name])
+                }
             }
         }
         if (params.containsKey(GsConstant.PROPERTY_NAME) && params.containsKey(GsConstant.PROPERTY_VALUE)){
