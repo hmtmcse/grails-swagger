@@ -6,6 +6,7 @@ import org.grails.core.DefaultGrailsControllerClass
 import org.grails.datastore.mapping.model.MappingContext
 import org.grails.datastore.mapping.model.PersistentEntity
 import org.grails.datastore.mapping.model.PersistentProperty
+import org.grails.datastore.mapping.model.types.Association
 
 
 class GsReflectionUtil {
@@ -42,7 +43,7 @@ class GsReflectionUtil {
     }
 
 
-    static Map getDomainToSwaggerDataType(Class clazz){
+    static Map getDomainToSwaggerDataType(Class clazz, Boolean listAssociation = true){
         Map properties = [:]
         PersistentEntity persistentEntity = getPersistentEntity(clazz)
         String dataType
@@ -50,10 +51,17 @@ class GsReflectionUtil {
             dataType = GsConfigHolder.javaToSwaggerDataType.get(persistentProperty.type.name)?: SwaggerConstant.SWAGGER_DT_OBJECT
             properties.put(persistentProperty.name, dataType)
         }
+
         PersistentProperty identity = persistentEntity.getIdentity()
         if (identity){
             dataType = GsConfigHolder.javaToSwaggerDataType.get(identity.type.name)?: SwaggerConstant.SWAGGER_DT_OBJECT
             properties.put(identity.name, dataType)
+        }
+
+        if (listAssociation){
+            for (Association association : persistentEntity.getAssociations()){
+                properties.put(association.name, getDomainToSwaggerDataType(association.associatedEntity.javaClass, false))
+            }
         }
         return properties
     }
