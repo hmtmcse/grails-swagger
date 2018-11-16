@@ -20,6 +20,11 @@ class GsApiRequestProperty extends GsRequestResponseProperty {
         return isRequired
     }
 
+    GsApiRequestProperty required() {
+        this.isRequired = true
+        return this
+    }
+
     void setIsRequired(Boolean isRequired) {
         this.isRequired = isRequired
     }

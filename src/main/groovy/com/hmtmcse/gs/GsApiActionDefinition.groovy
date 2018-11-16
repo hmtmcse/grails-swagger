@@ -45,6 +45,16 @@ class GsApiActionDefinition<T> {
         return new GsApiActionDefinition(domain)
     }
 
+    public GsApiActionDefinition<T> successResponseAsMap(def map = [:], Integer code = null){
+        successResponseFormat = GsApiResponseData.successResponse(map, code)
+        return this
+    }
+
+    public GsApiActionDefinition<T> successResponseAsList(def list = [], Integer code = null){
+        successResponseFormat = GsApiResponseData.successResponse(list, code)
+        return this
+    }
+
 
     public GsApiResponseProperty addResponseProperty(String name, String alias = null, String defaultValue = ""){
         responseProperties.put(name, new GsApiResponseProperty(name).setAlias(alias).setDefaultValue(defaultValue))

@@ -104,11 +104,18 @@ class SwaggerUIGeneratorService {
             gsApiActionDefinition.successResponseFormat = GsConfigHolder.defaultSuccessResponse
         }
         String successResponseDefinition = "${SwaggerConstant.SUCCESS_RESPONSE}${gsApiActionDefinition.modelDefinition}"
-        if (gsApiActionDefinition.successResponseFormat.response){
+        if (gsApiActionDefinition.successResponseFormat.response != null){
             SwaggerProperty swaggerProperty = propertiesProcessor(gsApiActionDefinition.getResponseProperties(), null, gsApiActionDefinition.domainFields())
             SwaggerProperty successResponse = GsApiResponseData.swaggerResponseProperty(gsApiActionDefinition.successResponseFormat)
-            successResponse.objectProperty(GsConfigHolder.responseKey(), swaggerProperty)
+
+            if (gsApiActionDefinition.successResponseFormat.response instanceof  List){
+                successResponse.arrayProperty(GsConfigHolder.responseKey(), swaggerProperty)
+            }else{
+                successResponse.objectProperty(GsConfigHolder.responseKey(), swaggerProperty)
+            }
+
             addToDefinition(successResponseDefinition, SwaggerConstant.SWAGGER_DT_OBJECT, successResponse)
+
             response.start(SwaggerConstant.SUCCESS_RESPONSE)
             response.description(GsUtil.makeHumReadble(SwaggerConstant.SUCCESS_RESPONSE)).schemaOnly(successResponseDefinition)
         }else{

@@ -28,6 +28,17 @@ public class SwaggerProperty {
         return this;
     }
 
+    public SwaggerProperty arrayProperty(String name, SwaggerProperty swaggerProperty){
+        this.name = name;
+        definition.put(name,
+                SwaggerMap.object()
+                        .set("type", SwaggerConstant.SWAGGER_DT_ARRAY)
+                        .setGet("items", SwaggerMap.object()
+                                .set("type", SwaggerConstant.SWAGGER_DT_OBJECT).setGet("properties", swaggerProperty.getDefinition())
+        ));
+        return this;
+    }
+
     public SwaggerProperty addFromExistingObjectProperty(String name, SwaggerProperty swaggerProperty){
         definition.put(name, swaggerProperty.getDefinitionWithType().get(name));
         return this;
