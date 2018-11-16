@@ -28,4 +28,27 @@ class GsApiResponseProperty extends GsRequestResponseProperty {
     String getMapKey() {
         return alias != null ? alias : name
     }
+
+    List<GsApiResponseProperty> getHasMany() {
+        return hasMany
+    }
+
+
+    private GsApiResponseProperty addHasManyOrOne(String name, Boolean isMany) {
+        GsApiNestedResponse gsApiNestedResponse = new GsApiNestedResponse()
+        gsApiNestedResponse.isList = isMany
+        nested.put(name, gsApiNestedResponse)
+        return nested.get(name).gsApiResponseProperty
+    }
+
+
+    GsApiResponseProperty addHasMany(String name) {
+        return addHasManyOrOne(name, true)
+    }
+
+
+    GsApiResponseProperty addHasOne(String name) {
+        return addHasManyOrOne(name, false)
+    }
+
 }

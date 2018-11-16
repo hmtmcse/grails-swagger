@@ -248,9 +248,11 @@ class SwaggerUIGeneratorService {
             if (field.example) {
                 swaggerProperty.example(field.example)
             }
+
             if (field.description) {
                 swaggerProperty.description(field.description)
             }
+
             if (inType) {
                 swaggerProperty.in(inType)
             }
