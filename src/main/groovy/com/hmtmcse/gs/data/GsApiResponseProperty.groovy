@@ -3,6 +3,9 @@ package com.hmtmcse.gs.data
 class GsApiResponseProperty extends GsRequestResponseProperty {
 
 
+    public LinkedHashMap<String, GsApiNestedResponse> nested = new LinkedHashMap<>()
+    
+
     GsApiResponseProperty(String name, String alias) {
         this.name = name
         this.alias = alias
