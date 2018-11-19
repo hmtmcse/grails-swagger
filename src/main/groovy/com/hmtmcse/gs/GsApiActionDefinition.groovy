@@ -17,7 +17,6 @@ class GsApiActionDefinition<T> {
     public String summary = null
     public String responseType = null
     public CustomProcessor customProcessor = null
-    public Boolean enableFilter = true
     public Boolean enableWhere = false
     public Class<T> domain
 

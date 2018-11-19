@@ -14,6 +14,8 @@ class GsApiResponseData {
     List errorDetails = null
     Integer code = null
     Integer total = null
+    Integer count = null
+    Boolean isExist = null
     Boolean isSuccess = false
 
     GsApiResponseData(){}
@@ -94,6 +96,9 @@ class GsApiResponseData {
         if (code != null){responseMap.code = code}
         if (total != null){responseMap.total = total}
 
+        if (isExist != null){responseMap.isExist = isExist}
+        if (count != null){responseMap.count = count}
+
         if (message != null){responseMap.message = message}
         if (response != null){
             responseMap.put(GsConfigHolder.responseKey(), response)
@@ -150,6 +155,14 @@ class GsApiResponseData {
 
         if (gsApiResponseData.errorDetails != null && gsInternalResponse.errorDetails != null) {
             gsApiResponseData.errorDetails = gsInternalResponse.errorDetails
+        }
+
+        if (gsApiResponseData.count != null && gsInternalResponse.count != null) {
+            gsApiResponseData.count = gsInternalResponse.count
+        }
+
+        if (gsApiResponseData.isExist != null && gsInternalResponse.isExist != null) {
+            gsApiResponseData.isExist = gsInternalResponse.isExist
         }
         return gsApiResponseData.toMap()
     }

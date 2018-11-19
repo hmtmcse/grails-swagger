@@ -167,10 +167,14 @@ class GsDataFilterHandler {
                 order(GsConfigHolder.sortColumn(), GsConfigHolder.sortOrder())
             }
 
-            if (where[GsConstant.SELECT]) {
+            if (where[GsConstant.SELECT] || where[GsConstant.COUNT]) {
                 projections {
-                    where[GsConstant.SELECT]?.each {
-                        property(it)
+                    if (where[GsConstant.COUNT]){
+                        count()
+                    }else if (where[GsConstant.SELECT]){
+                        where[GsConstant.SELECT]?.each {
+                            property(it)
+                        }
                     }
                 }
             }

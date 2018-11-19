@@ -13,6 +13,8 @@ class GsInternalResponse {
     Object domain = null
     Object response = null
     Integer total = null
+    Integer count = null
+    Boolean isExist = null
 
 
     static GsInternalResponse instance(){

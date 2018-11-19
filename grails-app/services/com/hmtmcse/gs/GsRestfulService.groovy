@@ -127,6 +127,26 @@ class GsRestfulService {
     }
 
 
+    def countByCondition(GsApiActionDefinition definition, Map params) throws GrailsSwaggerException {
+        def queryResult = null
+        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
+        try {
+            GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params, definition.domainFields())
+            Map where = [:]
+            if (definition.enableWhere && gsParamsPairData.params && gsParamsPairData.params.where && gsParamsPairData.params.where instanceof Map) {
+                gsParamsPairData.params.where[GsConstant.COUNT] = true
+            } else {
+                where.put(GsConstant.COUNT, true)
+            }
+            queryResult = definition.domain.createCriteria().list(gsDataFilterHandler.createCriteriaBuilder(where, true))
+        } catch (Exception e) {
+            String message = GsExceptionParser.exceptionMessage(e)
+            throw new GrailsSwaggerException(message)
+        }
+        return queryResult
+    }
+
+
     def readGetByCondition(GsApiActionDefinition definition, Map params) throws GrailsSwaggerException {
         def queryResult = null
         GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()

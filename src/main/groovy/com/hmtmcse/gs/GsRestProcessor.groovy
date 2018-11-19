@@ -86,6 +86,20 @@ class GsRestProcessor implements GsExceptionHandler {
     }
 
 
+    private countForApi(GsApiActionDefinition definition){
+        return render(gsRestfulService.gsDelete(definition, params) as JSON)
+    }
+
+    private countForDefinition(GsApiActionDefinition definition){
+        definition.responseType = GsConstant.COUNT_RESPONSE
+        return definition
+    }
+
+    def count(GsApiActionDefinition definition){
+        return "count${returnFor}"(definition)
+    }
+
+
     private customProcessorForApi(GsApiActionDefinition definition){
         return render(gsRestfulService.gsCustomProcessor(definition, params) as JSON)
     }

@@ -15,6 +15,7 @@ class GsConstant {
     public final static String CREATE_RESPONSE = "CREATE_RESPONSE"
     public final static String UPDATE_RESPONSE = "UPDATE_RESPONSE"
     public final static String DELETE_RESPONSE = "DELETE_RESPONSE"
+    public final static String COUNT_RESPONSE = "COUNT_RESPONSE"
     public final static String CUSTOM_PROCESSOR = "CUSTOM_PROCESSOR"
 
 
@@ -26,6 +27,7 @@ class GsConstant {
     public final static String ASC = "asc"
     public final static String DESC = "desc"
     public final static String SELECT = "select"
+    public final static String COUNT = "count"
     public final static String WHERE = "where"
 
     public final static String EQUAL = "equal"
