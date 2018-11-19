@@ -45,6 +45,9 @@ class GsReflectionUtil {
 
     static Map getDomainToSwaggerDataType(Class clazz, Boolean listAssociation = true){
         Map properties = [:]
+        if (!clazz){
+            return properties
+        }
         PersistentEntity persistentEntity = getPersistentEntity(clazz)
         String dataType
         persistentEntity?.getPersistentProperties()?.each { PersistentProperty persistentProperty ->

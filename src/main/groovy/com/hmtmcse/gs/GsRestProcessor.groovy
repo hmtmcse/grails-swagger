@@ -98,7 +98,7 @@ class GsRestProcessor implements GsExceptionHandler {
 
 
     def customProcessor(GsApiActionDefinition definition){
-        definition.enableWhere = true
+        definition.enableWhere = false
         return "customProcessor${returnFor}"(definition)
     }
 

@@ -66,7 +66,6 @@ class SwaggerUIGeneratorService {
         String url = "/${controllerActionData.apiVersion}/${controllerActionData.url}/"
         String actionUrl
         if (controllerObj) {
-            controllerObj.metaClass.render = {null}
             controllerObj.returnFor = GsConstant.RETURN_FOR_DEFINITION
             SwaggerPath swaggerPath
             SwaggerProperty swaggerProperty
@@ -87,6 +86,7 @@ class SwaggerUIGeneratorService {
                 } catch (InvocationTargetException e) {
                     println("processApiActionDefinition: " + e.getMessage())
                 } catch (NullPointerException e) {
+                    e.printStackTrace()
                     println("processApiActionDefinition: " + e.getMessage())
                 } catch (Exception e) {
                     println("processApiActionDefinition: " + e.getMessage())
@@ -234,7 +234,7 @@ class SwaggerUIGeneratorService {
             } else {
                 if (field.dataType == null || field.dataType.equals("")) {
                     field.dataType = SwaggerConstant.SWAGGER_DT_STRING
-                    if (domainFields.get(field.name)) {
+                    if (domainFields.hasProperty(field.name)) {
                         field.dataType = domainFields.get(field.name)
                     }
                 }
