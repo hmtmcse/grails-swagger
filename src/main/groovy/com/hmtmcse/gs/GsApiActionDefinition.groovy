@@ -45,13 +45,8 @@ class GsApiActionDefinition<T> {
         return new GsApiActionDefinition(domain)
     }
 
-    public GsApiActionDefinition<T> successResponseAsMap(def map = [:], Integer code = null){
-        successResponseFormat = GsApiResponseData.successResponse(map, code)
-        return this
-    }
-
-    public GsApiActionDefinition<T> successResponseAsList(def list = [], Integer code = null){
-        successResponseFormat = GsApiResponseData.successResponse(list, code)
+    public GsApiActionDefinition<T> successResponseAsData(Integer code = null){
+        successResponseFormat = GsApiResponseData.successResponse([:], code)
         return this
     }
 

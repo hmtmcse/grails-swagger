@@ -8,10 +8,11 @@ import com.hmtmcse.gs.model.CustomProcessor
 
 class GsRestfulService {
 
-    private def valueFromDomain(String key, def domain, GsApiResponseProperty gsApiResponseProperty){
-        try{
+
+    private def valueFromDomain(String key, def domain, GsApiResponseProperty gsApiResponseProperty) {
+        try {
             return domain[key]
-        }catch(Exception e){
+        } catch (Exception e) {
             return gsApiResponseProperty.getDefaultValue()
         }
     }
@@ -39,23 +40,25 @@ class GsRestfulService {
         return GsApiResponseData.processAPIResponse(definition, responseData)
     }
 
-    def readDetailsProcessor(GsApiActionDefinition definition, Map params){
+
+    def readDetailsProcessor(GsApiActionDefinition definition, Map params) {
         GsInternalResponse responseData = GsInternalResponse.instance()
-        try{
+        try {
             def queryResult = readGetByCondition(definition, params)
             responseData.isSuccess = true
             responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult)
-            if (definition.successResponseFormat == null){
+            if (definition.successResponseFormat == null) {
                 definition.successResponseFormat = GsApiResponseData.successResponse([])
             }
-        }catch(GrailsSwaggerException e){
+        } catch (GrailsSwaggerException e) {
             responseData.isSuccess = false
             responseData.message = e.getMessage()
         }
         return GsApiResponseData.processAPIResponse(definition, responseData)
     }
 
-    def gsReadList(GsApiActionDefinition definition, Map params){
+
+    def gsReadList(GsApiActionDefinition definition, Map params) {
         return readListProcessor(definition, params)
     }
 
@@ -97,36 +100,41 @@ class GsRestfulService {
     }
 
 
-
-    def gsCreate(GsApiActionDefinition definition, Map params){
+    def gsCreate(GsApiActionDefinition definition, Map params) {
         return saveUpdateProcessor(definition, params, definition.domain.newInstance())
     }
 
-    def saveUpdateProcessor(GsApiActionDefinition definition, Map params, def domain){
+
+    def saveUpdateProcessor(GsApiActionDefinition definition, Map params, def domain) {
         GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
         GsInternalResponse gsInternalResponse = gsDataFilterHandler.saveUpdateDataFilter(definition, params)
-        if (gsInternalResponse.isSuccess){
+        if (gsInternalResponse.isSuccess) {
             gsInternalResponse = saveUpdate(domain, gsInternalResponse.filteredParams)
         }
-        if (definition.successResponseFormat == null){
+
+        if (definition.successResponseFormat == null) {
             definition.successResponseFormat = GsConfigHolder.defaultSuccessResponse
+        } else if (gsInternalResponse.isSuccess && gsInternalResponse.domain) {
+            gsInternalResponse.response = makeApiResponse(definition, gsInternalResponse.domain, definition.successResponseFormat.response)
         }
+
         return GsApiResponseData.processAPIResponse(definition, gsInternalResponse)
     }
 
-    def gsDetails(GsApiActionDefinition definition, Map params){
+
+    def gsDetails(GsApiActionDefinition definition, Map params) {
         return readDetailsProcessor(definition, params)
     }
 
 
-    def readGetByCondition(GsApiActionDefinition definition, Map params) throws GrailsSwaggerException{
+    def readGetByCondition(GsApiActionDefinition definition, Map params) throws GrailsSwaggerException {
         def queryResult = null
         GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
-        try{
+        try {
             GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params, definition.domainFields())
             Closure listCriteria = gsDataFilterHandler.readCriteriaProcessor(gsParamsPairData, false, "details")
             queryResult = definition.domain.createCriteria().get(listCriteria)
-        }catch(Exception e){
+        } catch (Exception e) {
             String message = GsExceptionParser.exceptionMessage(e)
             throw new GrailsSwaggerException(message)
         }
@@ -134,17 +142,16 @@ class GsRestfulService {
     }
 
 
-
-    def gsUpdate(GsApiActionDefinition definition, Map params){
+    def gsUpdate(GsApiActionDefinition definition, Map params) {
         GsInternalResponse responseData = GsInternalResponse.instance()
-        try{
+        try {
             def queryResult = readGetByCondition(definition, params)
-            if (queryResult == null){
+            if (queryResult == null) {
                 responseData.message = GsConfigHolder.requestedConditionEmpty()
-            }else{
+            } else {
                 return saveUpdateProcessor(definition, params, queryResult)
             }
-        }catch(GrailsSwaggerException e){
+        } catch (GrailsSwaggerException e) {
             responseData.isSuccess = false
             responseData.message = e.getMessage()
         }
@@ -152,20 +159,20 @@ class GsRestfulService {
     }
 
 
-    def gsDelete(GsApiActionDefinition definition, Map params){
+    def gsDelete(GsApiActionDefinition definition, Map params) {
         GsInternalResponse responseData = GsInternalResponse.instance()
-        try{
+        try {
             def queryResult = readGetByCondition(definition, params)
-            if (queryResult == null){
+            if (queryResult == null) {
                 responseData.message = GsConfigHolder.requestedConditionEmpty()
-            }else{
+            } else {
                 queryResult.delete(flush: true)
                 responseData.isSuccess = true
             }
-        }catch(GrailsSwaggerException e){
+        } catch (GrailsSwaggerException e) {
             responseData.isSuccess = false
             responseData.message = e.getMessage()
-        }catch(Exception e){
+        } catch (Exception e) {
             responseData.isSuccess = false
             responseData.message = GsConfigHolder.failedMessage()
         }
@@ -173,28 +180,34 @@ class GsRestfulService {
     }
 
 
-
-    def gsBulkUpdate(GsApiActionDefinition definition, Map params){}
-
-    def gsBulkDelete(GsApiActionDefinition definition, Map params){}
+    def gsBulkUpdate(GsApiActionDefinition definition, Map params) {}
 
 
-    def requestValidate(GsApiActionDefinition definition, Map params){
+    def gsBulkDelete(GsApiActionDefinition definition, Map params) {}
+
+
+    def requestValidate(GsApiActionDefinition definition, Map params) {
         return true
     }
 
-    def processDefault(GsApiActionDefinition definition, Map params){
+    def processDefault(GsApiActionDefinition definition, Map params) {
         return true
     }
 
-    def resolveConditions(GsApiActionDefinition definition, Map params){
+    def resolveConditions(GsApiActionDefinition definition, Map params) {
         return true
     }
 
 
-    def responseToApi(GsApiActionDefinition definition, def queryResult, def defaultResponse = [:]){
+    private def makeApiResponse(GsApiActionDefinition definition, def queryResult, def defaultResponse = [:]) {
+        return responseMapGenerator(definition.getResponseProperties(), queryResult, defaultResponse)
+    }
+
+
+    GsApiResponseData responseToApi(GsApiActionDefinition definition, def queryResult, def defaultResponse = [:]) {
         return GsApiResponseData.successResponse(responseMapGenerator(definition.getResponseProperties(), queryResult, defaultResponse))
     }
+
 
     def gsCustomProcessor(GsApiActionDefinition definition, Map params) {
         requestValidate(definition, params)
@@ -215,10 +228,9 @@ class GsRestfulService {
         if (gsApiResponseData) {
             return gsApiResponseData.toMap()
         }
+
         return GsApiResponseData.failed(GsConfigHolder.failedMessage()).toMap()
     }
-
-
 
 
 }
