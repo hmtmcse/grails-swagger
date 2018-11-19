@@ -231,7 +231,7 @@ class SwaggerUIGeneratorService {
             } else {
                 if (field.dataType == null || field.dataType.equals("")) {
                     field.dataType = SwaggerConstant.SWAGGER_DT_STRING
-                    if (domainFields.hasProperty(field.name)) {
+                    if (domainFields.get(field.name)) {
                         field.dataType = domainFields.get(field.name)
                     }
                 }

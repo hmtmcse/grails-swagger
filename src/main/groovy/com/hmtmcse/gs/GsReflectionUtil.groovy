@@ -45,7 +45,7 @@ class GsReflectionUtil {
 
     static Map getDomainToSwaggerDataType(Class clazz, Boolean listAssociation = true){
         Map properties = [:]
-        if (!clazz){
+        if (clazz == null){
             return properties
         }
         PersistentEntity persistentEntity = getPersistentEntity(clazz)
