@@ -86,7 +86,6 @@ class SwaggerUIGeneratorService {
                 } catch (InvocationTargetException e) {
                     println("processApiActionDefinition: " + e.getMessage())
                 } catch (NullPointerException e) {
-                    e.printStackTrace()
                     println("processApiActionDefinition: " + e.getMessage())
                 } catch (Exception e) {
                     println("processApiActionDefinition: " + e.getMessage())
@@ -113,9 +112,7 @@ class SwaggerUIGeneratorService {
             }else{
                 successResponse.objectProperty(GsConfigHolder.responseKey(), swaggerProperty)
             }
-
             addToDefinition(successResponseDefinition, SwaggerConstant.SWAGGER_DT_OBJECT, successResponse)
-
             response.start(SwaggerConstant.SUCCESS_RESPONSE)
             response.description(GsUtil.makeHumReadble(SwaggerConstant.SUCCESS_RESPONSE)).schemaOnly(successResponseDefinition)
         }else{
