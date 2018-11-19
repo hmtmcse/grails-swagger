@@ -17,3 +17,10 @@ Custom URL Pattern
 1. /api/v2/store/cart/add
 2. /api/v2/admin/product/add
 need to add controller Regex into Controller mapping config
+
+
+
+
+1. Success Response Mapping for Happy Save
+2. count machanism 
+3. isExist Check.
