@@ -42,15 +42,11 @@ class SwaggerUIGeneratorService {
             String description = ""
             def controllerObj = GsReflectionUtil.getNewObject(controllerActionData.controllerClass)
             if (controllerObj) {
-                try{ controllerObj?.swaggerInit() }catch(Exception e){}
-
-                if (GsReflectionUtil.isExistProperty(controllerObj.getClass(), "tagName")) {
-                    tagName = controllerObj?.tagName ?: ""
-                }
-
-                if (GsReflectionUtil.isExistProperty(controllerObj.getClass(), "tagDescription")) {
+                try{
+                    controllerObj?.swaggerInit()
+                    tagName = controllerObj?.tagName ?: tagName
                     description = controllerObj?.tagDescription ?: ""
-                }
+                }catch(Exception e){}
             }
             processApiActionDefinition(controllerActionData, tagName)
             swaggerDefinition.addTag(tagName, description)
@@ -225,7 +221,6 @@ class SwaggerUIGeneratorService {
     SwaggerProperty propertiesProcessor(Map<String, GsRequestResponseProperty> responsePropertyMap, String inType, Map domainFields) {
         SwaggerProperty swaggerProperty = new SwaggerProperty()
         responsePropertyMap.each { String name, GsRequestResponseProperty field ->
-
             if (field.referenceDefinition) {
 
             } else {

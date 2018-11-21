@@ -1,6 +1,7 @@
 package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsAction
+import com.hmtmcse.gs.data.GsApiNestedResponse
 import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
@@ -26,6 +27,7 @@ class GsApiActionDefinition<T> {
     public GsApiResponseData failedResponseFormat = null
     public List whereAllowedPropertyList = []
     public Map whereAllowedPropertyMap = [:]
+    public LinkedHashMap<String, GsApiNestedResponse> nested = new LinkedHashMap<>()
 
 
     public GsApiActionDefinition(){}
@@ -104,5 +106,22 @@ class GsApiActionDefinition<T> {
 
     public setModelDefinition(String apiVersion, String controller, GsAction gsAction){
         this.modelDefinition = "${GsUtil.makeHumReadble(apiVersion)}${GsUtil.makeHumReadble(controller)}${GsUtil.makeHumReadble(gsAction.httpMethod)}${GsUtil.makeHumReadble(gsAction.name)}"
+    }
+
+    private GsApiResponseProperty addHasManyOrOne(String name, Boolean isMany) {
+        GsApiNestedResponse gsApiNestedResponse = new GsApiNestedResponse()
+        gsApiNestedResponse.isList = isMany
+        nested.put(name, gsApiNestedResponse)
+        return nested.get(name).gsApiResponseProperty
+    }
+
+
+    GsApiResponseProperty addHasMany(String name) {
+        return addHasManyOrOne(name, true)
+    }
+
+
+    GsApiResponseProperty addHasOne(String name) {
+        return addHasManyOrOne(name, false)
     }
 }
