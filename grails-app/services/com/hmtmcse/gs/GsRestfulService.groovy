@@ -3,6 +3,7 @@ package com.hmtmcse.gs
 import com.hmtmcse.gs.data.ApiHelper
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
+import com.hmtmcse.gs.data.GsDomain
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.gs.model.CustomProcessor
 
@@ -84,6 +85,11 @@ class GsRestfulService {
             }
         }
         return defaultResponse
+    }
+
+
+    def responseMapGenerator(GsApiActionDefinition gsApiActionDefinition, def queryResult, def defaultResponse = [:]) {
+
     }
 
 
