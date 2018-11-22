@@ -18,6 +18,10 @@ class GsConstant {
     public final static String COUNT_RESPONSE = "COUNT_RESPONSE"
     public final static String CUSTOM_PROCESSOR = "CUSTOM_PROCESSOR"
 
+    public final static String ER_MANY_TO_ONE = "many-to-one"
+    public final static String ER_MANY_TO_MANY = "many-to-many"
+    public final static String ER_ONE_TO_ONE = "one-to-one"
+
 
     // Data Filter
     public final static String OFFSET = "offset"

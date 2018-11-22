@@ -1,10 +1,11 @@
 package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsAction
-import com.hmtmcse.gs.data.GsApiNestedResponse
+import com.hmtmcse.gs.data.GsApiNestedResponseResponse
 import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
+import com.hmtmcse.gs.data.GsDomain
 import com.hmtmcse.gs.model.CustomProcessor
 
 
@@ -27,7 +28,8 @@ class GsApiActionDefinition<T> {
     public GsApiResponseData failedResponseFormat = null
     public List whereAllowedPropertyList = []
     public Map whereAllowedPropertyMap = [:]
-    public LinkedHashMap<String, GsApiNestedResponse> nested = new LinkedHashMap<>()
+    public LinkedHashMap<String, GsApiNestedResponseResponse> nested = new LinkedHashMap<>()
+    private GsDomain gsDomain
 
 
     public GsApiActionDefinition(){}
@@ -38,6 +40,7 @@ class GsApiActionDefinition<T> {
 
 
     public Map domainFields(){
+        gsDomain = GsReflectionUtil.getDomainToDomainProperties(this.domain)
         return  GsReflectionUtil.getDomainToSwaggerDataType(this.domain)
     }
 
@@ -108,20 +111,39 @@ class GsApiActionDefinition<T> {
         this.modelDefinition = "${GsUtil.makeHumReadble(apiVersion)}${GsUtil.makeHumReadble(controller)}${GsUtil.makeHumReadble(gsAction.httpMethod)}${GsUtil.makeHumReadble(gsAction.name)}"
     }
 
-    private GsApiResponseProperty addHasManyOrOne(String name, Boolean isMany) {
-        GsApiNestedResponse gsApiNestedResponse = new GsApiNestedResponse()
+
+    private GsApiResponseProperty addHasManyOrOneResponse(String name, Boolean isMany) {
+        GsApiNestedResponseResponse gsApiNestedResponse = new GsApiNestedResponseResponse()
         gsApiNestedResponse.isList = isMany
         nested.put(name, gsApiNestedResponse)
         return nested.get(name).gsApiResponseProperty
     }
 
 
-    GsApiResponseProperty addHasMany(String name) {
-        return addHasManyOrOne(name, true)
+    GsApiResponseProperty addHasManyResponse(String name) {
+        return addHasManyOrOneResponse(name, true)
     }
 
 
-    GsApiResponseProperty addHasOne(String name) {
-        return addHasManyOrOne(name, false)
+    GsApiResponseProperty addHasOneResponse(String name) {
+        return addHasManyOrOneResponse(name, false)
+    }
+
+
+    private GsApiRequestProperty addHasManyOrOneRequest(String name, Boolean isMany) {
+        GsApiNestedResponseResponse gsApiNestedRequest = new GsApiNestedResponseResponse()
+        gsApiNestedRequest.isList = isMany
+        nested.put(name, gsApiNestedRequest)
+        return nested.get(name).gsApiRequestProperty
+    }
+
+
+    GsApiRequestProperty addHasManyRequest(String name) {
+        return addHasManyOrOneRequest(name, true)
+    }
+
+
+    GsApiRequestProperty addHasOneRequest(String name) {
+        return addHasManyOrOneRequest(name, false)
     }
 }
