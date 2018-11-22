@@ -146,7 +146,7 @@ class SwaggerUIGeneratorService {
                     swaggerPath.parameters(GsDataFilterHandler.swaggerGetReadRequest(false, gsApiActionDefinition.whereAllowedPropertyList).getPropertyList())
                     break
                 case GsConstant.CUSTOM_PROCESSOR:
-                    swaggerProperty = propertiesProcessor(gsApiActionDefinition.getRequestProperties(), SwaggerConstant.IN_QUERY, [:])
+                    swaggerProperty = propertiesProcessor(gsApiActionDefinition.getRequestProperties(), SwaggerConstant.IN_QUERY, gsApiActionDefinition.domainFields())
                     swaggerPath.parameters(swaggerProperty.getPropertyList())
                     break
             }
@@ -173,7 +173,7 @@ class SwaggerUIGeneratorService {
                     swaggerDefinition.addDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT).addProperties(swaggerProperty)
                     break
                 case GsConstant.CUSTOM_PROCESSOR:
-                    swaggerProperty = propertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, [:])
+                    swaggerProperty = propertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, gsApiActionDefinition.domainFields())
                     swaggerDefinition.addDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT).addProperties(swaggerProperty)
                     break
             }
