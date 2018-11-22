@@ -114,6 +114,7 @@ class GsReflectionUtil {
             for (Association association : persistentEntity.getAssociations()) {
                 switch (entityRelationType(association)) {
                     case GsConstant.ER_MANY_TO_MANY:
+                    case GsConstant.ER_ONE_TO_MANY:
                         gsDomainHasMany = new GsDomainHasMany()
                         gsDomainHasMany.isOwningSide = association.isOwningSide()
                         gsDomainHasMany.name = association.name
