@@ -9,11 +9,11 @@ import com.hmtmcse.gs.data.GsDomain
 import com.hmtmcse.gs.model.CustomProcessor
 
 
-class GsApiActionDefinition<T> implements GsResponseOrganizer, GsRequestOrganizer{
+class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinition>, GsRequestOrganizer<GsApiActionDefinition> {
 
 
-    private Map<String, GsApiResponseProperty> responseProperties = new LinkedHashMap<>()
-    private Map<String, GsApiRequestProperty> requestProperties = new LinkedHashMap<>()
+    private LinkedHashMap<String, GsApiResponseProperty> responseProperties = new LinkedHashMap<>()
+    private LinkedHashMap<String, GsApiRequestProperty> requestProperties = new LinkedHashMap<>()
     public String description = null
     public String modelDefinition = null
     public String summary = null
@@ -22,42 +22,39 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer, GsRequestOrganize
     public Boolean enableWhere = false
     public Class<T> domain
 
-    public String parameterDescription = null
+    public String lastResponseRelationalEntityName = null
     public String parameterName = null
     public GsApiResponseData successResponseFormat = null
     public GsApiResponseData failedResponseFormat = null
     public List whereAllowedPropertyList = []
     public Map whereAllowedPropertyMap = [:]
     public LinkedHashMap<String, GsApiNestedResponseResponse> nested = new LinkedHashMap<>()
-    private GsDomain gsDomain
+    public GsDomain gsDomain = new GsDomain()
 
 
-    public GsApiActionDefinition(){}
-
-    public GsApiActionDefinition(Class<T> domain){
-        this.domain = domain
-    }
-
-
-    public Map domainFields(){
+    public GsApiActionDefinition() {
         gsDomain = GsReflectionUtil.getDomainToDomainProperties(this.domain)
-        return  GsReflectionUtil.getDomainToSwaggerDataType(this.domain)
     }
 
 
-    public static GsApiActionDefinition instance(Class<T> domain){
+    public GsApiActionDefinition(Class<T> domain) {
+        this.domain = domain
+        gsDomain = GsReflectionUtil.getDomainToDomainProperties(this.domain)
+    }
+
+
+    public Map domainFields() {
+        return GsReflectionUtil.getDomainToSwaggerDataType(this.domain)
+    }
+
+
+    public static GsApiActionDefinition instance(Class<T> domain) {
         return new GsApiActionDefinition(domain)
     }
 
-    public GsApiActionDefinition<T> successResponseAsData(Integer code = null){
-        successResponseFormat = GsApiResponseData.successResponse([:], code)
+    public GsApiActionDefinition<T> successResponseAsData(def isMapOrList = [:], Integer code = null) {
+        successResponseFormat = GsApiResponseData.successResponse(isMapOrList, code)
         return this
-    }
-
-
-    public GsApiResponseProperty addResponseProperty(String name, String alias = null, String defaultValue = ""){
-        responseProperties.put(name, new GsApiResponseProperty(name).setAlias(alias).setDefaultValue(defaultValue))
-        return responseProperties.get(name)
     }
 
 
@@ -67,7 +64,7 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer, GsRequestOrganize
     }
 
 
-    public GsApiActionDefinition<T> conditionAllowedProperty(List<String> fields){
+    public GsApiActionDefinition<T> conditionAllowedProperty(List<String> fields) {
         fields?.each { String field ->
             whereAllowedPropertyMap.put(field, true)
         }
@@ -76,7 +73,7 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer, GsRequestOrganize
     }
 
 
-    public GsApiActionDefinition<T> excludeProperty(List<String> fields){
+    public GsApiActionDefinition<T> excludeProperty(List<String> fields) {
         Map exclude = [:]
         fields?.each { String field ->
             exclude.put(field, true)
@@ -90,60 +87,43 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer, GsRequestOrganize
     }
 
 
-    public GsApiActionDefinition<T> includeOnlyProperty(List<String> fields){
-        fields?.each { String field ->
-            responseProperties.put(field, new GsApiResponseProperty(field))
-        }
-        return this
-    }
-
-
-    public getRequestProperties(){
+    public getRequestProperties() {
         return requestProperties
     }
 
-
-    public getResponseProperties(){
-        return responseProperties
+    @Override
+    LinkedHashMap<String, GsApiResponseProperty> getResponseProperties() {
+        return this.responseProperties
     }
 
-    public setModelDefinition(String apiVersion, String controller, GsAction gsAction){
+
+    @Override
+    LinkedHashMap<String, GsApiResponseProperty> setResponseProperties(LinkedHashMap<String, GsApiResponseProperty> responsePropertyLinkedHashMap) {
+        return this.responseProperties = responsePropertyLinkedHashMap
+    }
+
+    @Override
+    GsDomain getGsDomain() {
+        return this.gsDomain
+    }
+
+    public setModelDefinition(String apiVersion, String controller, GsAction gsAction) {
         this.modelDefinition = "${GsUtil.makeHumReadble(apiVersion)}${GsUtil.makeHumReadble(controller)}${GsUtil.makeHumReadble(gsAction.httpMethod)}${GsUtil.makeHumReadble(gsAction.name)}"
     }
 
 
-    private GsApiResponseProperty addHasManyOrOneResponse(String name, Boolean isMany) {
-        GsApiNestedResponseResponse gsApiNestedResponse = new GsApiNestedResponseResponse()
-        gsApiNestedResponse.isList = isMany
-        nested.put(name, gsApiNestedResponse)
-        return nested.get(name).gsApiResponseProperty
+    public GsRelationalEntityResponse addRelationalEntityResponse(String name, String alias = null, String defaultValue = "") {
+        GsApiResponseProperty gsApiResponseProperty = new GsApiResponseProperty(name).setAlias(alias).setDefaultValue(defaultValue)
+        gsApiResponseProperty.relationalEntity = new GsRelationalEntityResponse()
+        gsApiResponseProperty.relationalEntity.gsDomain = gsDomain
+        gsApiResponseProperty.relationalEntity.relationalEntityName = name
+        this.responseProperties.put(name, gsApiResponseProperty)
+        lastResponseRelationalEntityName = name
+        return this.responseProperties.get(name).relationalEntity
     }
 
-
-    GsApiResponseProperty addHasManyResponse(String name) {
-        return addHasManyOrOneResponse(name, true)
+    public GsRelationalEntityResponse reResponseData() {
+        return this.responseProperties.get(lastResponseRelationalEntityName).relationalEntity
     }
 
-
-    GsApiResponseProperty addHasOneResponse(String name) {
-        return addHasManyOrOneResponse(name, false)
-    }
-
-
-    private GsApiRequestProperty addHasManyOrOneRequest(String name, Boolean isMany) {
-        GsApiNestedResponseResponse gsApiNestedRequest = new GsApiNestedResponseResponse()
-        gsApiNestedRequest.isList = isMany
-        nested.put(name, gsApiNestedRequest)
-        return nested.get(name).gsApiRequestProperty
-    }
-
-
-    GsApiRequestProperty addHasManyRequest(String name) {
-        return addHasManyOrOneRequest(name, true)
-    }
-
-
-    GsApiRequestProperty addHasOneRequest(String name) {
-        return addHasManyOrOneRequest(name, false)
-    }
 }

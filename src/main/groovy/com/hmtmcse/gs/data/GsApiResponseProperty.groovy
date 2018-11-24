@@ -1,11 +1,13 @@
 package com.hmtmcse.gs.data
 
-import com.hmtmcse.gs.GsRelationalGsResponseEntity
+import com.hmtmcse.gs.GsRelationalEntityResponse
 
 class GsApiResponseProperty extends GsRequestResponseProperty {
 
 
-    public GsRelationalGsResponseEntity relationalEntity = null
+    public GsRelationalEntityResponse relationalEntity
+
+    GsApiResponseProperty() {}
 
     GsApiResponseProperty(String name, String alias) {
         this.name = name
@@ -37,4 +39,8 @@ class GsApiResponseProperty extends GsRequestResponseProperty {
         return hasMany
     }
 
+    GsApiResponseProperty setDataType(String dataType) {
+        super.dataType = dataType
+        return this
+    }
 }
