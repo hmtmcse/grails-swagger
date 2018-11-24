@@ -67,19 +67,38 @@ class GsRestfulService {
     def responseMapGenerator(Map<String, GsApiResponseProperty> responseProperties, def queryResult, def defaultResponse = [:]) {
         List resultList = []
         Map resultMap = [:]
+        def nestedDomain
         if (queryResult) {
             if (queryResult instanceof List) {
                 queryResult.each { data ->
                     resultMap = [:]
                     responseProperties.each { String fieldName, GsApiResponseProperty response ->
-                        resultMap.put(response.getMapKey(), valueFromDomain(fieldName, data, response))
+                        if (response.relationalEntity == null){
+                            resultMap.put(response.getMapKey(), valueFromDomain(fieldName, data, response))
+                        }else{
+                            nestedDomain = valueFromDomain(fieldName, data, response)
+                            if (nestedDomain && !nestedDomain.equals(response.getDefaultValue()) && response.relationalEntity.responseProperties.size()){
+                                resultMap.put(response.getMapKey(), responseMapGenerator(response.relationalEntity.responseProperties, nestedDomain, defaultResponse))
+                            }else{
+                                resultMap.put(response.getMapKey(), nestedDomain)
+                            }
+                        }
                     }
                     resultList.add(resultMap)
                 }
                 return resultList
             } else {
                 responseProperties.each { String fieldName, GsApiResponseProperty response ->
-                    resultMap.put(response.getMapKey(), valueFromDomain(fieldName, queryResult, response))
+                    if (response.relationalEntity == null){
+                        resultMap.put(response.getMapKey(), valueFromDomain(fieldName, queryResult, response))
+                    }else{
+                        nestedDomain = valueFromDomain(fieldName, queryResult, response)
+                        if (nestedDomain && !nestedDomain.equals(response.getDefaultValue()) && response.relationalEntity.responseProperties.size()){
+                            resultMap.put(response.getMapKey(), responseMapGenerator(response.relationalEntity.responseProperties, nestedDomain, defaultResponse))
+                        }else{
+                            resultMap.put(response.getMapKey(), nestedDomain)
+                        }
+                    }
                 }
                 return resultMap
             }

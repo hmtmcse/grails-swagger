@@ -5,7 +5,7 @@ import com.hmtmcse.gs.GsRelationalEntityResponse
 class GsApiResponseProperty extends GsRequestResponseProperty {
 
 
-    public GsRelationalEntityResponse relationalEntity
+    public GsRelationalEntityResponse relationalEntity = null
 
     GsApiResponseProperty() {}
 
