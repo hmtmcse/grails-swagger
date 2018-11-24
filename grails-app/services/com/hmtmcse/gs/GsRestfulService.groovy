@@ -63,44 +63,44 @@ class GsRestfulService {
         return readListProcessor(definition, params)
     }
 
+    private LinkedHashMap responseMap(Map<String, GsApiResponseProperty> responseProperties, def queryResult) {
+        LinkedHashMap resultMap = [:]
+        def nestedDomain
+        responseProperties.each { String fieldName, GsApiResponseProperty response ->
+            if (response.relationalEntity == null) {
+                resultMap.put(response.getMapKey(), valueFromDomain(fieldName, queryResult, response))
+            } else {
+                nestedDomain = valueFromDomain(fieldName, queryResult, response)
+                if (nestedDomain && !nestedDomain.equals(response.getDefaultValue()) && response.relationalEntity.responseProperties.size()) {
+                    List resultList = []
+                    if (nestedDomain instanceof List) {
+                        nestedDomain.each { data ->
+                            resultList.add(responseMap(responseProperties, data))
+                        }
+                        resultMap.put(response.getMapKey(), resultList)
+                        return
+                    } else {
+                        resultMap.put(response.getMapKey(), responseMap(response.relationalEntity.responseProperties, nestedDomain))
+                    }
+                } else {
+                    resultMap.put(response.getMapKey(), nestedDomain)
+                }
+            }
+        }
+        return resultMap
+    }
+
 
     def responseMapGenerator(Map<String, GsApiResponseProperty> responseProperties, def queryResult, def defaultResponse = [:]) {
         List resultList = []
-        Map resultMap = [:]
-        def nestedDomain
         if (queryResult) {
             if (queryResult instanceof List) {
                 queryResult.each { data ->
-                    resultMap = [:]
-                    responseProperties.each { String fieldName, GsApiResponseProperty response ->
-                        if (response.relationalEntity == null){
-                            resultMap.put(response.getMapKey(), valueFromDomain(fieldName, data, response))
-                        }else{
-                            nestedDomain = valueFromDomain(fieldName, data, response)
-                            if (nestedDomain && !nestedDomain.equals(response.getDefaultValue()) && response.relationalEntity.responseProperties.size()){
-                                resultMap.put(response.getMapKey(), responseMapGenerator(response.relationalEntity.responseProperties, nestedDomain, defaultResponse))
-                            }else{
-                                resultMap.put(response.getMapKey(), nestedDomain)
-                            }
-                        }
-                    }
-                    resultList.add(resultMap)
+                    resultList.add(responseMap(responseProperties, data))
                 }
                 return resultList
             } else {
-                responseProperties.each { String fieldName, GsApiResponseProperty response ->
-                    if (response.relationalEntity == null){
-                        resultMap.put(response.getMapKey(), valueFromDomain(fieldName, queryResult, response))
-                    }else{
-                        nestedDomain = valueFromDomain(fieldName, queryResult, response)
-                        if (nestedDomain && !nestedDomain.equals(response.getDefaultValue()) && response.relationalEntity.responseProperties.size()){
-                            resultMap.put(response.getMapKey(), responseMapGenerator(response.relationalEntity.responseProperties, nestedDomain, defaultResponse))
-                        }else{
-                            resultMap.put(response.getMapKey(), nestedDomain)
-                        }
-                    }
-                }
-                return resultMap
+                return responseMap(responseProperties, queryResult)
             }
         }
         return defaultResponse
