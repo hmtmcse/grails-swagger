@@ -2,7 +2,7 @@ package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsApiResponseProperty
 
-trait GsResponseOrganizer {
+trait GsResponseOrganizer<T> {
 
     public Map<String, GsApiResponseProperty> responseProperties = new LinkedHashMap<>()
 
