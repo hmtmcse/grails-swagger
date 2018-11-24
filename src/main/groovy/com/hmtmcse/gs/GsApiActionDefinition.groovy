@@ -9,7 +9,7 @@ import com.hmtmcse.gs.data.GsDomain
 import com.hmtmcse.gs.model.CustomProcessor
 
 
-class GsApiActionDefinition<T> {
+class GsApiActionDefinition<T> implements GsResponseOrganizer, GsRequestOrganizer{
 
 
     private Map<String, GsApiResponseProperty> responseProperties = new LinkedHashMap<>()

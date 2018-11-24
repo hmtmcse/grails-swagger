@@ -1,7 +1,11 @@
 package com.hmtmcse.gs.data
 
+import com.hmtmcse.gs.GsRelationalGsResponseEntity
+
 class GsApiResponseProperty extends GsRequestResponseProperty {
 
+
+    public GsRelationalGsResponseEntity relationalEntity = null
 
     GsApiResponseProperty(String name, String alias) {
         this.name = name
