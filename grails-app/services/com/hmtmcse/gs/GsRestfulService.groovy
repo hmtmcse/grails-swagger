@@ -5,6 +5,7 @@ import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
 import com.hmtmcse.gs.data.GsDomain
 import com.hmtmcse.gs.data.GsParamsPairData
+import com.hmtmcse.gs.model.CustomParamProcessor
 import com.hmtmcse.gs.model.CustomProcessor
 import org.grails.datastore.mapping.collection.PersistentSet
 
@@ -68,7 +69,7 @@ class GsRestfulService {
     private Map responseMap (Map<String, GsApiResponseProperty> responseProperties, def domainData, def defaultResponse = [:]){
         Map resultMap = [:]
         responseProperties.each { String fieldName, GsApiResponseProperty response ->
-            if (response.customProcessor){
+            if (response.customProcessor != null && response.customProcessor instanceof  CustomParamProcessor){
                 resultMap.put(response.getMapKey(), response.customProcessor.process(fieldName, domainData, response))
             }else if (response.relationalEntity == null){
                 resultMap.put(response.getMapKey(), valueFromDomain(fieldName, domainData, response))
