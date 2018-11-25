@@ -7,6 +7,7 @@ import com.hmtmcse.gs.data.GsDomain
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.gs.model.CustomParamProcessor
 import com.hmtmcse.gs.model.CustomProcessor
+import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.datastore.mapping.collection.PersistentSet
 
 class GsRestfulService {
@@ -127,7 +128,6 @@ class GsRestfulService {
         } else if (gsInternalResponse.isSuccess && gsInternalResponse.domain) {
             gsInternalResponse.response = makeApiResponse(definition, gsInternalResponse.domain, definition.successResponseFormat.response)
         }
-
         return GsApiResponseData.processAPIResponse(definition, gsInternalResponse)
     }
 
@@ -239,7 +239,7 @@ class GsRestfulService {
     }
 
 
-    def gsCustomProcessor(GsApiActionDefinition definition, Map params) {
+    def gsCustomProcessor(GsApiActionDefinition definition, GrailsParameterMap params) {
         requestValidate(definition, params)
         resolveConditions(definition, params)
         processDefault(definition, params)

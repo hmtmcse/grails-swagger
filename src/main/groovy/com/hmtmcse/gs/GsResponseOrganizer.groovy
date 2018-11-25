@@ -30,7 +30,6 @@ trait GsResponseOrganizer<T> {
             responseProperties.remove(field)
         }
         return this as T
-
     }
 
 

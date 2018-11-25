@@ -6,6 +6,7 @@ import com.hmtmcse.gs.data.GsMapKeyValue
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.swagger.definition.SwaggerConstant
 import com.hmtmcse.swagger.definition.SwaggerProperty
+import grails.web.servlet.mvc.GrailsParameterMap
 
 class GsDataFilterHandler {
 
@@ -55,29 +56,30 @@ class GsDataFilterHandler {
     }
 
 
+
     public GsParamsPairData getParamsPair(Map params, Map domainFieldsType = null) {
         GsParamsPairData gsParamsPairData = new GsParamsPairData()
+        gsParamsPairData.rawParams = params
         if (params.gsHttpRequestMethod) {
             switch (params.gsHttpRequestMethod.toLowerCase()) {
                 case GsConstant.POST:
                     gsParamsPairData.httpMethod = GsConstant.POST
                     gsParamsPairData.params = params.gsApiData ?: [:]
-                    return gsParamsPairData
+                    return gsParamsPairData.initFilteredGrailsParams()
                 case GsConstant.DELETE:
                     gsParamsPairData.httpMethod = GsConstant.DELETE
                     gsParamsPairData.params = params.gsApiData ?: [:]
-                    return gsParamsPairData
+                    return gsParamsPairData.initFilteredGrailsParams()
                 case GsConstant.PUT:
                     gsParamsPairData.httpMethod = GsConstant.PUT
                     gsParamsPairData.params = params.gsApiData ?: [:]
-                    return gsParamsPairData
+                    return gsParamsPairData.initFilteredGrailsParams()
                 case GsConstant.GET:
                     gsParamsPairData.httpMethod = GsConstant.GET
                     gsParamsPairData.params = domainFieldsType == null ? params : GsReflectionUtil.castFromDomainSwaggerMap(params, domainFieldsType)
-                    return gsParamsPairData
+                    return gsParamsPairData.initFilteredGrailsParams()
             }
         }
-        gsParamsPairData.rawParams = params
         return gsParamsPairData
     }
 
