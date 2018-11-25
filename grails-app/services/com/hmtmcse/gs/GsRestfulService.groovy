@@ -6,6 +6,7 @@ import com.hmtmcse.gs.data.GsApiResponseProperty
 import com.hmtmcse.gs.data.GsDomain
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.gs.model.CustomProcessor
+import org.grails.datastore.mapping.collection.PersistentSet
 
 class GsRestfulService {
 
@@ -63,28 +64,14 @@ class GsRestfulService {
         return readListProcessor(definition, params)
     }
 
-    private LinkedHashMap responseMap(Map<String, GsApiResponseProperty> responseProperties, def queryResult) {
-        LinkedHashMap resultMap = [:]
-        def nestedDomain
+
+    private Map responseMap (Map<String, GsApiResponseProperty> responseProperties, def domainData, def defaultResponse = [:]){
+        Map resultMap = [:]
         responseProperties.each { String fieldName, GsApiResponseProperty response ->
-            if (response.relationalEntity == null) {
-                resultMap.put(response.getMapKey(), valueFromDomain(fieldName, queryResult, response))
-            } else {
-                nestedDomain = valueFromDomain(fieldName, queryResult, response)
-                if (nestedDomain && !nestedDomain.equals(response.getDefaultValue()) && response.relationalEntity.responseProperties.size()) {
-                    List resultList = []
-                    if (nestedDomain instanceof List) {
-                        nestedDomain.each { data ->
-                            resultList.add(responseMap(responseProperties, data))
-                        }
-                        resultMap.put(response.getMapKey(), resultList)
-                        return
-                    } else {
-                        resultMap.put(response.getMapKey(), responseMap(response.relationalEntity.responseProperties, nestedDomain))
-                    }
-                } else {
-                    resultMap.put(response.getMapKey(), nestedDomain)
-                }
+            if (response.relationalEntity == null){
+                resultMap.put(response.getMapKey(), valueFromDomain(fieldName, domainData, response))
+            }else{
+                resultMap.put(response.getMapKey(), responseMapGenerator(response.relationalEntity.responseProperties, valueFromDomain(fieldName, domainData, response), defaultResponse))
             }
         }
         return resultMap
@@ -94,13 +81,13 @@ class GsRestfulService {
     def responseMapGenerator(Map<String, GsApiResponseProperty> responseProperties, def queryResult, def defaultResponse = [:]) {
         List resultList = []
         if (queryResult) {
-            if (queryResult instanceof List) {
+            if (queryResult instanceof List || queryResult instanceof Set) {
                 queryResult.each { data ->
-                    resultList.add(responseMap(responseProperties, data))
+                    resultList.add(responseMap(responseProperties, data, defaultResponse))
                 }
                 return resultList
             } else {
-                return responseMap(responseProperties, queryResult)
+                return responseMap(responseProperties, queryResult, defaultResponse)
             }
         }
         return defaultResponse
