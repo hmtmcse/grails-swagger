@@ -25,7 +25,20 @@ trait GsResponseOrganizer<T> {
     }
 
 
-    public void excludeFromResponse() {}
+    public T excludeFromResponse(List<String> fields) {
+        fields?.each { String field ->
+            responseProperties.remove(field)
+        }
+        return this as T
+
+    }
+
+
+    public T includeAllThenExcludeFromResponse(List<String> fields) {
+        includeAllPropertyToResponse()
+        excludeFromResponse(fields)
+        return this as T
+    }
 
 
     public GsApiResponseProperty addResponseProperty(String name, String alias = null, String defaultValue = "") {
