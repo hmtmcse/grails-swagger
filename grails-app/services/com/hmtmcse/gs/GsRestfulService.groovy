@@ -68,7 +68,9 @@ class GsRestfulService {
     private Map responseMap (Map<String, GsApiResponseProperty> responseProperties, def domainData, def defaultResponse = [:]){
         Map resultMap = [:]
         responseProperties.each { String fieldName, GsApiResponseProperty response ->
-            if (response.relationalEntity == null){
+            if (response.customProcessor){
+                resultMap.put(response.getMapKey(), response.customProcessor.process(fieldName, domainData, response))
+            }else if (response.relationalEntity == null){
                 resultMap.put(response.getMapKey(), valueFromDomain(fieldName, domainData, response))
             }else{
                 resultMap.put(response.getMapKey(), responseMapGenerator(response.relationalEntity.responseProperties, valueFromDomain(fieldName, domainData, response), defaultResponse))
@@ -91,11 +93,6 @@ class GsRestfulService {
             }
         }
         return defaultResponse
-    }
-
-
-    def responseMapGenerator(GsApiActionDefinition gsApiActionDefinition, def queryResult, def defaultResponse = [:]) {
-
     }
 
 
