@@ -115,8 +115,7 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
     public GsRelationalEntityResponse addRelationalEntityResponse(String name, String alias = null, String defaultValue = "") {
         GsApiResponseProperty gsApiResponseProperty = new GsApiResponseProperty(name).setAlias(alias).setDefaultValue(defaultValue)
         gsApiResponseProperty.relationalEntity = new GsRelationalEntityResponse()
-        gsApiResponseProperty.relationalEntity.gsDomain = gsDomain
-        gsApiResponseProperty.relationalEntity.relationalEntityName = name
+        gsApiResponseProperty.relationalEntity.gsDomain.domainProperties = gsDomain.domainProperties.get(name).relationalProperties
         this.responseProperties.put(name, gsApiResponseProperty)
         lastResponseRelationalEntityName = name
         return this.responseProperties.get(name).relationalEntity
