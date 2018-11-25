@@ -1,14 +1,14 @@
 1. Allowed Field
 2. Custom Service
     a. Concept Done
-    b. Implementation 
+    b. Implementation done
 3. Custom Regex
     a. Concept Done
     b. Implementation 
 4. Multiple Has many save
 5. Custom Field format
     a. Concept Done
-    b. Implementation 
+    b. Implementation done
 
 
 
@@ -21,6 +21,11 @@ need to add controller Regex into Controller mapping config
 
 
 
+
 1. Success Response Mapping for Happy Save
-2. count machanism 
 3. isExist Check.
+1. Input Params Casting
+2. Upload Mechanism
+3. count Mechanism
+4. Allowed Property
+5. nested searching and sorting

@@ -58,12 +58,6 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
     }
 
 
-    public GsApiRequestProperty addRequestProperty(String name, String dataType = null, String defaultValue = "") {
-        requestProperties.put(name, new GsApiRequestProperty(name).setDataType(dataType).setDefaultValue(defaultValue))
-        return requestProperties.get(name)
-    }
-
-
     public GsApiActionDefinition<T> conditionAllowedProperty(List<String> fields) {
         fields?.each { String field ->
             whereAllowedPropertyMap.put(field, true)
@@ -73,23 +67,7 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
     }
 
 
-    public GsApiActionDefinition<T> excludeProperty(List<String> fields) {
-        Map exclude = [:]
-        fields?.each { String field ->
-            exclude.put(field, true)
-        }
-        String key
-        domainFields()?.each { field ->
-            key = field.getKey() as String
-            responseProperties.put(key, new GsApiResponseProperty(key))
-        }
-        return this
-    }
 
-
-    public getRequestProperties() {
-        return requestProperties
-    }
 
     @Override
     LinkedHashMap<String, GsApiResponseProperty> getResponseProperties() {
@@ -100,6 +78,16 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
     @Override
     LinkedHashMap<String, GsApiResponseProperty> setResponseProperties(LinkedHashMap<String, GsApiResponseProperty> responsePropertyLinkedHashMap) {
         return this.responseProperties = responsePropertyLinkedHashMap
+    }
+
+    @Override
+    LinkedHashMap<String, GsApiRequestProperty> getRequestProperties() {
+        return this.requestProperties
+    }
+
+    @Override
+    LinkedHashMap<String, GsApiRequestProperty> setRequestProperties(LinkedHashMap<String, GsApiRequestProperty> requestPropertyLinkedHashMap) {
+        return this.requestProperties = requestPropertyLinkedHashMap
     }
 
     @Override

@@ -10,6 +10,8 @@ class GsApiRequestProperty extends GsRequestResponseProperty {
     public GsRelationalEntityRequest relationalEntity = null
 
 
+    GsApiRequestProperty() {}
+
     GsApiRequestProperty(String name, String alias) {
         super.name = name
         super.alias = alias

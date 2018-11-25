@@ -1,15 +1,27 @@
 package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsApiRequestProperty
+import com.hmtmcse.gs.data.GsDomain
 
-class GsRelationalEntityRequest extends GsApiRequestProperty implements GsRequestOrganizer {
+class GsRelationalEntityRequest extends GsApiRequestProperty implements GsRequestOrganizer<GsRelationalEntityRequest> {
+
+    public LinkedHashMap<String, GsApiRequestProperty> requestProperties = new LinkedHashMap<>()
+    public GsDomain gsDomain = new GsDomain()
 
 
-    GsRelationalEntityRequest(String name, String alias) {
-        super(name, alias)
+    @Override
+    LinkedHashMap<String, GsApiRequestProperty> getRequestProperties() {
+        return this.requestProperties
     }
 
-    GsRelationalEntityRequest(String name) {
-        super(name)
+
+    @Override
+    LinkedHashMap<String, GsApiRequestProperty> setRequestProperties(LinkedHashMap<String, GsApiRequestProperty> requestPropertyLinkedHashMap) {
+        return this.requestProperties = requestPropertyLinkedHashMap
+    }
+
+    @Override
+    GsDomain getGsDomain() {
+        return this.gsDomain
     }
 }
