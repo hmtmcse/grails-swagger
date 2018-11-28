@@ -145,7 +145,7 @@ class GsReflectionUtil {
     }
 
 
-    private static def castToGSObject(String dataType, def data) {
+    public static def castToGSObject(String dataType, def data) {
         switch (dataType) {
             case SwaggerConstant.SWAGGER_DT_BOOLEAN:
                 return data?.toBoolean()

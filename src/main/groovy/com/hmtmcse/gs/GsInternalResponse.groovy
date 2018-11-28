@@ -1,5 +1,6 @@
 package com.hmtmcse.gs
 
+import com.hmtmcse.gs.data.GsParamsPairData
 import org.springframework.validation.FieldError
 
 class GsInternalResponse {
@@ -15,6 +16,8 @@ class GsInternalResponse {
     Integer total = null
     Integer count = null
     Boolean isExist = null
+    String tempData = null
+    GsParamsPairData gsParamsPairData = null
 
 
     static GsInternalResponse instance(){
@@ -33,6 +36,14 @@ class GsInternalResponse {
         this.message = message
         errorDetails.add(error)
         return this
+    }
+
+
+    GsInternalResponse addRequestValidationError(String fieldName, String message){
+        if (tempData && !tempData.equals("")){
+            fieldName = tempData + "." + fieldName
+        }
+        return addErrorDetail(fieldName, message)
     }
 
     GsInternalResponse processDomainError(List errors){

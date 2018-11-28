@@ -115,10 +115,16 @@ class GsRestfulService {
         return saveUpdateProcessor(definition, params, definition.domain.newInstance())
     }
 
+    GsInternalResponse filterAndValidateRequest(GsApiActionDefinition definition, Map params){
+        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
+        GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params, definition.domainFields())
+        GsRequestValidator gsRequestValidator = GsRequestValidator.instance()
+        return gsRequestValidator.validate(gsParamsPairData, definition)
+    }
+
 
     def saveUpdateProcessor(GsApiActionDefinition definition, Map params, def domain) {
-        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
-        GsInternalResponse gsInternalResponse = gsDataFilterHandler.saveUpdateDataFilter(definition, params)
+        GsInternalResponse gsInternalResponse = filterAndValidateRequest(definition, params)
         if (gsInternalResponse.isSuccess) {
             gsInternalResponse = saveUpdate(domain, gsInternalResponse.filteredParams)
         }
@@ -216,14 +222,6 @@ class GsRestfulService {
     def gsBulkDelete(GsApiActionDefinition definition, Map params) {}
 
 
-    def requestValidate(GsApiActionDefinition definition, Map params) {
-        return true
-    }
-
-    def processDefault(GsApiActionDefinition definition, Map params) {
-        return true
-    }
-
     def resolveConditions(GsApiActionDefinition definition, Map params) {
         return true
     }
@@ -240,9 +238,13 @@ class GsRestfulService {
 
 
     def gsCustomProcessor(GsApiActionDefinition definition, GrailsParameterMap params) {
-        requestValidate(definition, params)
+
+        GsInternalResponse gsInternalResponse = filterAndValidateRequest(definition, params)
+        if (!gsInternalResponse.isSuccess) {
+            return GsApiResponseData.processAPIResponse(definition, gsInternalResponse)
+        }
+
         resolveConditions(definition, params)
-        processDefault(definition, params)
 
         GsApiResponseData gsApiResponseData = null
         ApiHelper apiHelper = new ApiHelper()

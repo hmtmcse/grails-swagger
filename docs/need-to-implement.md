@@ -29,3 +29,12 @@ need to add controller Regex into Controller mapping config
 3. count Mechanism
 4. Allowed Property
 5. nested searching and sorting
+
+
+Request Definition and Processing
+-----------------------------------------------------
+
+1. Definition
+    a. 
+2. Processing
+    1. 

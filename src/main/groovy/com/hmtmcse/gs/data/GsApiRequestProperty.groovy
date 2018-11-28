@@ -8,6 +8,8 @@ class GsApiRequestProperty extends GsRequestResponseProperty {
     public String errorMessage = null
     public String helpText = null
     public GsRelationalEntityRequest relationalEntity = null
+    public Boolean isTypeCast = false
+    public String defaultValue = null
 
 
     GsApiRequestProperty() {}
@@ -94,5 +96,16 @@ class GsApiRequestProperty extends GsRequestResponseProperty {
         return this
     }
 
+    Boolean getIsTypeCast() {
+        return isTypeCast
+    }
 
+    void setIsTypeCast(Boolean isTypeCast) {
+        this.isTypeCast = isTypeCast
+    }
+
+    @Override
+    String getDefaultValue() {
+        return defaultValue
+    }
 }
