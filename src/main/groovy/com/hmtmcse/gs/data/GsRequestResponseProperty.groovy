@@ -1,6 +1,5 @@
 package com.hmtmcse.gs.data
 
-import com.hmtmcse.gs.model.CustomParamProcessor
 
 class GsRequestResponseProperty {
 
@@ -12,7 +11,6 @@ class GsRequestResponseProperty {
     public String description = null
     public String defaultValue = ""
     public String referenceDefinition = null
-    public CustomParamProcessor customProcessor = null
 
     String getName() {
         return name

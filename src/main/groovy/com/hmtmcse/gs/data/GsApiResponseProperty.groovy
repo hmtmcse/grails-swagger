@@ -1,11 +1,13 @@
 package com.hmtmcse.gs.data
 
 import com.hmtmcse.gs.GsRelationalEntityResponse
+import com.hmtmcse.gs.model.CustomResponseParamProcessor
 
 class GsApiResponseProperty extends GsRequestResponseProperty {
 
 
     public GsRelationalEntityResponse relationalEntity = null
+    public CustomResponseParamProcessor customResponseParamProcessor = null
 
     GsApiResponseProperty() {}
 

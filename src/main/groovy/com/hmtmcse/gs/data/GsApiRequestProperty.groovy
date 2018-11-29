@@ -1,6 +1,7 @@
 package com.hmtmcse.gs.data
 
 import com.hmtmcse.gs.GsRelationalEntityRequest
+import com.hmtmcse.gs.model.CustomRequestParamProcessor
 
 class GsApiRequestProperty extends GsRequestResponseProperty {
 
@@ -10,6 +11,7 @@ class GsApiRequestProperty extends GsRequestResponseProperty {
     public GsRelationalEntityRequest relationalEntity = null
     public Boolean isTypeCast = false
     public String defaultValue = null
+    public CustomRequestParamProcessor customRequestParamProcessor = null
 
 
     GsApiRequestProperty() {}
@@ -90,11 +92,11 @@ class GsApiRequestProperty extends GsRequestResponseProperty {
         return this
     }
 
-
-    GsApiRequestProperty setCustomProcessor(Closure customProcessor) {
-        super.customProcessor = customProcessor
-        return this
+    String getRequestedKey() {
+        return alias != null ? alias : name
     }
+
+
 
     Boolean getIsTypeCast() {
         return isTypeCast

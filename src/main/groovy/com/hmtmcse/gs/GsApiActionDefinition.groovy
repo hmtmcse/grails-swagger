@@ -28,7 +28,6 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
     public GsApiResponseData failedResponseFormat = null
     public List whereAllowedPropertyList = []
     public Map whereAllowedPropertyMap = [:]
-    public LinkedHashMap<String, GsApiNestedResponseResponse> nested = new LinkedHashMap<>()
     public GsDomain gsDomain = new GsDomain()
 
 
