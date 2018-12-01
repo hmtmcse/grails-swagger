@@ -1,3 +1,5 @@
+Apache License
+
 Copyright (c) 2018 H.M.Touhid Mia (HMTMCSE)
 
 Licensed under the Apache License, Version 2.0 (the "License");
