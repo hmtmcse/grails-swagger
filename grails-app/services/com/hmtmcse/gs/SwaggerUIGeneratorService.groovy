@@ -2,6 +2,7 @@ package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsAction
 import com.hmtmcse.gs.data.GsApiResponseData
+import com.hmtmcse.gs.data.GsApiResponseProperty
 import com.hmtmcse.gs.data.GsControllerActionData
 import com.hmtmcse.gs.data.GsRequestResponseProperty
 import com.hmtmcse.swagger.definition.*
@@ -100,7 +101,7 @@ class SwaggerUIGeneratorService {
         }
         String successResponseDefinition = "${SwaggerConstant.SUCCESS_RESPONSE}${gsApiActionDefinition.modelDefinition}"
         if (gsApiActionDefinition.successResponseFormat.response != null){
-            SwaggerProperty swaggerProperty = propertiesProcessor(gsApiActionDefinition.getResponseProperties(), null, gsApiActionDefinition.domainFields())
+            SwaggerProperty swaggerProperty = responsePropertiesProcessor(gsApiActionDefinition.getResponseProperties(), null, gsApiActionDefinition.domainFields())
             SwaggerProperty successResponse = GsApiResponseData.swaggerResponseProperty(gsApiActionDefinition.successResponseFormat)
 
             if (gsApiActionDefinition.successResponseFormat.response instanceof  List){
@@ -253,6 +254,45 @@ class SwaggerUIGeneratorService {
         return swaggerProperty
     }
 
+
+
+    SwaggerProperty responsePropertiesProcessor(LinkedHashMap<String, GsApiResponseProperty> responsePropertyMap, String inType, Map domainFields) {
+        SwaggerProperty swaggerProperty = new SwaggerProperty()
+        responsePropertyMap.each { String name, GsApiResponseProperty field ->
+            if (field.referenceDefinition) {
+
+            } else {
+                if (field.dataType == null || field.dataType.equals("")) {
+                    field.dataType = SwaggerConstant.SWAGGER_DT_STRING
+                    if (domainFields.get(field.name)) {
+                        field.dataType = domainFields.get(field.name)
+                    }
+                }
+                swaggerProperty.property(field.name, field.dataType)
+                if (field.format) {
+                    swaggerProperty.format(field.format)
+                }
+            }
+
+            if (field.relationalEntity) {
+                swaggerProperty.objectProperty(name, responsePropertiesProcessor(field.relationalEntity.responseProperties, inType, domainFields[name]))
+            }
+
+            if (field.example) {
+                swaggerProperty.example(field.example)
+            }
+
+            if (field.description) {
+                swaggerProperty.description(field.description)
+            }
+
+            if (inType) {
+                swaggerProperty.in(inType)
+            }
+            swaggerProperty.addToList()
+        }
+        return swaggerProperty
+    }
 
 
     void startSwagger(String host, String basePath){
