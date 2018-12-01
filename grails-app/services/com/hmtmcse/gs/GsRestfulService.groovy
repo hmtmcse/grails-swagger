@@ -141,6 +141,25 @@ class GsRestfulService {
     }
 
 
+    def gsCount(GsApiActionDefinition definition, Map params) {
+        return readCountProcessor(definition, params)
+    }
+
+
+    def readCountProcessor(GsApiActionDefinition definition, Map params) {
+        GsInternalResponse responseData = GsInternalResponse.instance()
+        try {
+            def queryResult = countByCondition(definition, params)
+            responseData.isSuccess = true
+            responseData.response = [count: queryResult]
+            definition.successResponseFormat = GsApiResponseData.successResponse([])
+        } catch (GrailsSwaggerException e) {
+            responseData.isSuccess = false
+            responseData.message = e.getMessage()
+        }
+        return GsApiResponseData.processAPIResponse(definition, responseData)
+    }
+
     def countByCondition(GsApiActionDefinition definition, Map params) throws GrailsSwaggerException {
         def queryResult = null
         GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
@@ -152,7 +171,7 @@ class GsRestfulService {
             } else {
                 where.put(GsConstant.COUNT, true)
             }
-            queryResult = definition.domain.createCriteria().list(gsDataFilterHandler.createCriteriaBuilder(where, true))
+            queryResult = definition.domain.count()
         } catch (Exception e) {
             String message = GsExceptionParser.exceptionMessage(e)
             throw new GrailsSwaggerException(message)

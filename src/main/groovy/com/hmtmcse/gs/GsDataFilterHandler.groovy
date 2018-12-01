@@ -197,7 +197,6 @@ class GsDataFilterHandler {
                 }
             }
             keyValueCriteriaBuilder.call(where)
-
         }
         return criteria
     }

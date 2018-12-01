@@ -1,7 +1,6 @@
 package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsApiRequestProperty
-import com.hmtmcse.gs.data.GsApiResponseProperty
 import com.hmtmcse.gs.data.GsDomain
 import com.hmtmcse.gs.data.GsDomainProperty
 
