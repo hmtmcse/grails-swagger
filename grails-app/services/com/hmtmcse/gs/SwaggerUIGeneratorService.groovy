@@ -1,6 +1,7 @@
 package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsAction
+import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
 import com.hmtmcse.gs.data.GsControllerActionData
@@ -161,7 +162,7 @@ class SwaggerUIGeneratorService {
                     addToDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT, GsDataFilterHandler.swaggerPostReadRequest(true, gsApiActionDefinition.whereAllowedPropertyList))
                     break
                 case GsConstant.CREATE_RESPONSE:
-                    swaggerProperty = propertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, gsApiActionDefinition.domainFields())
+                    swaggerProperty = requestPropertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, gsApiActionDefinition.domainFields())
                     swaggerDefinition.addDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT).addProperties(swaggerProperty)
                     break
                 case GsConstant.DELETE_RESPONSE:
@@ -169,12 +170,12 @@ class SwaggerUIGeneratorService {
                     addToDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT, GsDataFilterHandler.swaggerPostReadRequest(false, gsApiActionDefinition.whereAllowedPropertyList))
                     break
                 case GsConstant.UPDATE_RESPONSE:
-                    swaggerProperty = propertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, gsApiActionDefinition.domainFields())
+                    swaggerProperty = requestPropertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, gsApiActionDefinition.domainFields())
                     swaggerProperty.addFromExistingObjectProperty(GsConstant.WHERE, GsDataFilterHandler.swaggerPostReadRequest(false, gsApiActionDefinition.whereAllowedPropertyList))
                     swaggerDefinition.addDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT).addProperties(swaggerProperty)
                     break
                 case GsConstant.CUSTOM_PROCESSOR:
-                    swaggerProperty = propertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, gsApiActionDefinition.domainFields())
+                    swaggerProperty = requestPropertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, gsApiActionDefinition.domainFields())
                     swaggerDefinition.addDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT).addProperties(swaggerProperty)
                     break
             }
@@ -293,6 +294,46 @@ class SwaggerUIGeneratorService {
         }
         return swaggerProperty
     }
+
+
+    SwaggerProperty requestPropertiesProcessor(LinkedHashMap<String, GsApiRequestProperty> requestPropertyMap, String inType, Map domainFields) {
+        SwaggerProperty swaggerProperty = new SwaggerProperty()
+        requestPropertyMap.each { String name, GsApiRequestProperty field ->
+            if (field.referenceDefinition) {
+
+            } else {
+                if (field.dataType == null || field.dataType.equals("")) {
+                    field.dataType = SwaggerConstant.SWAGGER_DT_STRING
+                    if (domainFields.get(field.name)) {
+                        field.dataType = domainFields.get(field.name)
+                    }
+                }
+                swaggerProperty.property(field.name, field.dataType)
+                if (field.format) {
+                    swaggerProperty.format(field.format)
+                }
+            }
+
+            if (field.relationalEntity) {
+                swaggerProperty.objectProperty(name, requestPropertiesProcessor(field.relationalEntity.requestProperties, inType, domainFields[name]))
+            }
+
+            if (field.example) {
+                swaggerProperty.example(field.example)
+            }
+
+            if (field.description) {
+                swaggerProperty.description(field.description)
+            }
+
+            if (inType) {
+                swaggerProperty.in(inType)
+            }
+            swaggerProperty.addToList()
+        }
+        return swaggerProperty
+    }
+
 
 
     void startSwagger(String host, String basePath){
