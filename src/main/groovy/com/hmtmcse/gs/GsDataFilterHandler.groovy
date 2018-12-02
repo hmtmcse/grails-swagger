@@ -1,12 +1,10 @@
 package com.hmtmcse.gs
 
-import com.hmtmcse.gs.data.GsApiRequestProperty
-import com.hmtmcse.gs.data.GsApiResponseProperty
+import com.hmtmcse.gs.data.GsCriteriaData
 import com.hmtmcse.gs.data.GsMapKeyValue
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.swagger.definition.SwaggerConstant
 import com.hmtmcse.swagger.definition.SwaggerProperty
-import grails.web.servlet.mvc.GrailsParameterMap
 
 class GsDataFilterHandler {
 
@@ -83,38 +81,22 @@ class GsDataFilterHandler {
         return gsParamsPairData
     }
 
-    public Map filterAllowedField(List allowedFields, Map params) {
-        Map refineParams = [:]
-        allowedFields.each { String fieldName ->
-            refineParams.put(fieldName, params[fieldName])
-        }
-        return refineParams
-    }
-
-
-    public GsInternalResponse saveUpdateDataFilter(GsApiActionDefinition definition, Map params) {
-        GsInternalResponse internalResponse = GsInternalResponse.instance()
-        GsParamsPairData gsParamsPairData = getParamsPair(params, definition.domainFields())
-        Map paramsData = gsParamsPairData.params
-        definition.getRequestProperties().each { String name, GsApiRequestProperty properties ->
-            if (paramsData.containsKey(name)) {
-                internalResponse.params(name, paramsData[name])
-            } else {
-                if (properties.isRequired) {
-                    internalResponse.addErrorDetail(name, properties.errorMessage ?: GsConfigHolder.requiredFieldMissing())
-                    return internalResponse
-                }
-            }
-        }
-        internalResponse.isSuccess = true
-        return internalResponse
-    }
 
     public static GsDataFilterHandler instance(){
         return new GsDataFilterHandler()
     }
 
 
+
+
+
+    public Closure buildCriteria(GsCriteriaData criteriaData){
+
+        Closure criteria = {
+
+        }
+        return criteria
+    }
 
 
     public Closure createCriteriaBuilder(Map where, Boolean andOr = false, String details = null) {
@@ -239,7 +221,7 @@ class GsDataFilterHandler {
             swaggerProperty.property(GsConstant.PROPERTY_VALUE, SwaggerConstant.SWAGGER_DT_STRING).addToListWithType(inType)
 
             if (allowedProperty.size()) {
-                swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, allowedProperty.join(", ")).addToListWithType(inType)
+                swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, allowedProperty?.name?.join(", ")).addToListWithType(inType)
             }
         }
         return swaggerProperty
@@ -251,7 +233,7 @@ class GsDataFilterHandler {
         property.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING)
                 .example(GsConstant.PROPERTY_VALUE)
         if (allowedProperty.size()) {
-            property.otherProperty(GsConstant.ALLOWED_PROPERTY, allowedProperty.join(", "))
+            property.otherProperty(GsConstant.ALLOWED_PROPERTY, allowedProperty?.name?.join(", "))
         }
 
         SwaggerProperty conditions = new SwaggerProperty()

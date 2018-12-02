@@ -15,7 +15,7 @@ trait GsResponseOrganizer<T> {
 
     public T includeInResponse(List<String> fields) {
         fields?.each { String field ->
-            responseProperties.put(field, new GsApiResponseProperty(field))
+            responseProperties.put(field, new GsApiResponseProperty(field).setDataType(gsDomain.domainProperties.get(field).swaggerDataType))
         }
         return this as T
     }
@@ -37,7 +37,7 @@ trait GsResponseOrganizer<T> {
 
 
     public GsApiResponseProperty addResponseProperty(String name, String alias = null, String defaultValue = "") {
-        this.responseProperties.put(name, new GsApiResponseProperty(name).setAlias(alias).setDefaultValue(defaultValue))
+        this.responseProperties.put(name, new GsApiResponseProperty(name).setAlias(alias).setDefaultValue(defaultValue).setDataType(gsDomain.domainProperties.get(name).swaggerDataType))
         return this.responseProperties.get(name)
     }
 

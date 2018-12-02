@@ -1,15 +1,15 @@
 package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsAction
-import com.hmtmcse.gs.data.GsApiNestedResponseResponse
 import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
 import com.hmtmcse.gs.data.GsDomain
+import com.hmtmcse.gs.data.GsWhereFilterProperty
 import com.hmtmcse.gs.model.CustomProcessor
 
 
-class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinition>, GsRequestOrganizer<GsApiActionDefinition> {
+class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinition>, GsRequestOrganizer<GsApiActionDefinition>, GsDataFilter<GsApiActionDefinition> {
 
 
     private LinkedHashMap<String, GsApiResponseProperty> responseProperties = new LinkedHashMap<>()
@@ -26,8 +26,8 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
     public String parameterName = null
     public GsApiResponseData successResponseFormat = null
     public GsApiResponseData failedResponseFormat = null
-    public List whereAllowedPropertyList = []
-    public Map whereAllowedPropertyMap = [:]
+    public List<GsWhereFilterProperty> whereAllowedPropertyList = []
+    public LinkedHashMap<String, GsWhereFilterProperty> whereAllowedPropertyMap = [:]
     public GsDomain gsDomain = new GsDomain()
 
 
@@ -57,16 +57,6 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
     }
 
 
-    public GsApiActionDefinition<T> conditionAllowedProperty(List<String> fields) {
-        fields?.each { String field ->
-            whereAllowedPropertyMap.put(field, true)
-        }
-        whereAllowedPropertyList = fields
-        return this
-    }
-
-
-
 
     @Override
     LinkedHashMap<String, GsApiResponseProperty> getResponseProperties() {
@@ -87,6 +77,26 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
     @Override
     LinkedHashMap<String, GsApiRequestProperty> setRequestProperties(LinkedHashMap<String, GsApiRequestProperty> requestPropertyLinkedHashMap) {
         return this.requestProperties = requestPropertyLinkedHashMap
+    }
+
+    @Override
+    List<GsWhereFilterProperty> getWhereAllowedPropertyList() {
+        return this.whereAllowedPropertyList
+    }
+
+    @Override
+    List<GsWhereFilterProperty> setWhereAllowedPropertyList(List<GsWhereFilterProperty> list) {
+        return this.whereAllowedPropertyList = list
+    }
+
+    @Override
+    LinkedHashMap<String, GsWhereFilterProperty> getWhereAllowedPropertyMap() {
+        return this.whereAllowedPropertyMap
+    }
+
+    @Override
+    LinkedHashMap<String, GsWhereFilterProperty> setWhereAllowedPropertyMap(LinkedHashMap<String, GsWhereFilterProperty> map) {
+        return this.whereAllowedPropertyMap = map
     }
 
     @Override
