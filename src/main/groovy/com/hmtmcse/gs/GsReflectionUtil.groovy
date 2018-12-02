@@ -153,6 +153,8 @@ class GsReflectionUtil {
                 return data?.toInteger()
             case SwaggerConstant.SWAGGER_DT_INTEGER_64:
                 return data?.toLong()
+            case SwaggerConstant.SWAGGER_DT_DOUBLE:
+                return data?.toDouble()
         }
         return data
     }

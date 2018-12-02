@@ -4,7 +4,7 @@ import com.hmtmcse.gs.data.GsDomain
 import com.hmtmcse.gs.data.GsDomainProperty
 import com.hmtmcse.gs.data.GsWhereFilterProperty
 
-trait GsDataFilter<T> {
+trait GsDataFilterOrganizer<T> {
 
     abstract List<GsWhereFilterProperty> getWhereAllowedPropertyList()
     abstract List<GsWhereFilterProperty> setWhereAllowedPropertyList(List<GsWhereFilterProperty> list)
@@ -112,8 +112,10 @@ trait GsDataFilter<T> {
             return whereFilterPropertyLinkedHashMap
         }
         domainProperties.each { String name, GsDomainProperty gsDomainProperty ->
-            gsWhereFilterProperty = new GsWhereFilterProperty(name).setDataType(gsDomainProperty.swaggerDataType)
-            whereFilterPropertyLinkedHashMap.put(name, gsWhereFilterProperty)
+            if (!gsDomainProperty.isRelationalEntity) {
+                gsWhereFilterProperty = new GsWhereFilterProperty(name).setDataType(gsDomainProperty.swaggerDataType)
+                whereFilterPropertyLinkedHashMap.put(name, gsWhereFilterProperty)
+            }
         }
         return whereFilterPropertyLinkedHashMap
     }

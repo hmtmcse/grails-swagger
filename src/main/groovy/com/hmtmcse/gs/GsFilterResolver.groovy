@@ -1,8 +1,11 @@
 package com.hmtmcse.gs
 
-import com.hmtmcse.gs.data.GsFilterData
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.hmtmcse.gs.data.GsFilteredData
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.gs.data.GsWhereData
+import com.hmtmcse.gs.data.GsWhereFilterProperty
 import grails.web.servlet.mvc.GrailsParameterMap
 
 class GsFilterResolver {
@@ -77,17 +80,182 @@ class GsFilterResolver {
     }
 
 
-    public GsWhereData resolveWhereData(GrailsParameterMap params){
+    public GsFilteredData resolveFilterData(GsParamsPairData paramsPairData, GsDataFilterOrganizer gsDataFilter) {
+        GsFilteredData gsFilterData = new GsFilteredData()
+        if (gsDataFilter.enableQueryFilter && paramsPairData.params) {
+            if (paramsPairData.params.propertyName && paramsPairData.params.propertyValue) {
+                gsFilterData.propertyName = paramsPairData.params.propertyName
+                gsFilterData.propertyValue = paramsPairData.params.propertyValue
+                gsFilterData.where.equal.put(gsFilterData.propertyName.toString(), gsFilterData.propertyValue)
+            }
+        } else {
+            if (paramsPairData.params && paramsPairData.params.where) {
+                ObjectMapper objectMapper = new ObjectMapper()
+                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                try {
+                    String json = paramsPairData.params.where.toStrin()
+                    gsFilterData.where = objectMapper.readValue(json, GsWhereData.class)
+                } catch (IOException e) {
+                    println("Exception from JSON Where Parser: " + e.getMessage())
+                }
+            }
+        }
+
+        if (gsDataFilter.enablePaginationAndSorting) {
+            gsFilterData.max = paramsPairData.params.max ?: GsConfigHolder.itemsPerPage()
+            gsFilterData.offset = paramsPairData.params.offset ?: 0
+            gsFilterData.offsetMaxSort = [max: gsFilterData.max, offset: gsFilterData.offset]
+
+            if (!paramsPairData.params.orderProperty || !paramsPairData.params.order || !gsDataFilter.whereAllowedPropertyMap.get(paramsPairData.params.orderProperty)) {
+                gsFilterData.orderProperty = GsConfigHolder.sortColumn()
+                gsFilterData.order = GsConfigHolder.sortOrder()
+                gsFilterData.offsetMaxSort.put("sort", gsFilterData.orderProperty)
+                gsFilterData.offsetMaxSort.put("order", gsFilterData.order)
+            } else {
+                gsFilterData.orderProperty = paramsPairData.params.orderProperty
+                gsFilterData.order = paramsPairData.params.order
+                gsFilterData.where.order.put(gsFilterData.orderProperty.toString(), gsFilterData.order)
+            }
+        }
+        return gsFilterData
 
     }
 
+    private resolveAllCriteria = { GsDataFilterOrganizer gsDataFilter, GsWhereData where ->
+        GsWhereFilterProperty whereFilterProperty
 
-    public GsWhereData resolveWhereClosure(GsWhereData whereData){
+        where.equal.each { String key, Object value ->
+            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+            if (whereFilterProperty) {
+                eq(key, whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value)
+            }
+        }
 
+        where.notEqual.each { String key, Object value ->
+            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+            if (whereFilterProperty) {
+                ne(key, whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value)
+            }
+        }
+
+
+        where.lessThan.each { String key, Object value ->
+            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+            if (whereFilterProperty) {
+                lt(key, whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value)
+            }
+        }
+
+
+        where.lessThanEqual.each { String key, Object value ->
+            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+            if (whereFilterProperty) {
+                le(key, whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value)
+            }
+        }
+
+
+        where.greaterThan.each { String key, Object value ->
+            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+            if (whereFilterProperty) {
+                gt(key, whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value)
+            }
+        }
+
+
+        where.greaterThanEqual.each { String key, Object value ->
+            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+            if (whereFilterProperty) {
+                ge(key, whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value)
+            }
+        }
+
+
+        where.like.each { String key, Object value ->
+            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+            if (whereFilterProperty) {
+                like(key, value)
+            }
+        }
+
+        where.inList.each { String key, Object value ->
+            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+            if (whereFilterProperty && where.inList.get(key)) {
+                'in'(key, where.inList.get(key))
+            }
+        }
+
+        where.between.each { String key, Object value ->
+            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+            if (whereFilterProperty && where.between.get(key)) {
+                where.between.get(key).each { String field1, String field2 ->
+                    between(key, field1, field2)
+                }
+            }
+        }
+
+        if (where.and){
+            and {
+                resolveAllCriteria.call(gsDataFilter, where)
+            }
+        }
+
+        if (where.or){
+            or {
+                resolveAllCriteria.call(gsDataFilter, where)
+            }
+        }
     }
 
-    public GsFilterData resolvePagination(GrailsParameterMap params){
+    public Closure resolveWhereClosure(GsWhereData whereData, GsDataFilterOrganizer gsDataFilter) {
+        if (whereData == null || gsDataFilter.whereAllowedPropertyMap.size() == 0) {
+            return {}
+        }
 
+        Closure criteria = {
+            if (whereData.order) {
+                whereData.order.each { String key, Object value ->
+                    if (gsDataFilter.allowedCondition.get(key)) {
+                        order(key, value)
+                    }
+                }
+            } else {
+                order(GsConfigHolder.sortColumn(), GsConfigHolder.sortOrder())
+            }
+
+            if (whereData.select || whereData.count) {
+                projections {
+                    if (whereData.count) {
+                        count()
+                    } else if (whereData.select) {
+                        whereData.select.each { selectField ->
+                            if (gsDataFilter.whereAllowedPropertyMap.get(selectField)) {
+                                property(selectField)
+                            }
+                        }
+                    }
+                }
+            }
+            resolveAllCriteria.call(gsDataFilter, whereData)
+        }
+
+        return criteria
+    }
+
+    public void validateWhereAllowedCondition(GsWhereData whereData, GsDataFilterOrganizer gsDataFilter){
+        whereData.properties.each {
+            println(it)
+        }
+    }
+
+
+
+    public GsFilteredData resolve(GsApiActionDefinition definition, GrailsParameterMap params){
+        GsParamsPairData paramsPairData = getParamsPair(params)
+        GsFilteredData gsFilteredData = resolveFilterData(paramsPairData, definition)
+        validateWhereAllowedCondition(gsFilteredData.where, definition)
+        gsFilteredData.whereClosure = resolveWhereClosure(gsFilteredData.where, definition)
+        return gsFilteredData
     }
 
 }

@@ -2,7 +2,6 @@ package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.GsApiResponseData
 import grails.converters.JSON
-import org.grails.web.converters.Converter
 
 class GsRestProcessor implements GsExceptionHandler {
 

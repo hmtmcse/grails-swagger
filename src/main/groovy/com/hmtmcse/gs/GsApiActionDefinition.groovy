@@ -9,7 +9,7 @@ import com.hmtmcse.gs.data.GsWhereFilterProperty
 import com.hmtmcse.gs.model.CustomProcessor
 
 
-class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinition>, GsRequestOrganizer<GsApiActionDefinition>, GsDataFilter<GsApiActionDefinition> {
+class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinition>, GsRequestOrganizer<GsApiActionDefinition>, GsDataFilterOrganizer<GsApiActionDefinition> {
 
 
     private LinkedHashMap<String, GsApiResponseProperty> responseProperties = new LinkedHashMap<>()

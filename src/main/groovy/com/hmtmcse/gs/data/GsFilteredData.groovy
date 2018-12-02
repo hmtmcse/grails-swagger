@@ -1,6 +1,6 @@
 package com.hmtmcse.gs.data
 
-class GsFilterData {
+class GsFilteredData {
 
     public Object offset
     public Object max
@@ -8,6 +8,8 @@ class GsFilterData {
     public Object order
     public Object propertyName
     public Object propertyValue
-    public GsWhereData where
+    public GsWhereData where = new GsWhereData()
+    public Closure whereClosure
+    public Map offsetMaxSort = [:]
 
 }
