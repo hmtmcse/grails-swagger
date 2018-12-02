@@ -102,8 +102,9 @@ class GsApiRequestProperty extends GsRequestResponseProperty {
         return isTypeCast
     }
 
-    void setIsTypeCast(Boolean isTypeCast) {
-        this.isTypeCast = isTypeCast
+    GsApiRequestProperty typeCast() {
+        this.isTypeCast = true
+        return this
     }
 
     @Override
