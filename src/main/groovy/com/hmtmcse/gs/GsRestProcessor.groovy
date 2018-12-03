@@ -22,6 +22,9 @@ class GsRestProcessor implements GsExceptionHandler {
     def list(GsApiActionDefinition definition){
         definition.responseType = GsConstant.LIST_RESPONSE
         definition.enableWhere = true
+        definition.allowedAllCondition()
+        definition.enablePaginationAndSorting()
+        definition.enableQueryFilter()
         return "list${returnFor}"(definition)
     }
 
@@ -37,6 +40,9 @@ class GsRestProcessor implements GsExceptionHandler {
 
     def details(GsApiActionDefinition definition){
         definition.enableWhere = true
+        definition.allowedConditionEqualAndOr()
+        definition.disablePaginationAndSorting()
+        definition.enableQueryFilter()
         return "details${returnFor}"(definition)
     }
 
@@ -51,6 +57,9 @@ class GsRestProcessor implements GsExceptionHandler {
     }
 
     def create(GsApiActionDefinition definition){
+        definition.disableCondition()
+        definition.disablePaginationAndSorting()
+        definition.disableQueryFilter()
         return "create${returnFor}"(definition)
     }
 
@@ -59,6 +68,7 @@ class GsRestProcessor implements GsExceptionHandler {
         return render(gsRestfulService.gsUpdate(definition, params) as JSON)
     }
 
+
     private updateForDefinition(GsApiActionDefinition definition){
         definition.responseType = GsConstant.UPDATE_RESPONSE
         return definition
@@ -66,6 +76,9 @@ class GsRestProcessor implements GsExceptionHandler {
 
     def update(GsApiActionDefinition definition){
         definition.enableWhere = true
+        definition.allowedConditionEqualAndOr()
+        definition.disablePaginationAndSorting()
+        definition.enableQueryFilter()
         return "update${returnFor}"(definition)
     }
 
@@ -81,6 +94,9 @@ class GsRestProcessor implements GsExceptionHandler {
 
     def delete(GsApiActionDefinition definition){
         definition.enableWhere = true
+        definition.allowedConditionEqualAndOr()
+        definition.disablePaginationAndSorting()
+        definition.enableQueryFilter()
         return "delete${returnFor}"(definition)
     }
 

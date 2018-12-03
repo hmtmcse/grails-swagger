@@ -33,8 +33,18 @@ trait GsDataFilterOrganizer<T> {
         return this as T
     }
 
+    public T disableQueryFilter(){
+        this.enableQueryFilter = true
+        return this as T
+    }
+
     public T enablePaginationAndSorting(){
         this.enablePaginationAndSorting = true
+        return this as T
+    }
+
+    public T disablePaginationAndSorting(){
+        this.enablePaginationAndSorting = false
         return this as T
     }
 
@@ -52,6 +62,12 @@ trait GsDataFilterOrganizer<T> {
                 GsConstant.AND,
                 GsConstant.OR
         ])
+    }
+
+
+    public T disableCondition() {
+        allowedCondition = new LinkedHashMap<>()
+        return this as T
     }
 
     public T allowedConditionOnlyEqual() {

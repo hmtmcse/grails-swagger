@@ -6,51 +6,11 @@ import com.hmtmcse.gs.data.GsFilteredData
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.gs.data.GsWhereData
 import com.hmtmcse.gs.data.GsWhereFilterProperty
+import com.hmtmcse.swagger.definition.SwaggerConstant
+import com.hmtmcse.swagger.definition.SwaggerProperty
 import grails.web.servlet.mvc.GrailsParameterMap
 
 class GsFilterResolver {
-
-
-//    private final Map whereSwaggerMap = [
-//            GsConstant.EQUAL            : [
-//                    "propertyName" : "propertyValue",
-//                    "propertyName1": "propertyValue",
-//            ],
-//            GsConstant.ORDER            : [
-//                    "propertyName" : "propertyValue",
-//                    "propertyName1": "propertyValue",
-//            ],
-//            GsConstant.NOT_EQUAL        : [
-//                    "propertyName" : "propertyValue",
-//                    "propertyName1": "propertyValue",
-//            ],
-//            GsConstant.LESS_THAN        : [
-//                    "propertyName" : "propertyValue",
-//                    "propertyName1": "propertyValue",
-//            ],
-//            GsConstant.LESS_THAN_EQUAL  : [
-//                    "propertyName" : "propertyValue",
-//                    "propertyName1": "propertyValue",
-//            ],
-//            GsConstant.GETTER_THAN      : [
-//                    "propertyName" : "propertyValue",
-//                    "propertyName1": "propertyValue",
-//            ],
-//            GsConstant.GETTER_THAN_EQUAL: [
-//                    "propertyName" : "propertyValue",
-//                    "propertyName1": "propertyValue",
-//            ],
-//            GsConstant.LIKE             : [
-//                    "propertyName" : "propertyValue",
-//                    "propertyName1": "propertyValue",
-//            ],
-//            GsConstant.IN_LIST          : ["propertyName", "propertyName1"],
-//            GsConstant.BETWEEN          : [
-//                    "propertyName": ["propertyName": "propertyValue"]
-//            ],
-//            GsConstant.SELECT           : ["propertyName", "propertyName1"],
-//            GsConstant.COUNT            : true,
-//    ]
 
 
     public GsParamsPairData getParamsPair(GrailsParameterMap params) {
@@ -79,7 +39,6 @@ class GsFilterResolver {
         return gsParamsPairData
     }
 
-
     public GsFilteredData resolveFilterData(GsParamsPairData paramsPairData, GsDataFilterOrganizer gsDataFilter) {
         GsFilteredData gsFilterData = new GsFilteredData()
         if (gsDataFilter.enableQueryFilter && paramsPairData.params && paramsPairData.httpMethod.equals(GsConstant.GET)) {
@@ -89,7 +48,7 @@ class GsFilterResolver {
                 gsFilterData.where.equal.put(gsFilterData.propertyName.toString(), gsFilterData.propertyValue)
             }
         } else {
-            if (paramsPairData.params && paramsPairData.params.where) {
+            if (paramsPairData.httpMethod.equals(GsConstant.POST) && paramsPairData.params && paramsPairData.params.where) {
                 ObjectMapper objectMapper = new ObjectMapper()
                 objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 try {
@@ -118,9 +77,7 @@ class GsFilterResolver {
             }
         }
         return gsFilterData
-
     }
-
 
     public Closure resolveWhereClosure(GsWhereData whereData, GsDataFilterOrganizer gsDataFilter) throws GsValidationException {
         if (whereData == null || gsDataFilter.whereAllowedPropertyMap.size() == 0) {
@@ -263,8 +220,6 @@ class GsFilterResolver {
         }
     }
 
-
-
     public GsFilteredData resolve(GsApiActionDefinition definition, GrailsParameterMap params){
         GsParamsPairData paramsPairData = getParamsPair(params)
         GsFilteredData gsFilteredData = resolveFilterData(paramsPairData, definition)
@@ -272,5 +227,98 @@ class GsFilterResolver {
         gsFilteredData.whereClosure = resolveWhereClosure(gsFilteredData.where, definition)
         return gsFilteredData
     }
+
+
+
+
+
+    public SwaggerProperty resolveSwaggerDefinition(GsApiActionDefinition gsApiActionDefinition, String inType) {
+        SwaggerProperty swaggerProperty = new SwaggerProperty()
+
+        if (gsApiActionDefinition.enableQueryFilter) {
+            swaggerProperty = swaggerQueryFilter(swaggerProperty, inType)
+        }
+
+        if (gsApiActionDefinition.enablePaginationAndSorting) {
+            swaggerProperty = swaggerPagination(swaggerProperty, inType)
+            swaggerProperty = swaggerSorting(swaggerProperty, inType)
+        }
+
+        if (gsApiActionDefinition.whereAllowedPropertyList.size()) {
+            swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, gsApiActionDefinition.whereAllowedPropertyList?.name?.join(", ")).addToListWithType(inType)
+        }
+
+        return swaggerProperty
+    }
+
+
+    private SwaggerProperty swaggerPagination(SwaggerProperty swaggerProperty, String inType = null) {
+        swaggerProperty.property(GsConstant.OFFSET, SwaggerConstant.SWAGGER_DT_INTEGER).addToListWithType(inType)
+        swaggerProperty.property(GsConstant.MAX, SwaggerConstant.SWAGGER_DT_INTEGER).addToListWithType(inType)
+        return swaggerProperty
+    }
+
+
+    private SwaggerProperty swaggerSorting(SwaggerProperty swaggerProperty, String inType = null) {
+        if (inType && inType.equals(SwaggerConstant.IN_QUERY)) {
+            swaggerProperty.property(GsConstant.ORDER_PROPERTY, SwaggerConstant.SWAGGER_DT_STRING).addToListWithType(inType)
+            swaggerProperty.property(GsConstant.ORDER, SwaggerConstant.SWAGGER_DT_STRING).addToListWithType(inType)
+        }
+        return swaggerProperty
+    }
+
+
+    private SwaggerProperty swaggerQueryFilter(SwaggerProperty swaggerProperty, String inType = null) {
+        if (inType && inType.equals(SwaggerConstant.IN_QUERY)) {
+            swaggerProperty.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING).addToListWithType(inType)
+            swaggerProperty.property(GsConstant.PROPERTY_VALUE, SwaggerConstant.SWAGGER_DT_STRING).addToListWithType(inType)
+        }
+        return swaggerProperty
+    }
+
+    private SwaggerProperty swaggerWhere(LinkedHashMap<String, Boolean> allowedCondition, SwaggerProperty swaggerProperty) {
+        allowedCondition.each { String key ->
+            swaggerProperty.objectProperty(key, whereCondition(key))
+        }
+        return swaggerProperty
+    }
+
+
+    private SwaggerProperty whereCondition(String condition) {
+        SwaggerProperty property = new SwaggerProperty()
+        SwaggerProperty nestedCondition
+        switch (condition){
+            case GsConstant.EQUAL:
+            case GsConstant.NOT_EQUAL:
+            case GsConstant.LESS_THAN:
+            case GsConstant.LESS_THAN_EQUAL:
+            case GsConstant.GETTER_THAN:
+            case GsConstant.GETTER_THAN_EQUAL:
+                property.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING).example(GsConstant.PROPERTY_VALUE)
+                property.property(GsConstant.PROPERTY_NAME_X, SwaggerConstant.SWAGGER_DT_INTEGER).example(10)
+                break
+            case GsConstant.ORDER:
+                property.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING).example(GsConstant.ASC + "|" + GsConstant.DESC)
+                break
+            case GsConstant.LIKE:
+                property.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING).example( "%" + GsConstant.PROPERTY_VALUE + "%")
+                break
+            case GsConstant.COUNT:
+                property.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_BOOLEAN).example( true)
+                break
+            case GsConstant.IN_LIST:
+                nestedCondition = new SwaggerProperty()
+                nestedCondition.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING).example(GsConstant.PROPERTY_NAME_X)
+                property.arrayProperty(GsConstant.PROPERTY_NAME, nestedCondition)
+                break
+            case GsConstant.BETWEEN:
+                nestedCondition = new SwaggerProperty()
+                nestedCondition.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING).example(GsConstant.PROPERTY_NAME)
+                property.objectProperty(GsConstant.PROPERTY_NAME, nestedCondition)
+                break
+        }
+        return property
+    }
+
 
 }

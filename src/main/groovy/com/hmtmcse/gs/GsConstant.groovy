@@ -48,10 +48,9 @@ class GsConstant {
     public final static String LIKE = "like"
 
     public final static String PROPERTY_NAME = "propertyName"
+    public final static String PROPERTY_NAME_X = "propertyNameX"
     public final static String ORDER_PROPERTY= "orderProperty"
     public final static String PROPERTY_VALUE = "propertyValue"
     public final static String ALLOWED_PROPERTY = "allowedProperty"
-
-
     // End of Data Filter
 }

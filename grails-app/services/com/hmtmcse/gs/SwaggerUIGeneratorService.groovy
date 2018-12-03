@@ -138,6 +138,8 @@ class SwaggerUIGeneratorService {
         SwaggerPathParameter parameter = null
         SwaggerProperty swaggerProperty = null
         String requestDefinition = "${SwaggerConstant.REQUEST}${gsApiActionDefinition.modelDefinition}"
+
+
         if (gsAction.httpMethod && gsAction.httpMethod.equals(GsConstant.GET)) {
             switch (gsApiActionDefinition.responseType){
                 case GsConstant.LIST_RESPONSE:
@@ -152,7 +154,8 @@ class SwaggerUIGeneratorService {
                     swaggerPath.parameters(swaggerProperty.getPropertyList())
                     break
             }
-        } else if (gsAction.httpMethod && gsAction.httpMethod.equals(GsConstant.POST)) {
+        }
+        else if (gsAction.httpMethod && gsAction.httpMethod.equals(GsConstant.POST)) {
             message = "Please Use Http POST Request for "
             parameter = swaggerDefinition.pathParameter(SwaggerConstant.IN_BODY, gsApiActionDefinition.parameterName ?: SwaggerConstant.IN_BODY)
             parameter.required().schema(requestDefinition)
@@ -184,7 +187,8 @@ class SwaggerUIGeneratorService {
             if (parameter){
                 swaggerPath.addParameter(parameter)
             }
-        } else if (gsAction.httpMethod && gsAction.httpMethod.equals(GsConstant.DELETE)) {
+        }
+        else if (gsAction.httpMethod && gsAction.httpMethod.equals(GsConstant.DELETE)) {
             message = "Please Use Http DELETE Request for "
             parameter = swaggerDefinition.pathParameter(SwaggerConstant.IN_BODY, gsApiActionDefinition.parameterName ?: SwaggerConstant.IN_BODY)
             parameter.required().schema(requestDefinition)
