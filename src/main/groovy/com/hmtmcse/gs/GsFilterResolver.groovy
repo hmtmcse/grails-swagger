@@ -229,12 +229,8 @@ class GsFilterResolver {
     }
 
 
-
-
-
-    public SwaggerProperty resolveSwaggerDefinition(GsApiActionDefinition gsApiActionDefinition, String inType) {
-        SwaggerProperty swaggerProperty = new SwaggerProperty()
-
+    public SwaggerProperty resolveSwaggerDefinition(GsApiActionDefinition gsApiActionDefinition, String inType, SwaggerProperty swaggerProperty = null) {
+        swaggerProperty = (swaggerProperty ?: new SwaggerProperty())
         if (gsApiActionDefinition.enableQueryFilter) {
             swaggerProperty = swaggerQueryFilter(swaggerProperty, inType)
         }
@@ -245,12 +241,16 @@ class GsFilterResolver {
         }
 
         if (gsApiActionDefinition.whereAllowedPropertyList.size()) {
-            swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, gsApiActionDefinition.whereAllowedPropertyList?.name?.join(", ")).addToListWithType(inType)
+            swaggerProperty = swaggerAllowedFields(swaggerProperty, gsApiActionDefinition.whereAllowedPropertyList, inType)
         }
 
         return swaggerProperty
     }
 
+    private SwaggerProperty swaggerAllowedFields(SwaggerProperty swaggerProperty, List<GsWhereFilterProperty> whereAllowedPropertyList, String inType) {
+        swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, whereAllowedPropertyList?.name?.join(", ")).addToListWithType(inType)
+        return swaggerProperty
+    }
 
     private SwaggerProperty swaggerPagination(SwaggerProperty swaggerProperty, String inType = null) {
         swaggerProperty.property(GsConstant.OFFSET, SwaggerConstant.SWAGGER_DT_INTEGER).addToListWithType(inType)
@@ -276,9 +276,15 @@ class GsFilterResolver {
         return swaggerProperty
     }
 
-    private SwaggerProperty swaggerWhere(LinkedHashMap<String, Boolean> allowedCondition, SwaggerProperty swaggerProperty) {
-        allowedCondition.each { String key ->
+    public SwaggerProperty swaggerWhere(GsApiActionDefinition gsApiActionDefinition, SwaggerProperty swaggerProperty, String inType = null) {
+        if (!gsApiActionDefinition.allowedCondition) {
+            return swaggerProperty
+        }
+        gsApiActionDefinition.allowedCondition.each { String key ->
             swaggerProperty.objectProperty(key, whereCondition(key))
+        }
+        if (gsApiActionDefinition.whereAllowedPropertyList.size()) {
+            swaggerProperty = swaggerAllowedFields(swaggerProperty, gsApiActionDefinition.whereAllowedPropertyList, inType)
         }
         return swaggerProperty
     }

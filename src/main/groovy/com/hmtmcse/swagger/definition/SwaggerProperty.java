@@ -77,6 +77,11 @@ public class SwaggerProperty {
         return this;
     }
 
+    public SwaggerProperty required(){
+        definition.get(name).put("required", true);
+        return this;
+    }
+
     public SwaggerProperty setEnum(String[] enums){
         definition.get(name).put("enum", enums);
         return this;

@@ -14,14 +14,14 @@ trait GsRequestOrganizer<T>  {
 
     public T includeInRequest(List<String> fields) {
         fields?.each { String field ->
-            requestProperties.put(field, new GsApiRequestProperty(field).setDataType(gsDomain.domainProperties.get(field).swaggerDataType))
+            requestProperties.put(field, new GsApiRequestProperty(field).setDataType(gsDomain.domainProperties.get(field)?.swaggerDataType))
         }
         return this as T
     }
 
 
     public GsApiRequestProperty addRequestProperty(String name, String dataType = null, String defaultValue = "") {
-        dataType = (dataType != null ? dataType : gsDomain.domainProperties.get(name).swaggerDataType)
+        dataType = (dataType != null ? dataType : gsDomain.domainProperties.get(name)?.swaggerDataType)
         requestProperties.put(name, new GsApiRequestProperty(name).setDataType(dataType).setDefaultValue(defaultValue))
         return requestProperties.get(name)
     }

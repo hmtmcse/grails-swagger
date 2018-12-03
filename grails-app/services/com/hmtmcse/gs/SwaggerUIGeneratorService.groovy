@@ -138,9 +138,17 @@ class SwaggerUIGeneratorService {
         SwaggerPathParameter parameter = null
         SwaggerProperty swaggerProperty = null
         String requestDefinition = "${SwaggerConstant.REQUEST}${gsApiActionDefinition.modelDefinition}"
+        GsFilterResolver gsFilterResolver = new GsFilterResolver()
+
 
 
         if (gsAction.httpMethod && gsAction.httpMethod.equals(GsConstant.GET)) {
+            swaggerProperty = requestPropertiesProcessor(gsApiActionDefinition.getRequestProperties(), SwaggerConstant.IN_QUERY)
+            swaggerProperty = gsFilterResolver.resolveSwaggerDefinition(gsApiActionDefinition, SwaggerConstant.IN_QUERY, swaggerProperty)
+            swaggerPath.parameters(swaggerProperty.getPropertyList())
+
+
+            //TODO:: Remove After Success
             switch (gsApiActionDefinition.responseType){
                 case GsConstant.LIST_RESPONSE:
                     swaggerPath.parameters(GsDataFilterHandler.swaggerGetReadRequest(true, gsApiActionDefinition.whereAllowedPropertyList).getPropertyList())
@@ -154,8 +162,7 @@ class SwaggerUIGeneratorService {
                     swaggerPath.parameters(swaggerProperty.getPropertyList())
                     break
             }
-        }
-        else if (gsAction.httpMethod && gsAction.httpMethod.equals(GsConstant.POST)) {
+        } else if (gsAction.httpMethod && gsAction.httpMethod.equals(GsConstant.POST)) {
             message = "Please Use Http POST Request for "
             parameter = swaggerDefinition.pathParameter(SwaggerConstant.IN_BODY, gsApiActionDefinition.parameterName ?: SwaggerConstant.IN_BODY)
             parameter.required().schema(requestDefinition)
@@ -222,6 +229,45 @@ class SwaggerUIGeneratorService {
         return swaggerPath
 
     }
+
+    SwaggerProperty requestPropertiesProcessor(LinkedHashMap<String, GsApiRequestProperty> requestPropertyMap, String inType) {
+        SwaggerProperty swaggerProperty = new SwaggerProperty()
+        requestPropertyMap.each { String name, GsApiRequestProperty field ->
+
+            if (field.dataType == null || field.dataType.equals("")) {
+                field.dataType = SwaggerConstant.SWAGGER_DT_STRING
+            }
+
+            swaggerProperty.property(field.name, field.dataType)
+            if (field.format) {
+                swaggerProperty.format(field.format)
+            }
+
+            if (field.relationalEntity) {
+                swaggerProperty.objectProperty(name, requestPropertiesProcessor(field.relationalEntity.requestProperties, inType))
+            }
+
+            if (field.example) {
+                swaggerProperty.example(field.example)
+            }
+
+            if (field.description) {
+                swaggerProperty.description(field.description)
+            }
+
+            if (inType) {
+                swaggerProperty.in(inType)
+            }
+
+            if (inType && inType.equals(SwaggerConstant.IN_QUERY) && field.isRequired){
+                swaggerProperty.required()
+            }
+
+            swaggerProperty.addToList()
+        }
+        return swaggerProperty
+    }
+
 
 
     SwaggerProperty propertiesProcessor(Map<String, GsRequestResponseProperty> responsePropertyMap, String inType, Map domainFields) {
@@ -337,6 +383,8 @@ class SwaggerUIGeneratorService {
         }
         return swaggerProperty
     }
+
+
 
 
 
