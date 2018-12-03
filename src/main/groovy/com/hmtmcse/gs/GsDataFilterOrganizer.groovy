@@ -15,6 +15,25 @@ trait GsDataFilterOrganizer<T> {
     public Boolean enableQueryFilter = false
     public Boolean enablePaginationAndSorting = false
 
+    public Boolean getEnableQueryFilter(){
+        return this.enableQueryFilter
+    }
+
+    public Boolean getEnablePaginationAndSorting(){
+        return this.enablePaginationAndSorting
+    }
+
+    public T enableQueryFilter(){
+        this.enableQueryFilter = true
+        return this as T
+    }
+
+    public T enablePaginationAndSorting(){
+        this.enablePaginationAndSorting = true
+        return this as T
+    }
+
+
     public T allowedConditions(List<String> fields) {
         fields?.each { String field ->
             allowedCondition.put(field, true)
@@ -49,7 +68,6 @@ trait GsDataFilterOrganizer<T> {
                 GsConstant.IN_LIST,
                 GsConstant.BETWEEN,
                 GsConstant.LIKE,
-                GsConstant.SELECT,
                 GsConstant.COUNT
         ])
     }
@@ -66,7 +84,7 @@ trait GsDataFilterOrganizer<T> {
     }
 
 
-    public GsWhereFilterProperty addToWhereFilterProperty(String name, String dataType = null, Boolean isTypeCast = false) {
+    public GsWhereFilterProperty addToWhereFilterProperty(String name, Boolean isTypeCast = false, String dataType = null) {
         GsWhereFilterProperty gsWhereFilterProperty = new GsWhereFilterProperty(name)
         gsWhereFilterProperty.dataType = (dataType ? dataType : gsDomain.domainProperties.get(name).swaggerDataType)
         whereAllowedPropertyMap.put(name, gsWhereFilterProperty)

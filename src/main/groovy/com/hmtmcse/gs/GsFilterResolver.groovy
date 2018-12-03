@@ -11,46 +11,46 @@ import grails.web.servlet.mvc.GrailsParameterMap
 class GsFilterResolver {
 
 
-    private final Map whereSwaggerMap = [
-            GsConstant.EQUAL: [
-                    "propertyName" : "propertyValue",
-                    "propertyName1" : "propertyValue",
-            ],
-            GsConstant.ORDER: [
-                    "propertyName" : "propertyValue",
-                    "propertyName1" : "propertyValue",
-            ],
-            GsConstant.NOT_EQUAL: [
-                    "propertyName" : "propertyValue",
-                    "propertyName1" : "propertyValue",
-            ],
-            GsConstant.LESS_THAN: [
-                    "propertyName" : "propertyValue",
-                    "propertyName1" : "propertyValue",
-            ],
-            GsConstant.LESS_THAN_EQUAL: [
-                    "propertyName" : "propertyValue",
-                    "propertyName1" : "propertyValue",
-            ],
-            GsConstant.GETTER_THAN: [
-                    "propertyName" : "propertyValue",
-                    "propertyName1" : "propertyValue",
-            ],
-            GsConstant.GETTER_THAN_EQUAL: [
-                    "propertyName" : "propertyValue",
-                    "propertyName1" : "propertyValue",
-            ],
-            GsConstant.LIKE: [
-                    "propertyName" : "propertyValue",
-                    "propertyName1" : "propertyValue",
-            ],
-            GsConstant.IN_LIST: ["propertyName", "propertyName1"],
-            GsConstant.BETWEEN: [
-                    "propertyName": ["propertyName" : "propertyValue"]
-            ],
-            GsConstant.SELECT: ["propertyName", "propertyName1"],
-            GsConstant.COUNT: true,
-    ]
+//    private final Map whereSwaggerMap = [
+//            GsConstant.EQUAL            : [
+//                    "propertyName" : "propertyValue",
+//                    "propertyName1": "propertyValue",
+//            ],
+//            GsConstant.ORDER            : [
+//                    "propertyName" : "propertyValue",
+//                    "propertyName1": "propertyValue",
+//            ],
+//            GsConstant.NOT_EQUAL        : [
+//                    "propertyName" : "propertyValue",
+//                    "propertyName1": "propertyValue",
+//            ],
+//            GsConstant.LESS_THAN        : [
+//                    "propertyName" : "propertyValue",
+//                    "propertyName1": "propertyValue",
+//            ],
+//            GsConstant.LESS_THAN_EQUAL  : [
+//                    "propertyName" : "propertyValue",
+//                    "propertyName1": "propertyValue",
+//            ],
+//            GsConstant.GETTER_THAN      : [
+//                    "propertyName" : "propertyValue",
+//                    "propertyName1": "propertyValue",
+//            ],
+//            GsConstant.GETTER_THAN_EQUAL: [
+//                    "propertyName" : "propertyValue",
+//                    "propertyName1": "propertyValue",
+//            ],
+//            GsConstant.LIKE             : [
+//                    "propertyName" : "propertyValue",
+//                    "propertyName1": "propertyValue",
+//            ],
+//            GsConstant.IN_LIST          : ["propertyName", "propertyName1"],
+//            GsConstant.BETWEEN          : [
+//                    "propertyName": ["propertyName": "propertyValue"]
+//            ],
+//            GsConstant.SELECT           : ["propertyName", "propertyName1"],
+//            GsConstant.COUNT            : true,
+//    ]
 
 
     public GsParamsPairData getParamsPair(GrailsParameterMap params) {
@@ -82,7 +82,7 @@ class GsFilterResolver {
 
     public GsFilteredData resolveFilterData(GsParamsPairData paramsPairData, GsDataFilterOrganizer gsDataFilter) {
         GsFilteredData gsFilterData = new GsFilteredData()
-        if (gsDataFilter.enableQueryFilter && paramsPairData.params) {
+        if (gsDataFilter.enableQueryFilter && paramsPairData.params && paramsPairData.httpMethod.equals(GsConstant.GET)) {
             if (paramsPairData.params.propertyName && paramsPairData.params.propertyValue) {
                 gsFilterData.propertyName = paramsPairData.params.propertyName
                 gsFilterData.propertyValue = paramsPairData.params.propertyValue
@@ -93,7 +93,7 @@ class GsFilterResolver {
                 ObjectMapper objectMapper = new ObjectMapper()
                 objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 try {
-                    String json = paramsPairData.params.where.toStrin()
+                    String json = paramsPairData.params.where.toString()
                     gsFilterData.where = objectMapper.readValue(json, GsWhereData.class)
                 } catch (IOException e) {
                     println("Exception from JSON Where Parser: " + e.getMessage())
@@ -121,124 +121,135 @@ class GsFilterResolver {
 
     }
 
-    private resolveAllCriteria = { GsDataFilterOrganizer gsDataFilter, GsWhereData where ->
-        GsWhereFilterProperty whereFilterProperty
 
-        where.equal.each { String key, Object value ->
-            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
-            if (whereFilterProperty) {
-                eq(key, whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value)
-            }
-        }
-
-        where.notEqual.each { String key, Object value ->
-            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
-            if (whereFilterProperty) {
-                ne(key, whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value)
-            }
-        }
-
-
-        where.lessThan.each { String key, Object value ->
-            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
-            if (whereFilterProperty) {
-                lt(key, whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value)
-            }
-        }
-
-
-        where.lessThanEqual.each { String key, Object value ->
-            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
-            if (whereFilterProperty) {
-                le(key, whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value)
-            }
-        }
-
-
-        where.greaterThan.each { String key, Object value ->
-            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
-            if (whereFilterProperty) {
-                gt(key, whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value)
-            }
-        }
-
-
-        where.greaterThanEqual.each { String key, Object value ->
-            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
-            if (whereFilterProperty) {
-                ge(key, whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value)
-            }
-        }
-
-
-        where.like.each { String key, Object value ->
-            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
-            if (whereFilterProperty) {
-                like(key, value)
-            }
-        }
-
-        where.inList.each { String key, Object value ->
-            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
-            if (whereFilterProperty && where.inList.get(key)) {
-                'in'(key, where.inList.get(key))
-            }
-        }
-
-        where.between.each { String key, Object value ->
-            whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
-            if (whereFilterProperty && where.between.get(key)) {
-                where.between.get(key).each { String field1, String field2 ->
-                    between(key, field1, field2)
-                }
-            }
-        }
-
-        if (where.and){
-            and {
-                resolveAllCriteria.call(gsDataFilter, where)
-            }
-        }
-
-        if (where.or){
-            or {
-                resolveAllCriteria.call(gsDataFilter, where)
-            }
-        }
-    }
-
-    public Closure resolveWhereClosure(GsWhereData whereData, GsDataFilterOrganizer gsDataFilter) {
+    public Closure resolveWhereClosure(GsWhereData whereData, GsDataFilterOrganizer gsDataFilter) throws GsValidationException {
         if (whereData == null || gsDataFilter.whereAllowedPropertyMap.size() == 0) {
             return {}
         }
 
         Closure criteria = {
+            GsWhereFilterProperty whereFilterProperty
+            def resolveAllCriteria
+            resolveAllCriteria = { GsWhereData where ->
+                where.equal.each { String key, Object value ->
+                    whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+                    if (whereFilterProperty) {
+                        eq(key, (whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value))
+                    } else {
+                        throw new GsValidationException(GsConfigHolder.unauthorizedFieldOrCondition(key))
+                    }
+                }
+
+                where.notEqual.each { String key, Object value ->
+                    whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+                    if (whereFilterProperty) {
+                        ne(key, whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value)
+                    } else {
+                        throw new GsValidationException(GsConfigHolder.unauthorizedFieldOrCondition(key))
+                    }
+                }
+
+
+                where.lessThan.each { String key, Object value ->
+                    whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+                    if (whereFilterProperty) {
+                        lt(key, (whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value))
+                    } else {
+                        throw new GsValidationException(GsConfigHolder.unauthorizedFieldOrCondition(key))
+                    }
+                }
+
+
+                where.lessThanEqual.each { String key, Object value ->
+                    whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+                    if (whereFilterProperty) {
+                        le(key, (whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value))
+                    } else {
+                        throw new GsValidationException(GsConfigHolder.unauthorizedFieldOrCondition(key))
+                    }
+                }
+
+
+                where.greaterThan.each { String key, Object value ->
+                    whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+                    if (whereFilterProperty) {
+                        gt(key, (whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value))
+                    }
+                }
+
+
+                where.greaterThanEqual.each { String key, Object value ->
+                    whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+                    if (whereFilterProperty) {
+                        ge(key, (whereFilterProperty.isTypeCast ? GsReflectionUtil.castToGSObject(whereFilterProperty.dataType, value) : value))
+                    } else {
+                        throw new GsValidationException(GsConfigHolder.unauthorizedFieldOrCondition(key))
+                    }
+                }
+
+
+                where.like.each { String key, Object value ->
+                    whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+                    if (whereFilterProperty) {
+                        like(key, value)
+                    } else {
+                        throw new GsValidationException(GsConfigHolder.unauthorizedFieldOrCondition(key))
+                    }
+                }
+
+                where.inList.each { String key, Object value ->
+                    whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+                    if (whereFilterProperty && where.inList.get(key)) {
+                        'in'(key, where.inList.get(key))
+                    } else {
+                        throw new GsValidationException(GsConfigHolder.unauthorizedFieldOrCondition(key))
+                    }
+                }
+
+                where.between.each { String key, Object value ->
+                    whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+                    if (whereFilterProperty && where.between.get(key)) {
+                        where.between.get(key).each { String field1, String field2 ->
+                            between(key, field1, field2)
+                        }
+                    }
+                }
+
+                if (where.and) {
+                    and {
+                        resolveAllCriteria.call(where)
+                    }
+                }
+
+                if (where.or) {
+                    or {
+                        resolveAllCriteria.call(where)
+                    }
+                }
+            }
+
             if (whereData.order) {
                 whereData.order.each { String key, Object value ->
-                    if (gsDataFilter.allowedCondition.get(key)) {
+                    whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
+                    if (whereFilterProperty) {
                         order(key, value)
+                    } else {
+                        throw new GsValidationException(GsConfigHolder.unauthorizedFieldOrCondition(key))
                     }
                 }
             } else {
                 order(GsConfigHolder.sortColumn(), GsConfigHolder.sortOrder())
             }
 
-            if (whereData.select || whereData.count) {
+            if (whereData.count) {
                 projections {
                     if (whereData.count) {
                         count()
-                    } else if (whereData.select) {
-                        whereData.select.each { selectField ->
-                            if (gsDataFilter.whereAllowedPropertyMap.get(selectField)) {
-                                property(selectField)
-                            }
-                        }
                     }
                 }
             }
-            resolveAllCriteria.call(gsDataFilter, whereData)
+            resolveAllCriteria.call(whereData)
         }
-
         return criteria
     }
 

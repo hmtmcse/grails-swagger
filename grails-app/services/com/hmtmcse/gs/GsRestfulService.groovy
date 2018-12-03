@@ -3,6 +3,7 @@ package com.hmtmcse.gs
 import com.hmtmcse.gs.data.ApiHelper
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
+import com.hmtmcse.gs.data.GsFilteredData
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.gs.model.CustomResponseParamProcessor
 import com.hmtmcse.gs.model.CustomProcessor
@@ -27,13 +28,21 @@ class GsRestfulService {
             GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params, definition.domainFields())
             Map pagination = gsDataFilterHandler.readPaginationWithSortProcessor(gsParamsPairData)
             Closure listCriteria = gsDataFilterHandler.readCriteriaProcessor(gsParamsPairData)
+
+            GsFilterResolver gsFilterResolver = new GsFilterResolver()
+            GsFilteredData filteredData = gsFilterResolver.resolve(definition, params)
+
+
             responseData.isSuccess = true
-            def queryResult = definition.domain.createCriteria().list(pagination, listCriteria)
+            def queryResult = definition.domain.createCriteria().list(filteredData.offsetMaxSort, filteredData.whereClosure)
             responseData.total = (queryResult ? queryResult.totalCount : 0)
             responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult, [])
             if (definition.successResponseFormat == null) {
                 definition.successResponseFormat = GsApiResponseData.successResponseWithTotal([], 0)
             }
+        } catch (GsValidationException e) {
+            responseData.isSuccess = false
+            responseData.message = e.getMessage()
         } catch (Exception e) {
             println(e.getMessage())
             responseData.isSuccess = false

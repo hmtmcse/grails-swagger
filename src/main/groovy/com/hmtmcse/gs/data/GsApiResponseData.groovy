@@ -103,7 +103,7 @@ class GsApiResponseData {
         if (response != null){
             responseMap.put(GsConfigHolder.responseKey(), response)
         }
-        if (errorDetails != null){responseMap.errorDetails = errorDetails}
+        if (errorDetails){responseMap.errorDetails = errorDetails}
         return responseMap
     }
 

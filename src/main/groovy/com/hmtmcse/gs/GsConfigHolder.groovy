@@ -28,6 +28,7 @@ class GsConfigHolder {
     public static String requiredFieldMissingDefaultMessage = "Required Field Missing"
     public static String invalidFieldDataDefaultMessage = "Invalid/Missing Field Or Data"
     public static String requestedConditionEmptyDefaultMessage = "Requested Condition Empty"
+    public static String unAuthorizeFieldOrCondition = "You are Request for Unauthorized %s Name %s"
 
 
 
@@ -105,4 +106,9 @@ class GsConfigHolder {
     static String controllerCustomUrlRegex() {
         return controllerCustomUrlRegexDefault
     }
+
+    static String unauthorizedFieldOrCondition(String name, String type = "field") {
+        return String.format(unAuthorizeFieldOrCondition, type, name)
+    }
+
 }

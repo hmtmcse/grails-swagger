@@ -26,7 +26,7 @@ class GsWhereFilterProperty extends GsRequestResponseProperty {
     }
 
     GsWhereFilterProperty setDataType(String dataType) {
-        this.dataType = dataType
+        super.dataType = dataType
         return this
     }
 
