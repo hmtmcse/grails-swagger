@@ -254,8 +254,12 @@ class GsFilterResolver {
     }
 
     public void validateWhereAllowedCondition(GsWhereData whereData, GsDataFilterOrganizer gsDataFilter){
-        whereData.properties.each {
-            println(it)
+        whereData.class.declaredFields.each {
+            if (!it.synthetic){
+                if (whereData[it.name] && !gsDataFilter.allowedCondition.get(it.name)){
+                    throw new GsValidationException(GsConfigHolder.unauthorizedFieldOrCondition(it.name, "Criteria"))
+                }
+            }
         }
     }
 

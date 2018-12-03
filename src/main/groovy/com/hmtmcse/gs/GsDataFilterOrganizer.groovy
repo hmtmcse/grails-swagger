@@ -15,6 +15,11 @@ trait GsDataFilterOrganizer<T> {
     public Boolean enableQueryFilter = false
     public Boolean enablePaginationAndSorting = false
 
+
+    public LinkedHashMap<String, Boolean> getAllowedCondition(){
+        return this.allowedCondition
+    }
+
     public Boolean getEnableQueryFilter(){
         return this.enableQueryFilter
     }
