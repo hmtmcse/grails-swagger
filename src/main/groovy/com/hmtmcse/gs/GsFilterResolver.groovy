@@ -204,13 +204,13 @@ class GsFilterResolver {
 
                 if (where.and) {
                     and {
-                        resolveAllCriteria.call(where)
+                        resolveAllCriteria.call(where.and)
                     }
                 }
 
                 if (where.or) {
                     or {
-                        resolveAllCriteria.call(where)
+                        resolveAllCriteria.call(where.or)
                     }
                 }
             }
