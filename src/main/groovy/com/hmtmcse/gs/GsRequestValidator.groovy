@@ -24,8 +24,8 @@ class GsRequestValidator {
         gsInternalResponse.response = [:]
 
 
-        if (!requestProperties || !params) {
-            return gsInternalResponse
+        if (!requestProperties) {
+            return gsInternalResponse.setIsSuccess(true)
         }
 
 
