@@ -284,7 +284,15 @@ class GsFilterResolver {
 
         SwaggerProperty operators = new SwaggerProperty()
         gsApiActionDefinition.allowedCondition.each { String key, Boolean value ->
-            operators.objectProperty(key, whereCondition(key))
+            if (key.equals(GsConstant.COUNT)) {
+                operators.property(GsConstant.COUNT, SwaggerConstant.SWAGGER_DT_BOOLEAN).example(true)
+            } else if (key.equals(GsConstant.AND)) {
+                operators.objectProperty(key, new SwaggerProperty().objectProperty(GsConstant.EQUAL, whereCondition(GsConstant.EQUAL))).description("You may use all of allowed Operator here. Like as notEqual, lessThan etc.")
+            } else if (key.equals(GsConstant.OR)) {
+                operators.objectProperty(key, new SwaggerProperty().objectProperty(GsConstant.EQUAL, whereCondition(GsConstant.NOT_EQUAL))).description("You may use all of allowed Operator here. Like as equal, lessThan etc.")
+            } else {
+                operators.objectProperty(key, whereCondition(key))
+            }
         }
         if (gsApiActionDefinition.whereAllowedPropertyList.size()) {
             operators = swaggerAllowedFields(swaggerProperty, gsApiActionDefinition.whereAllowedPropertyList, inType)
@@ -313,9 +321,6 @@ class GsFilterResolver {
             case GsConstant.LIKE:
                 property.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING).example( "%" + GsConstant.PROPERTY_VALUE + "%")
                 break
-            case GsConstant.COUNT:
-                property.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_BOOLEAN).example( true)
-                break
             case GsConstant.IN_LIST:
                 nestedCondition = new SwaggerProperty()
                 nestedCondition.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING).example(GsConstant.PROPERTY_NAME_X)
@@ -323,7 +328,7 @@ class GsFilterResolver {
                 break
             case GsConstant.BETWEEN:
                 nestedCondition = new SwaggerProperty()
-                nestedCondition.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING).example(GsConstant.PROPERTY_NAME)
+                nestedCondition.property(GsConstant.PROPERTY_VALUE, SwaggerConstant.SWAGGER_DT_STRING).example(GsConstant.PROPERTY_VALUE)
                 property.objectProperty(GsConstant.PROPERTY_NAME, nestedCondition)
                 break
         }
