@@ -36,8 +36,9 @@ class GsInternalResponse {
         return this
     }
 
-    void setGsFilteredData(GsFilteredData gsFilteredData) {
+    GsInternalResponse setGsFilteredData(GsFilteredData gsFilteredData) {
         this.gsFilteredData = gsFilteredData
+        return this
     }
 
     GsInternalResponse addErrorDetail(String fieldName, String message){
