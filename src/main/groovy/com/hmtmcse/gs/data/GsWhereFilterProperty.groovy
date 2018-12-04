@@ -20,7 +20,7 @@ class GsWhereFilterProperty extends GsRequestResponseProperty {
     }
 
 
-    GsWhereFilterProperty typeCast() {
+    GsWhereFilterProperty enableTypeCast() {
         this.isTypeCast = true
         return this
     }
