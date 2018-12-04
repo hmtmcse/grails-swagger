@@ -289,7 +289,7 @@ class GsFilterResolver {
             } else if (key.equals(GsConstant.AND)) {
                 operators.objectProperty(key, new SwaggerProperty().objectProperty(GsConstant.EQUAL, whereCondition(GsConstant.EQUAL))).description("You may use all of allowed Operator here. Like as notEqual, lessThan etc.")
             } else if (key.equals(GsConstant.OR)) {
-                operators.objectProperty(key, new SwaggerProperty().objectProperty(GsConstant.EQUAL, whereCondition(GsConstant.NOT_EQUAL))).description("You may use all of allowed Operator here. Like as equal, lessThan etc.")
+                operators.objectProperty(key, new SwaggerProperty().objectProperty(GsConstant.NOT_EQUAL, whereCondition(GsConstant.NOT_EQUAL))).description("You may use all of allowed Operator here. Like as equal, lessThan etc.")
             } else {
                 operators.objectProperty(key, whereCondition(key))
             }
