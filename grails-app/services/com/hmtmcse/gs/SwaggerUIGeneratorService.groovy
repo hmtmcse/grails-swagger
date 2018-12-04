@@ -72,9 +72,9 @@ class SwaggerUIGeneratorService {
                 actionUrl = null
                 try {
                     gsApiActionDefinition = controllerObj."$gsAction.actionRealName"()
-                    if (gsApiActionDefinition){
+                    if (gsApiActionDefinition) {
                         gsApiActionDefinition.setModelDefinition(controllerActionData.apiVersion, controllerActionData.controllerUrlName, gsAction)
-                        swaggerPath = pathGenerator(gsAction, gsApiActionDefinition )
+                        swaggerPath = pathGenerator(gsAction, gsApiActionDefinition)
                         swaggerPath.addTag(tagName)
                         actionUrl = "${url}${gsAction.name}"
                         swaggerDefinition.startPaths(actionUrl).addPath(gsAction.httpMethod, swaggerPath)
@@ -82,11 +82,11 @@ class SwaggerUIGeneratorService {
                         swaggerPath.addResponse(response)
                     }
                 } catch (InvocationTargetException e) {
-                    println("processApiActionDefinition: " + e.getMessage())
+                    println("controller:${controllerActionData.controllerName} actionName:${gsAction.actionRealName} processApiActionDefinition: " + e.getMessage())
                 } catch (NullPointerException e) {
-                    println("processApiActionDefinition: " + e.getMessage())
+                    println("controller:${controllerActionData.controllerName} actionName:${gsAction.actionRealName} processApiActionDefinition: " + e.getMessage())
                 } catch (Exception e) {
-                    println("processApiActionDefinition: " + e.getMessage())
+                    println("controller:${controllerActionData.controllerName} actionName:${gsAction.actionRealName} processApiActionDefinition: " + e.getMessage())
                 }
             }
         }

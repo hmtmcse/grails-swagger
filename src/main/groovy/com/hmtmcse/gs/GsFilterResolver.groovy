@@ -14,6 +14,16 @@ import grails.web.servlet.mvc.GrailsParameterMap
 class GsFilterResolver {
 
 
+
+    public static GsFilterResolver instance(){
+        return new GsFilterResolver()
+    }
+
+
+    public GsParamsPairData getParamsPair(GrailsParameterMap params, GsApiActionDefinition definition) {
+        return getParamsPair(params, definition.gsDomain.domainProperties)
+    }
+
     public GsParamsPairData getParamsPair(GrailsParameterMap params, LinkedHashMap<String, GsDomainProperty> domainProperties = null) {
         GsParamsPairData gsParamsPairData = new GsParamsPairData()
         gsParamsPairData.rawParams = params
@@ -265,6 +275,7 @@ class GsFilterResolver {
         if (gsApiActionDefinition.enablePaginationAndSorting) {
             swaggerProperty = swaggerPagination(swaggerProperty, inType)
             swaggerProperty = swaggerSorting(swaggerProperty, inType)
+
         }
 
         if (gsApiActionDefinition.enableQueryFilter) {
@@ -279,7 +290,7 @@ class GsFilterResolver {
     }
 
     private SwaggerProperty swaggerAllowedFields(SwaggerProperty swaggerProperty, List<GsWhereFilterProperty> whereAllowedPropertyList, String inType) {
-        swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, whereAllowedPropertyList?.name?.join(", ")).addToListWithType(inType)
+//        swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, whereAllowedPropertyList?.name?.join(", ")).addToListWithType(inType)
         return swaggerProperty
     }
 
@@ -324,10 +335,11 @@ class GsFilterResolver {
                 operators.objectProperty(key, whereCondition(key))
             }
         }
-        if (gsApiActionDefinition.whereAllowedPropertyList.size()) {
-            operators = swaggerAllowedFields(swaggerProperty, gsApiActionDefinition.whereAllowedPropertyList, inType)
-        }
+
         swaggerProperty.objectProperty(GsConstant.WHERE, operators).addToListWithType(inType)
+        if (gsApiActionDefinition.whereAllowedPropertyList.size()) {
+            operators = swaggerAllowedFields(operators, gsApiActionDefinition.whereAllowedPropertyList, inType)
+        }
         return swaggerProperty
     }
 

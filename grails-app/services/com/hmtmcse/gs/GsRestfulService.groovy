@@ -112,19 +112,18 @@ class GsRestfulService {
     }
 
 
-    def gsCreate(GsApiActionDefinition definition, Map params) {
+    def gsCreate(GsApiActionDefinition definition, GrailsParameterMap params) {
         return saveUpdateProcessor(definition, params, definition.domain.newInstance())
     }
 
-    GsInternalResponse filterAndValidateRequest(GsApiActionDefinition definition, Map params){
-        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
-        GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params, definition.domainFields())
+    GsInternalResponse filterAndValidateRequest(GsApiActionDefinition definition, GrailsParameterMap params) {
+        GsFilteredData gsFilteredData = GsFilterResolver.instance().resolve(definition, params)
         GsRequestValidator gsRequestValidator = GsRequestValidator.instance()
-        return gsRequestValidator.validate(gsParamsPairData, definition)
+        return gsRequestValidator.validate(gsFilteredData.gsParamsPairData, definition).setGsFilteredData(gsFilteredData)
     }
 
 
-    def saveUpdateProcessor(GsApiActionDefinition definition, Map params, def domain) {
+    def saveUpdateProcessor(GsApiActionDefinition definition, GrailsParameterMap params, def domain) {
         GsInternalResponse gsInternalResponse = filterAndValidateRequest(definition, params)
         if (gsInternalResponse.isSuccess) {
             gsInternalResponse = saveUpdate(domain, gsInternalResponse.filteredParams)
@@ -165,9 +164,8 @@ class GsRestfulService {
 
     def countByCondition(GsApiActionDefinition definition, GrailsParameterMap params) throws GrailsSwaggerException {
         def queryResult = null
-        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
         try {
-            GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params, definition.domainFields())
+            GsParamsPairData gsParamsPairData = GsFilterResolver.instance().getParamsPair(params, definition)
             Map where = [:]
             if (definition.enableWhere && gsParamsPairData.params && gsParamsPairData.params.where && gsParamsPairData.params.where instanceof Map) {
                 gsParamsPairData.params.where[GsConstant.COUNT] = true
@@ -263,17 +261,12 @@ class GsRestfulService {
             return GsApiResponseData.processAPIResponse(definition, gsInternalResponse)
         }
 
-        resolveConditions(definition, params)
-
         GsApiResponseData gsApiResponseData = null
         ApiHelper apiHelper = new ApiHelper()
         apiHelper.help = this
 
-
-        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
-        GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params, null)
         if (definition.customProcessor != null && definition.customProcessor instanceof CustomProcessor) {
-            gsApiResponseData = definition.customProcessor.process(definition, gsParamsPairData, apiHelper)
+            gsApiResponseData = definition.customProcessor.process(definition, gsInternalResponse.gsParamsPairData, apiHelper)
         }
 
         if (gsApiResponseData) {

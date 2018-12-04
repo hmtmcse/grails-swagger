@@ -1,5 +1,6 @@
 package com.hmtmcse.gs
 
+import com.hmtmcse.gs.data.GsFilteredData
 import com.hmtmcse.gs.data.GsParamsPairData
 import org.springframework.validation.FieldError
 
@@ -18,6 +19,7 @@ class GsInternalResponse {
     Boolean isExist = null
     String tempData = null
     GsParamsPairData gsParamsPairData = null
+    GsFilteredData gsFilteredData = null
 
 
     static GsInternalResponse instance(){
@@ -27,6 +29,15 @@ class GsInternalResponse {
      GsInternalResponse params(String key, Object value){
          filteredParams.put(key, value)
         return this
+    }
+
+    GsInternalResponse setGsParamsPairData(GsParamsPairData gsParamsPairData) {
+        this.gsParamsPairData = gsParamsPairData
+        return this
+    }
+
+    void setGsFilteredData(GsFilteredData gsFilteredData) {
+        this.gsFilteredData = gsFilteredData
     }
 
     GsInternalResponse addErrorDetail(String fieldName, String message){
