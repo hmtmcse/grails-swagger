@@ -20,8 +20,6 @@ class GsRestProcessor implements GsExceptionHandler {
     }
 
     def list(GsApiActionDefinition definition){
-        definition.responseType = GsConstant.LIST_RESPONSE
-        definition.enableWhere = true
         definition.allowedAllCondition()
         definition.enablePaginationAndSorting()
         definition.enableQueryFilter()
@@ -34,12 +32,10 @@ class GsRestProcessor implements GsExceptionHandler {
     }
 
     private detailsForDefinition(GsApiActionDefinition definition){
-        definition.responseType = GsConstant.DETAILS_RESPONSE
         return definition
     }
 
     def details(GsApiActionDefinition definition){
-        definition.enableWhere = true
         definition.allowedConditionEqualAndOr()
         definition.disablePaginationAndSorting()
         definition.enableQueryFilter()
@@ -52,7 +48,6 @@ class GsRestProcessor implements GsExceptionHandler {
     }
 
     private createForDefinition(GsApiActionDefinition definition){
-        definition.responseType = GsConstant.CREATE_RESPONSE
         return definition
     }
 
@@ -70,12 +65,10 @@ class GsRestProcessor implements GsExceptionHandler {
 
 
     private updateForDefinition(GsApiActionDefinition definition){
-        definition.responseType = GsConstant.UPDATE_RESPONSE
         return definition
     }
 
     def update(GsApiActionDefinition definition){
-        definition.enableWhere = true
         definition.allowedConditionEqualAndOr()
         definition.disablePaginationAndSorting()
         definition.enableQueryFilter()
@@ -88,12 +81,10 @@ class GsRestProcessor implements GsExceptionHandler {
     }
 
     private deleteForDefinition(GsApiActionDefinition definition){
-        definition.responseType = GsConstant.DELETE_RESPONSE
         return definition
     }
 
     def delete(GsApiActionDefinition definition){
-        definition.enableWhere = true
         definition.allowedConditionEqualAndOr()
         definition.disablePaginationAndSorting()
         definition.enableQueryFilter()
@@ -106,7 +97,6 @@ class GsRestProcessor implements GsExceptionHandler {
     }
 
     private countForDefinition(GsApiActionDefinition definition){
-        definition.responseType = GsConstant.COUNT_RESPONSE
         return definition
     }
 
@@ -121,7 +111,6 @@ class GsRestProcessor implements GsExceptionHandler {
 
 
     private customProcessorForDefinition(GsApiActionDefinition definition){
-        definition.responseType = GsConstant.CUSTOM_PROCESSOR
         return definition
     }
 

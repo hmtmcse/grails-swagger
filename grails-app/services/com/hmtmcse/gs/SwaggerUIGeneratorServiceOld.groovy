@@ -1,16 +1,11 @@
 package com.hmtmcse.gs
 
-import com.hmtmcse.gs.data.GsAction
-import com.hmtmcse.gs.data.GsApiRequestProperty
-import com.hmtmcse.gs.data.GsApiResponseData
-import com.hmtmcse.gs.data.GsApiResponseProperty
-import com.hmtmcse.gs.data.GsControllerActionData
-import com.hmtmcse.gs.data.GsRequestResponseProperty
+import com.hmtmcse.gs.data.*
 import com.hmtmcse.swagger.definition.*
 
 import java.lang.reflect.InvocationTargetException
 
-class SwaggerUIGeneratorService {
+class SwaggerUIGeneratorServiceOld {
 
     private SwaggerDefinition swaggerDefinition = new SwaggerDefinition()
     private String failedResponseName = "FailedResponse"
@@ -140,11 +135,28 @@ class SwaggerUIGeneratorService {
         String requestDefinition = "${SwaggerConstant.REQUEST}${gsApiActionDefinition.modelDefinition}"
         GsFilterResolver gsFilterResolver = new GsFilterResolver()
 
+
+
         if (gsAction.httpMethod && gsAction.httpMethod.equals(GsConstant.GET)) {
             swaggerProperty = requestPropertiesProcessor(gsApiActionDefinition.getRequestProperties(), SwaggerConstant.IN_QUERY)
             swaggerProperty = gsFilterResolver.resolveSwaggerDefinition(gsApiActionDefinition, SwaggerConstant.IN_QUERY, swaggerProperty)
             swaggerPath.parameters(swaggerProperty.getPropertyList())
 
+
+            //TODO:: Remove After Success
+            switch (gsApiActionDefinition.responseType){
+                case GsConstant.LIST_RESPONSE:
+                    swaggerPath.parameters(GsDataFilterHandler.swaggerGetReadRequest(true, gsApiActionDefinition.whereAllowedPropertyList).getPropertyList())
+                    break
+                case GsConstant.DELETE_RESPONSE:
+                case GsConstant.DETAILS_RESPONSE:
+                    swaggerPath.parameters(GsDataFilterHandler.swaggerGetReadRequest(false, gsApiActionDefinition.whereAllowedPropertyList).getPropertyList())
+                    break
+                case GsConstant.CUSTOM_PROCESSOR:
+                    swaggerProperty = propertiesProcessor(gsApiActionDefinition.getRequestProperties(), SwaggerConstant.IN_QUERY, gsApiActionDefinition.domainFields())
+                    swaggerPath.parameters(swaggerProperty.getPropertyList())
+                    break
+            }
         } else if (gsAction.httpMethod && gsAction.httpMethod.equals(GsConstant.POST)) {
             message = "Please Use Http POST Request for "
             parameter = swaggerDefinition.pathParameter(SwaggerConstant.IN_BODY, gsApiActionDefinition.parameterName ?: SwaggerConstant.IN_BODY)
@@ -156,12 +168,37 @@ class SwaggerUIGeneratorService {
             swaggerProperty = gsFilterResolver.swaggerWhere(gsApiActionDefinition,  swaggerProperty, SwaggerConstant.IN_BODY)
             addToDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT, swaggerProperty)
 
+
+            //TODO:: Remove After Success
+            switch (gsApiActionDefinition.responseType){
+                case GsConstant.LIST_RESPONSE:
+                    addToDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT, GsDataFilterHandler.swaggerPostReadRequest(true, gsApiActionDefinition.whereAllowedPropertyList))
+                    break
+                case GsConstant.CREATE_RESPONSE:
+                    swaggerProperty = requestPropertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, gsApiActionDefinition.domainFields())
+                    swaggerDefinition.addDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT).addProperties(swaggerProperty)
+                    break
+                case GsConstant.DELETE_RESPONSE:
+                case GsConstant.DETAILS_RESPONSE:
+                    addToDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT, GsDataFilterHandler.swaggerPostReadRequest(false, gsApiActionDefinition.whereAllowedPropertyList))
+                    break
+                case GsConstant.UPDATE_RESPONSE:
+                    swaggerProperty = requestPropertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, gsApiActionDefinition.domainFields())
+                    swaggerProperty.addFromExistingObjectProperty(GsConstant.WHERE, GsDataFilterHandler.swaggerPostReadRequest(false, gsApiActionDefinition.whereAllowedPropertyList))
+                    swaggerDefinition.addDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT).addProperties(swaggerProperty)
+                    break
+                case GsConstant.CUSTOM_PROCESSOR:
+                    swaggerProperty = requestPropertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, gsApiActionDefinition.domainFields())
+                    swaggerDefinition.addDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT).addProperties(swaggerProperty)
+                    break
+            }
+
             swaggerPath.addConsumeType(SwaggerConstant.APPLICATION_JSON)
             if (parameter){
                 swaggerPath.addParameter(parameter)
             }
-
-        } else if (gsAction.httpMethod && gsAction.httpMethod.equals(GsConstant.DELETE)) {
+        }
+        else if (gsAction.httpMethod && gsAction.httpMethod.equals(GsConstant.DELETE)) {
             message = "Please Use Http DELETE Request for "
             parameter = swaggerDefinition.pathParameter(SwaggerConstant.IN_BODY, gsApiActionDefinition.parameterName ?: SwaggerConstant.IN_BODY)
             parameter.required().schema(requestDefinition)
@@ -171,6 +208,12 @@ class SwaggerUIGeneratorService {
             }
             swaggerProperty = gsFilterResolver.swaggerWhere(gsApiActionDefinition,  swaggerProperty, SwaggerConstant.IN_BODY)
             addToDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT, swaggerProperty)
+
+
+            //TODO:: Remove After Success
+            swaggerProperty = propertiesProcessor(gsApiActionDefinition.getRequestProperties(), null, gsApiActionDefinition.domainFields())
+            swaggerProperty.addFromExistingObjectProperty(GsConstant.WHERE, GsDataFilterHandler.swaggerPostReadRequest(false, gsApiActionDefinition.whereAllowedPropertyList))
+            swaggerDefinition.addDefinition(requestDefinition, SwaggerConstant.SWAGGER_DT_OBJECT).addProperties(swaggerProperty)
 
             swaggerPath.addConsumeType(SwaggerConstant.APPLICATION_JSON)
             swaggerPath.addParameter(parameter)
