@@ -55,7 +55,7 @@ trait GsResponseOrganizer<T> {
 
 
     public T includeAllPropertyToResponse(Boolean isRelational = true) {
-        responseProperties = domainPropertyToResponseProperty(gsDomain.domainProperties)
+        responseProperties = domainPropertyToResponseProperty(gsDomain.domainProperties, isRelational)
         return this as T
     }
 
@@ -68,9 +68,13 @@ trait GsResponseOrganizer<T> {
         }
         domainProperties.each { String name, GsDomainProperty gsDomainProperty ->
             gsApiResponseProperty = new GsApiResponseProperty(gsDomainProperty.name).setDataType(gsDomainProperty.swaggerDataType)
-            if (gsDomainProperty.isRelationalEntity && isRelational) {
-                gsApiResponseProperty.relationalEntity = new GsRelationalEntityResponse()
-                gsApiResponseProperty.relationalEntity.responseProperties = domainPropertyToResponseProperty(gsDomainProperty.relationalProperties)
+            if (gsDomainProperty.isRelationalEntity) {
+                if (isRelational) {
+                    gsApiResponseProperty.relationalEntity = new GsRelationalEntityResponse()
+                    gsApiResponseProperty.relationalEntity.responseProperties = domainPropertyToResponseProperty(gsDomainProperty.relationalProperties)
+                } else {
+                    return
+                }
             }
             responsePropertyLinkedHashMap.put(gsDomainProperty.name, gsApiResponseProperty)
         }
