@@ -22,6 +22,28 @@ class GsInternalResponse {
     GsFilteredData gsFilteredData = null
 
 
+    void copyFilterAndPagination(){
+        if (gsFilteredData && gsParamsPairData && gsParamsPairData.filteredGrailsParameterMap){
+            gsParamsPairData.filteredGrailsParameterMap.offset =  gsFilteredData.offset
+            gsParamsPairData.params.offset =  gsFilteredData.offset
+
+            gsParamsPairData.filteredGrailsParameterMap.max =  gsFilteredData.max
+            gsParamsPairData.params.max =  gsFilteredData.max
+
+            gsParamsPairData.filteredGrailsParameterMap.orderProperty =  gsFilteredData.orderProperty
+            gsParamsPairData.params.orderProperty =  gsFilteredData.orderProperty
+
+            gsParamsPairData.filteredGrailsParameterMap.order =  gsFilteredData.order
+            gsParamsPairData.params.order =  gsFilteredData.order
+
+            gsParamsPairData.filteredGrailsParameterMap.propertyName =  gsFilteredData.propertyName
+            gsParamsPairData.params.propertyName =  gsFilteredData.propertyName
+
+            gsParamsPairData.filteredGrailsParameterMap.propertyValue =  gsFilteredData.propertyValue
+            gsParamsPairData.params.propertyValue =  gsFilteredData.propertyValue
+        }
+    }
+
     static GsInternalResponse instance(){
         return new GsInternalResponse()
     }

@@ -271,7 +271,7 @@ class GsRestfulService {
         GsApiResponseData gsApiResponseData = null
         ApiHelper apiHelper = new ApiHelper()
         apiHelper.help = this
-
+        gsInternalResponse.copyFilterAndPagination()
         if (definition.customProcessor != null && definition.customProcessor instanceof CustomProcessor) {
             gsApiResponseData = definition.customProcessor.process(definition, gsInternalResponse.gsParamsPairData, apiHelper)
         }
