@@ -21,17 +21,11 @@ class GsRestfulService {
     }
 
 
-    def readListProcessor(GsApiActionDefinition definition, Map params) {
+    def readListProcessor(GsApiActionDefinition definition, GrailsParameterMap params) {
         GsInternalResponse responseData = GsInternalResponse.instance()
-        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
         try {
-            GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params, definition.domainFields())
-            Map pagination = gsDataFilterHandler.readPaginationWithSortProcessor(gsParamsPairData)
-            Closure listCriteria = gsDataFilterHandler.readCriteriaProcessor(gsParamsPairData)
-
             GsFilterResolver gsFilterResolver = new GsFilterResolver()
             GsFilteredData filteredData = gsFilterResolver.resolve(definition, params)
-
 
             responseData.isSuccess = true
             def queryResult = definition.domain.createCriteria().list(filteredData.offsetMaxSort, filteredData.whereClosure)
@@ -52,7 +46,7 @@ class GsRestfulService {
     }
 
 
-    def readDetailsProcessor(GsApiActionDefinition definition, Map params) {
+    def readDetailsProcessor(GsApiActionDefinition definition, GrailsParameterMap params) {
         GsInternalResponse responseData = GsInternalResponse.instance()
         try {
             def queryResult = readGetByCondition(definition, params)
@@ -69,7 +63,7 @@ class GsRestfulService {
     }
 
 
-    def gsReadList(GsApiActionDefinition definition, Map params) {
+    def gsReadList(GsApiActionDefinition definition, GrailsParameterMap params) {
         return readListProcessor(definition, params)
     }
 
@@ -145,17 +139,17 @@ class GsRestfulService {
     }
 
 
-    def gsDetails(GsApiActionDefinition definition, Map params) {
+    def gsDetails(GsApiActionDefinition definition, GrailsParameterMap params) {
         return readDetailsProcessor(definition, params)
     }
 
 
-    def gsCount(GsApiActionDefinition definition, Map params) {
+    def gsCount(GsApiActionDefinition definition, GrailsParameterMap params) {
         return readCountProcessor(definition, params)
     }
 
 
-    def readCountProcessor(GsApiActionDefinition definition, Map params) {
+    def readCountProcessor(GsApiActionDefinition definition, GrailsParameterMap params) {
         GsInternalResponse responseData = GsInternalResponse.instance()
         try {
             def queryResult = countByCondition(definition, params)
@@ -169,7 +163,7 @@ class GsRestfulService {
         return GsApiResponseData.processAPIResponse(definition, responseData)
     }
 
-    def countByCondition(GsApiActionDefinition definition, Map params) throws GrailsSwaggerException {
+    def countByCondition(GsApiActionDefinition definition, GrailsParameterMap params) throws GrailsSwaggerException {
         def queryResult = null
         GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
         try {
@@ -189,13 +183,12 @@ class GsRestfulService {
     }
 
 
-    def readGetByCondition(GsApiActionDefinition definition, Map params) throws GrailsSwaggerException {
+    def readGetByCondition(GsApiActionDefinition definition, GrailsParameterMap params) throws GrailsSwaggerException {
         def queryResult = null
-        GsDataFilterHandler gsDataFilterHandler = GsDataFilterHandler.instance()
         try {
-            GsParamsPairData gsParamsPairData = gsDataFilterHandler.getParamsPair(params, definition.domainFields())
-            Closure listCriteria = gsDataFilterHandler.readCriteriaProcessor(gsParamsPairData, false, "details")
-            queryResult = definition.domain.createCriteria().get(listCriteria)
+            GsFilterResolver gsFilterResolver = new GsFilterResolver()
+            GsFilteredData filteredData = gsFilterResolver.resolve(definition, params)
+            queryResult = definition.domain.createCriteria().get(filteredData.whereClosure)
         } catch (Exception e) {
             String message = GsExceptionParser.exceptionMessage(e)
             throw new GrailsSwaggerException(message)
@@ -204,7 +197,7 @@ class GsRestfulService {
     }
 
 
-    def gsUpdate(GsApiActionDefinition definition, Map params) {
+    def gsUpdate(GsApiActionDefinition definition, GrailsParameterMap params) {
         GsInternalResponse responseData = GsInternalResponse.instance()
         try {
             def queryResult = readGetByCondition(definition, params)
@@ -221,7 +214,7 @@ class GsRestfulService {
     }
 
 
-    def gsDelete(GsApiActionDefinition definition, Map params) {
+    def gsDelete(GsApiActionDefinition definition, GrailsParameterMap params) {
         GsInternalResponse responseData = GsInternalResponse.instance()
         try {
             def queryResult = readGetByCondition(definition, params)
