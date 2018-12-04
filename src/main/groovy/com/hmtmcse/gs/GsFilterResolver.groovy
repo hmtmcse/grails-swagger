@@ -322,9 +322,7 @@ class GsFilterResolver {
                 property.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING).example( "%" + GsConstant.PROPERTY_VALUE + "%")
                 break
             case GsConstant.IN_LIST:
-                nestedCondition = new SwaggerProperty()
-                nestedCondition.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING).example(GsConstant.PROPERTY_NAME_X)
-                property.arrayProperty(GsConstant.PROPERTY_NAME, nestedCondition)
+                property.arrayPropertyList(GsConstant.PROPERTY_NAME,SwaggerConstant.SWAGGER_DT_STRING, GsConstant.PROPERTY_VALUE_X)
                 break
             case GsConstant.BETWEEN:
                 nestedCondition = new SwaggerProperty()
