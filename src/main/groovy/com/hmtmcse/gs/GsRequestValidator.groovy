@@ -35,7 +35,7 @@ class GsRequestValidator {
         gsInternalResponse.isSuccess = true
         requestProperties.each { String fieldName, GsApiRequestProperty requestProperty ->
 
-            param = params.get(requestProperty.getRequestedKey())
+            param = GsUtil.getMapValue(requestProperty.getRequestedKey(), params)
             requestedKey = requestProperty.getRequestedKey()
             if (requestProperty.isRequired && param == null) {
                 gsInternalResponse.addRequestValidationError(requestedKey, GsConfigHolder.requiredFieldMissing())

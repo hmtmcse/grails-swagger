@@ -55,6 +55,9 @@ class GsRestfulService {
             if (definition.successResponseFormat == null) {
                 definition.successResponseFormat = GsApiResponseData.successResponse([])
             }
+        } catch (GsValidationException e) {
+            responseData.isSuccess = false
+            responseData.message = e.getMessage()
         } catch (GrailsSwaggerException e) {
             responseData.isSuccess = false
             responseData.message = e.getMessage()
@@ -173,6 +176,8 @@ class GsRestfulService {
                 where.put(GsConstant.COUNT, true)
             }
             queryResult = definition.domain.count()
+        } catch (GsValidationException e) {
+            throw new GrailsSwaggerException(e.getMessage())
         } catch (Exception e) {
             String message = GsExceptionParser.exceptionMessage(e)
             throw new GrailsSwaggerException(message)
@@ -187,6 +192,8 @@ class GsRestfulService {
             GsFilterResolver gsFilterResolver = new GsFilterResolver()
             GsFilteredData filteredData = gsFilterResolver.resolve(definition, params)
             queryResult = definition.domain.createCriteria().get(filteredData.whereClosure)
+        } catch (GsValidationException e) {
+            throw new GrailsSwaggerException(e.getMessage())
         } catch (Exception e) {
             String message = GsExceptionParser.exceptionMessage(e)
             throw new GrailsSwaggerException(message)

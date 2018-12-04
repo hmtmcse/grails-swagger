@@ -42,4 +42,12 @@ class GsUtil {
             return string
         }
     }
+
+    public static def getMapValue(String key, Map map){
+        try{
+            return map.get(key)
+        }catch(Exception e){
+            return null
+        }
+    }
 }
