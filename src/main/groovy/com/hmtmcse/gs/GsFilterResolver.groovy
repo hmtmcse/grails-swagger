@@ -272,27 +272,24 @@ class GsFilterResolver {
     public SwaggerProperty resolveSwaggerDefinition(GsApiActionDefinition gsApiActionDefinition, String inType, SwaggerProperty swaggerProperty = null) {
         swaggerProperty = (swaggerProperty ?: new SwaggerProperty())
 
+        String allowedField = ""
+        if (gsApiActionDefinition.whereAllowedPropertyList.size()) {
+            allowedField = gsApiActionDefinition.whereAllowedPropertyList?.name?.join(", ")
+        }
+
         if (gsApiActionDefinition.enablePaginationAndSorting) {
             swaggerProperty = swaggerPagination(swaggerProperty, inType)
-            swaggerProperty = swaggerSorting(swaggerProperty, inType)
+            swaggerProperty = swaggerSorting(swaggerProperty, inType, allowedField)
 
         }
 
         if (gsApiActionDefinition.enableQueryFilter) {
-            swaggerProperty = swaggerQueryFilter(swaggerProperty, inType)
-        }
-
-        if (gsApiActionDefinition.whereAllowedPropertyList.size()) {
-            swaggerProperty = swaggerAllowedFields(swaggerProperty, gsApiActionDefinition.whereAllowedPropertyList, inType)
+            swaggerProperty = swaggerQueryFilter(swaggerProperty, inType, allowedField)
         }
 
         return swaggerProperty
     }
 
-    private SwaggerProperty swaggerAllowedFields(SwaggerProperty swaggerProperty, List<GsWhereFilterProperty> whereAllowedPropertyList, String inType) {
-//        swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, whereAllowedPropertyList?.name?.join(", ")).addToListWithType(inType)
-        return swaggerProperty
-    }
 
     private SwaggerProperty swaggerPagination(SwaggerProperty swaggerProperty, String inType = null) {
         swaggerProperty.property(GsConstant.OFFSET, SwaggerConstant.SWAGGER_DT_INTEGER).addToListWithType(inType)
@@ -301,19 +298,21 @@ class GsFilterResolver {
     }
 
 
-    private SwaggerProperty swaggerSorting(SwaggerProperty swaggerProperty, String inType = null) {
+    private SwaggerProperty swaggerSorting(SwaggerProperty swaggerProperty, String inType = null, String allowedProperty) {
         if (inType && inType.equals(SwaggerConstant.IN_QUERY)) {
             swaggerProperty.property(GsConstant.ORDER_PROPERTY, SwaggerConstant.SWAGGER_DT_STRING).addToListWithType(inType)
+            swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, allowedProperty).addToListWithType(inType)
             swaggerProperty.property(GsConstant.ORDER, SwaggerConstant.SWAGGER_DT_STRING).addToListWithType(inType)
         }
         return swaggerProperty
     }
 
 
-    private SwaggerProperty swaggerQueryFilter(SwaggerProperty swaggerProperty, String inType = null) {
+    private SwaggerProperty swaggerQueryFilter(SwaggerProperty swaggerProperty, String inType = null, String allowedProperty) {
         if (inType && inType.equals(SwaggerConstant.IN_QUERY)) {
             swaggerProperty.property(GsConstant.PROPERTY_NAME, SwaggerConstant.SWAGGER_DT_STRING).addToListWithType(inType)
             swaggerProperty.property(GsConstant.PROPERTY_VALUE, SwaggerConstant.SWAGGER_DT_STRING).addToListWithType(inType)
+            swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, allowedProperty).addToListWithType(inType)
         }
         return swaggerProperty
     }
@@ -337,9 +336,11 @@ class GsFilterResolver {
         }
 
         swaggerProperty.objectProperty(GsConstant.WHERE, operators).addToListWithType(inType)
+        String allowedField = ""
         if (gsApiActionDefinition.whereAllowedPropertyList.size()) {
-            operators = swaggerAllowedFields(operators, gsApiActionDefinition.whereAllowedPropertyList, inType)
+            allowedField = gsApiActionDefinition.whereAllowedPropertyList?.name?.join(", ")
         }
+        swaggerProperty.otherProperty(GsConstant.ALLOWED_PROPERTY, allowedField).addToListWithType(inType)
         return swaggerProperty
     }
 

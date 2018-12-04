@@ -35,6 +35,18 @@ trait GsResponseOrganizer<T> {
         return this as T
     }
 
+    public T includeAllButExcludeRelationalFromResponse() {
+        includeAllPropertyToResponse(false)
+        return this as T
+    }
+
+
+    public T includeAllNotRelationalThenExcludeFromResponse(List<String> fields) {
+        includeAllPropertyToResponse(false)
+        excludeFromResponse(fields)
+        return this as T
+    }
+
 
     public GsApiResponseProperty addResponseProperty(String name, String alias = null, String defaultValue = "") {
         this.responseProperties.put(name, new GsApiResponseProperty(name).setAlias(alias).setDefaultValue(defaultValue).setDataType(gsDomain.domainProperties.get(name)?.swaggerDataType))
@@ -42,13 +54,13 @@ trait GsResponseOrganizer<T> {
     }
 
 
-    public T includeAllPropertyToResponse() {
+    public T includeAllPropertyToResponse(Boolean isRelational = true) {
         responseProperties = domainPropertyToResponseProperty(gsDomain.domainProperties)
         return this as T
     }
 
 
-    LinkedHashMap<String, GsApiResponseProperty> domainPropertyToResponseProperty(LinkedHashMap<String, GsDomainProperty> domainProperties) {
+    LinkedHashMap<String, GsApiResponseProperty> domainPropertyToResponseProperty(LinkedHashMap<String, GsDomainProperty> domainProperties, Boolean isRelational = true) {
         GsApiResponseProperty gsApiResponseProperty
         LinkedHashMap<String, GsApiResponseProperty> responsePropertyLinkedHashMap = new LinkedHashMap<>()
         if (domainProperties == null) {
@@ -56,7 +68,7 @@ trait GsResponseOrganizer<T> {
         }
         domainProperties.each { String name, GsDomainProperty gsDomainProperty ->
             gsApiResponseProperty = new GsApiResponseProperty(gsDomainProperty.name).setDataType(gsDomainProperty.swaggerDataType)
-            if (gsDomainProperty.isRelationalEntity) {
+            if (gsDomainProperty.isRelationalEntity && isRelational) {
                 gsApiResponseProperty.relationalEntity = new GsRelationalEntityResponse()
                 gsApiResponseProperty.relationalEntity.responseProperties = domainPropertyToResponseProperty(gsDomainProperty.relationalProperties)
             }
