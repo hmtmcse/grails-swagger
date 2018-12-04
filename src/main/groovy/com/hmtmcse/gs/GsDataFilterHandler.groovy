@@ -10,48 +10,7 @@ class GsDataFilterHandler {
 
     private static String inType = null
 
-    Closure readCriteriaProcessor(GsParamsPairData gsParamsPairData, Boolean andOr = false, String details = null){
-        switch (gsParamsPairData.httpMethod) {
-            case GsConstant.DELETE:
-            case GsConstant.POST:
-                if (gsParamsPairData.params && gsParamsPairData.params.where){
-                    return createCriteriaBuilder(gsParamsPairData.params.where, andOr, details)
-                }
-                return {}
-            case GsConstant.GET:
-                return readGetMethodCriteriaProcessor(gsParamsPairData)
-        }
-    }
 
-
-    Closure readGetMethodCriteriaProcessor(GsParamsPairData gsParamsPairData) {
-        Map params = gsParamsPairData.params
-        if (params && params.propertyName && params.propertyValue != null) {
-            return {
-                eq(params.propertyName, params.propertyValue)
-            }
-        }
-        return {}
-    }
-
-
-    Map readPaginationWithSortProcessor(GsParamsPairData gsParamsPairData) {
-        Map refineParams = [:]
-        Map params = gsParamsPairData.params
-        refineParams.max = params.max ?: GsConfigHolder.itemsPerPage()
-        refineParams.offset = params.offset ?: 0
-        if (!gsParamsPairData.httpMethod.equals(GsConstant.GET)) {
-            return refineParams
-        }
-        if (!params.orderProperty || !params.order) {
-            refineParams.sort = GsConfigHolder.sortColumn()
-            refineParams.order = GsConfigHolder.sortOrder()
-        } else {
-            refineParams.sort = params.orderProperty
-            refineParams.order = params.order
-        }
-        return refineParams
-    }
 
 
 

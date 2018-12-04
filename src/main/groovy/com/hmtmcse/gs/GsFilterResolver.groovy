@@ -2,6 +2,7 @@ package com.hmtmcse.gs
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.hmtmcse.gs.data.GsDomainProperty
 import com.hmtmcse.gs.data.GsFilteredData
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.gs.data.GsWhereData
@@ -13,7 +14,7 @@ import grails.web.servlet.mvc.GrailsParameterMap
 class GsFilterResolver {
 
 
-    public GsParamsPairData getParamsPair(GrailsParameterMap params) {
+    public GsParamsPairData getParamsPair(GrailsParameterMap params, LinkedHashMap<String, GsDomainProperty> domainProperties = null) {
         GsParamsPairData gsParamsPairData = new GsParamsPairData()
         gsParamsPairData.rawParams = params
         if (params.gsHttpRequestMethod) {
@@ -32,12 +33,31 @@ class GsFilterResolver {
                     return gsParamsPairData.initFilteredGrailsParams()
                 case GsConstant.GET:
                     gsParamsPairData.httpMethod = GsConstant.GET
-                    gsParamsPairData.params = params
+                    gsParamsPairData.params = domainProperties == null ? params : castFromDomainSwaggerMap(params, domainProperties)
                     return gsParamsPairData.initFilteredGrailsParams()
             }
         }
         return gsParamsPairData
     }
+
+    static def castFromDomainSwaggerMap(Map params, LinkedHashMap<String, GsDomainProperty> domainProperties) {
+        GsDomainProperty gsDomainProperty
+        params.each { String key, def value ->
+            if (domainProperties.containsKey(key)){
+                gsDomainProperty =  domainProperties.get(key)
+                params[key] = GsReflectionUtil.castToGSObject(gsDomainProperty.swaggerDataType, value)
+            }
+        }
+        if (params.containsKey(GsConstant.PROPERTY_NAME) && params.containsKey(GsConstant.PROPERTY_VALUE)) {
+            String fieldName = params[GsConstant.PROPERTY_NAME]
+            if (domainProperties.containsKey(fieldName)){
+                gsDomainProperty =  domainProperties.get(fieldName)
+                params[GsConstant.PROPERTY_VALUE] = GsReflectionUtil.castToGSObject(gsDomainProperty.swaggerDataType, params[GsConstant.PROPERTY_VALUE])
+            }
+        }
+        return params
+    }
+
 
     public GsFilteredData resolveFilterData(GsParamsPairData paramsPairData, GsDataFilterOrganizer gsDataFilter) {
         GsFilteredData gsFilterData = new GsFilteredData()
@@ -221,12 +241,22 @@ class GsFilterResolver {
     }
 
     public GsFilteredData resolve(GsApiActionDefinition definition, GrailsParameterMap params){
-        GsParamsPairData paramsPairData = getParamsPair(params)
+        GsParamsPairData paramsPairData = getParamsPair(params, definition.gsDomain.domainProperties)
         GsFilteredData gsFilteredData = resolveFilterData(paramsPairData, definition)
+        gsFilteredData.gsParamsPairData = paramsPairData
         validateWhereAllowedCondition(gsFilteredData.where, definition)
         gsFilteredData.whereClosure = resolveWhereClosure(gsFilteredData.where, definition)
         return gsFilteredData
     }
+
+
+
+
+
+
+
+
+
 
 
     public SwaggerProperty resolveSwaggerDefinition(GsApiActionDefinition gsApiActionDefinition, String inType, SwaggerProperty swaggerProperty = null) {
