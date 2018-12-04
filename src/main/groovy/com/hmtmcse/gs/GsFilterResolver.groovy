@@ -80,7 +80,7 @@ class GsFilterResolver {
     }
 
     public Closure resolveWhereClosure(GsWhereData whereData, GsDataFilterOrganizer gsDataFilter) throws GsValidationException {
-        if (whereData == null || gsDataFilter.whereAllowedPropertyMap.size() == 0) {
+        if (whereData == null) {
             return {}
         }
 

@@ -182,9 +182,6 @@ class SwaggerUIGeneratorService {
             message = "Please Use Http Request for "
         }
 
-
-
-
         if (!gsApiActionDefinition.summary) {
             gsApiActionDefinition.summary = GsUtil.makeHumReadble(message + gsAction.name)
         }
