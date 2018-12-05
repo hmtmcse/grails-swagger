@@ -34,7 +34,7 @@ class GsConfigHolder {
 
     public static Map javaToSwaggerDataType = [
             "java.lang.Integer" : SwaggerConstant.SWAGGER_DT_INTEGER,
-            "java.lang.Long" : SwaggerConstant.SWAGGER_DT_INTEGER_64,
+            "java.lang.Long" : SwaggerConstant.SWAGGER_DT_LONG,
             "java.lang.String" : SwaggerConstant.SWAGGER_DT_STRING,
             "java.util.Date" : SwaggerConstant.SWAGGER_DT_STRING_DATE,
             "java.lang.Double" : SwaggerConstant.SWAGGER_DT_DOUBLE,

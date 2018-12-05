@@ -206,6 +206,29 @@ class SwaggerUIGeneratorService {
             swaggerProperty.property(field.name, field.dataType)
             if (field.format) {
                 swaggerProperty.format(field.format)
+            }else{
+                switch (field.dataType){
+                    case SwaggerConstant.SWAGGER_DT_LONG:
+                        field.dataType = SwaggerConstant.SWAGGER_DT_INTEGER
+                        field.format = SwaggerConstant.SWAGGER_FM_INT64
+                        break
+                    case SwaggerConstant.SWAGGER_DT_INTEGER:
+                        field.dataType = SwaggerConstant.SWAGGER_DT_INTEGER
+                        field.format = SwaggerConstant.SWAGGER_FM_INT32
+                        break
+                    case SwaggerConstant.SWAGGER_DT_FLOAT:
+                        field.dataType = SwaggerConstant.SWAGGER_DT_NUMBER
+                        field.format = SwaggerConstant.SWAGGER_FM_FLOAT
+                        break
+                    case SwaggerConstant.SWAGGER_DT_DOUBLE:
+                        field.dataType = SwaggerConstant.SWAGGER_DT_NUMBER
+                        field.format = SwaggerConstant.SWAGGER_FM_DOUBLE
+                        break
+                    case SwaggerConstant.SWAGGER_DT_STRING_DATE:
+                        field.dataType = SwaggerConstant.SWAGGER_DT_STRING
+                        field.format = SwaggerConstant.SWAGGER_FM_DATE
+                        break
+                }
             }
 
             if (field.relationalEntity) {
