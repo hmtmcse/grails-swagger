@@ -29,6 +29,7 @@ class GsConfigHolder {
     public static String invalidFieldDataDefaultMessage = "Invalid/Missing Field Or Data"
     public static String requestedConditionEmptyDefaultMessage = "Requested Condition Empty"
     public static String unAuthorizeFieldOrCondition = "You are Request for Unauthorized %s Name %s"
+    public static String invalidListParams = "Invalid List"
 
 
 
@@ -109,6 +110,10 @@ class GsConfigHolder {
 
     static String unauthorizedFieldOrCondition(String name, String type = "field") {
         return String.format(unAuthorizeFieldOrCondition, type, name)
+    }
+
+    static String invalidList() {
+        return invalidListParams
     }
 
 }

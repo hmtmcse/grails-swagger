@@ -3,6 +3,7 @@ package com.hmtmcse.gs
 import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.gs.model.CustomRequestParamProcessor
+import com.hmtmcse.swagger.definition.SwaggerConstant
 
 class GsRequestValidator {
 
@@ -74,6 +75,12 @@ class GsRequestValidator {
 
             if (param == null && requestProperty.defaultValue != null) {
                 param = requestProperty.defaultValue
+            }
+
+            if (requestProperty.dataType && requestProperty.dataType.startsWith("ARRAY_") && !(param instanceof List)){
+                gsInternalResponse.addRequestValidationError(requestedKey,GsConfigHolder.invalidList())
+                gsInternalResponse.isSuccess = false
+                return
             }
 
             if (param != null && requestProperty.isTypeCast) {
