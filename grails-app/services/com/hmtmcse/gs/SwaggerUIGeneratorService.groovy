@@ -203,11 +203,8 @@ class SwaggerUIGeneratorService {
                 field.dataType = SwaggerConstant.SWAGGER_DT_STRING
             }
 
-            swaggerProperty.property(field.name, field.dataType)
-            if (field.format) {
-                swaggerProperty.format(field.format)
-            }else{
-                switch (field.dataType){
+            if (!field.format) {
+                switch (field.dataType) {
                     case SwaggerConstant.SWAGGER_DT_LONG:
                         field.dataType = SwaggerConstant.SWAGGER_DT_INTEGER
                         field.format = SwaggerConstant.SWAGGER_FM_INT64
@@ -230,6 +227,10 @@ class SwaggerUIGeneratorService {
                         break
                 }
             }
+
+            swaggerProperty.property(field.name, field.dataType)
+            swaggerProperty.format(field.format)
+
 
             if (field.relationalEntity) {
                 swaggerProperty.objectProperty(name, requestPropertiesProcessor(field.relationalEntity.requestProperties, inType))
