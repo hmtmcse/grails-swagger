@@ -1,9 +1,6 @@
 package com.hmtmcse.swagger.definition;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public class SwaggerProperty {
 
@@ -40,14 +37,26 @@ public class SwaggerProperty {
         return this;
     }
 
-    public SwaggerProperty arrayPropertyList(String name, String type, Object example){
+    public SwaggerProperty arrayPropertyList(String name, String type, Object example) {
+        return arrayPropertyList(name, type, example, null);
+    }
+
+    public SwaggerProperty arrayPropertyList(String name, String type, Object example, String format) {
         this.name = name;
+
+        LinkedHashMap<Object, Object> swaggerMap = SwaggerMap.object().setGet("type", type);
+        if (example != null) {
+            swaggerMap.put("example", example);
+        }
+
+        if (format != null) {
+            swaggerMap.put("format", format);
+        }
+
         definition.put(name,
                 SwaggerMap.object()
                         .set("type", SwaggerConstant.SWAGGER_DT_ARRAY)
-                        .setGet("items", SwaggerMap.object()
-                                .set("type", type).setGet("example", example)
-                        ));
+                        .setGet("items", swaggerMap));
         return this;
     }
 

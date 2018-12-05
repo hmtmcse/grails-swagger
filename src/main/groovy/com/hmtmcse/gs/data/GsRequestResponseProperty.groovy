@@ -6,7 +6,7 @@ class GsRequestResponseProperty {
     public String name
     public String alias = null
     public String dataType = null
-    public String example = null
+    public Object example = null
     public String format = null
     public String description = null
     public String defaultValue = ""
@@ -24,7 +24,7 @@ class GsRequestResponseProperty {
         return dataType
     }
 
-    String getExample() {
+    Object getExample() {
         return example
     }
 

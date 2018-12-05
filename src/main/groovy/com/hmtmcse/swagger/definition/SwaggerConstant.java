@@ -30,6 +30,11 @@ public class SwaggerConstant {
     public final static String SWAGGER_DT_DOUBLE = "double";
     public final static String SWAGGER_DT_FLOAT = "float";
 
+    public final static String SWAGGER_DT_ARRAY_STRING = "ARRAY_STRING";
+    public final static String SWAGGER_DT_ARRAY_INTEGER = "ARRAY_INTEGER";
+    public final static String SWAGGER_DT_ARRAY_DOUBLE = "ARRAY_DOUBLE";
+    public final static String SWAGGER_DT_ARRAY_LONG = "ARRAY_LONG";
+
     // Swagger Data Types Format
     public final static String SWAGGER_FM_INT64 = "int64";
     public final static String SWAGGER_FM_INT32 = "int32";

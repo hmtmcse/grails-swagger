@@ -227,7 +227,24 @@ class SwaggerUIGeneratorService {
         }
 
         swaggerProperty.property(field.name, field.dataType)
-        swaggerProperty.format(field.format)
+        if (field.format){
+            swaggerProperty.format(field.format)
+        }
+
+        switch (field.dataType) {
+            case SwaggerConstant.SWAGGER_DT_ARRAY_STRING:
+                swaggerProperty.arrayPropertyList(field.name, SwaggerConstant.SWAGGER_DT_STRING, field.example)
+                break
+            case SwaggerConstant.SWAGGER_DT_ARRAY_INTEGER:
+                swaggerProperty.arrayPropertyList(field.name, SwaggerConstant.SWAGGER_DT_INTEGER, field.example)
+                break
+            case SwaggerConstant.SWAGGER_DT_ARRAY_DOUBLE:
+                swaggerProperty.arrayPropertyList(field.name, SwaggerConstant.SWAGGER_DT_NUMBER, field.example, SwaggerConstant.SWAGGER_FM_DOUBLE)
+                break
+            case SwaggerConstant.SWAGGER_DT_ARRAY_LONG:
+                swaggerProperty.arrayPropertyList(field.name, SwaggerConstant.SWAGGER_DT_NUMBER, field.example, SwaggerConstant.SWAGGER_FM_INT64)
+                break
+        }
 
         if (field.example) {
             swaggerProperty.example(field.example)
@@ -243,7 +260,6 @@ class SwaggerUIGeneratorService {
 
         if (field instanceof GsApiRequestProperty){
             if (field.isRequired){
-                println(field.name + " " + inType)
                 swaggerProperty.required()
             }
         }

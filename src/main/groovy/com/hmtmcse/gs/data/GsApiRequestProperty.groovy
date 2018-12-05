@@ -67,7 +67,7 @@ class GsApiRequestProperty extends GsRequestResponseProperty {
         return this
     }
 
-    GsApiRequestProperty setExample(String example) {
+    GsApiRequestProperty setExample(Object example) {
         super.example = example
         return this
     }
