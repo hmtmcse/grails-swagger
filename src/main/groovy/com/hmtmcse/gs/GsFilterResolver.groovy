@@ -78,7 +78,7 @@ class GsFilterResolver {
                 gsFilterData.where.equal.put(gsFilterData.propertyName.toString(), gsFilterData.propertyValue)
             }
         } else {
-            if (paramsPairData.httpMethod.equals(GsConstant.POST) && paramsPairData.params && paramsPairData.params.where) {
+            if (!paramsPairData.httpMethod.equals(GsConstant.GET) && paramsPairData.params && paramsPairData.params.where) {
                 ObjectMapper objectMapper = new ObjectMapper()
                 objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 try {
