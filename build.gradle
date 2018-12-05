@@ -10,14 +10,14 @@ buildscript {
 }
 
 version "0.1"
-group "grails.swagger"
+group "com.hmtmcse.gs"
 
-apply plugin:"eclipse"
 apply plugin:"idea"
 apply plugin:"org.grails.grails-plugin"
 apply plugin:"org.grails.grails-plugin-publish"
 apply plugin:"asset-pipeline"
 apply plugin:"org.grails.grails-gsp"
+apply plugin: 'com.jfrog.bintray'
 
 repositories {
     mavenLocal()
@@ -66,16 +66,30 @@ bootRun {
 // enable if you wish to package this plugin as a standalone application
 bootRepackage.enabled = false
 grailsPublish {
-    // TODO: Provide values here
-    user = 'user'
-    key = 'key'
-    githubSlug = 'foo/bar'
+    user = ''
+    key = ''
+    githubSlug = 'hmtmcse/grails-swagger'
     license {
-        name = 'Apache-2.0'
+        name = 'MIT'
     }
-    title = "My Plugin"
+    title = "Grails Swagger"
     desc = "Full plugin description"
-    developers = [johndoe:"John Doe"]
+    developers = [hmtmcse:"H.M.Touhid Mia (HMTMCSE)"]
+}
+
+bintray {
+    publications = ['maven']
+    publish = true
+    pkg {
+        userOrg = 'Grails'
+        name = "$project.name"
+        issueTrackerUrl = "https://github.com/hmtmcse/grails-swagger/issues"
+        vcsUrl = "https://github.com/hmtmcse/grails-swagger"
+        version {
+            attributes = ['grails-plugin': "$project.group:$project.name"]
+            name = project.version
+        }
+    }
 }
 
 
