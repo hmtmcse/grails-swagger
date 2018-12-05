@@ -34,11 +34,6 @@ class GsApiRequestProperty extends GsRequestResponseProperty {
         return this
     }
 
-    void setIsRequired(Boolean isRequired) {
-        this.isRequired = isRequired
-    }
-
-
     String getErrorMessage() {
         return errorMessage
     }

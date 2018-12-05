@@ -102,7 +102,7 @@ class SwaggerUIGeneratorService {
         }
         String successResponseDefinition = "${SwaggerConstant.SUCCESS_RESPONSE}${gsApiActionDefinition.modelDefinition}"
         if (gsApiActionDefinition.successResponseFormat.response != null){
-            SwaggerProperty swaggerProperty = responsePropertiesProcessor(gsApiActionDefinition.getResponseProperties(), null, gsApiActionDefinition.domainFields())
+            SwaggerProperty swaggerProperty = responsePropertiesProcessor(gsApiActionDefinition.getResponseProperties(), SwaggerConstant.IN_BODY)
             SwaggerProperty successResponse = GsApiResponseData.swaggerResponseProperty(gsApiActionDefinition.successResponseFormat)
 
             if (gsApiActionDefinition.successResponseFormat.response instanceof  List){
@@ -192,190 +192,88 @@ class SwaggerUIGeneratorService {
         }
 
         return swaggerPath
+    }
 
+
+    SwaggerProperty requestResponseToSwaggerProperties(GsRequestResponseProperty field, SwaggerProperty swaggerProperty, String inType){
+
+        if (field.dataType == null || field.dataType.equals("")) {
+            field.dataType = SwaggerConstant.SWAGGER_DT_STRING
+        }
+
+        if (!field.format) {
+            switch (field.dataType) {
+                case SwaggerConstant.SWAGGER_DT_LONG:
+                    field.dataType = SwaggerConstant.SWAGGER_DT_INTEGER
+                    field.format = SwaggerConstant.SWAGGER_FM_INT64
+                    break
+                case SwaggerConstant.SWAGGER_DT_INTEGER:
+                    field.dataType = SwaggerConstant.SWAGGER_DT_INTEGER
+                    field.format = SwaggerConstant.SWAGGER_FM_INT32
+                    break
+                case SwaggerConstant.SWAGGER_DT_FLOAT:
+                    field.dataType = SwaggerConstant.SWAGGER_DT_NUMBER
+                    field.format = SwaggerConstant.SWAGGER_FM_FLOAT
+                    break
+                case SwaggerConstant.SWAGGER_DT_DOUBLE:
+                    field.dataType = SwaggerConstant.SWAGGER_DT_NUMBER
+                    field.format = SwaggerConstant.SWAGGER_FM_DOUBLE
+                    break
+                case SwaggerConstant.SWAGGER_DT_STRING_DATE:
+                    field.dataType = SwaggerConstant.SWAGGER_DT_STRING
+                    field.format = SwaggerConstant.SWAGGER_FM_DATE
+                    break
+            }
+        }
+
+        swaggerProperty.property(field.name, field.dataType)
+        swaggerProperty.format(field.format)
+
+        if (field.example) {
+            swaggerProperty.example(field.example)
+        }
+
+        if (field.description) {
+            swaggerProperty.description(field.description)
+        }
+
+        if (inType) {
+            swaggerProperty.in(inType)
+        }
+
+        if (field instanceof GsApiRequestProperty){
+            if (field.isRequired){
+                println(field.name + " " + inType)
+                swaggerProperty.required()
+            }
+        }
+        return swaggerProperty
     }
 
     SwaggerProperty requestPropertiesProcessor(LinkedHashMap<String, GsApiRequestProperty> requestPropertyMap, String inType) {
         SwaggerProperty swaggerProperty = new SwaggerProperty()
         requestPropertyMap.each { String name, GsApiRequestProperty field ->
-
-            if (field.dataType == null || field.dataType.equals("")) {
-                field.dataType = SwaggerConstant.SWAGGER_DT_STRING
-            }
-
-            if (!field.format) {
-                switch (field.dataType) {
-                    case SwaggerConstant.SWAGGER_DT_LONG:
-                        field.dataType = SwaggerConstant.SWAGGER_DT_INTEGER
-                        field.format = SwaggerConstant.SWAGGER_FM_INT64
-                        break
-                    case SwaggerConstant.SWAGGER_DT_INTEGER:
-                        field.dataType = SwaggerConstant.SWAGGER_DT_INTEGER
-                        field.format = SwaggerConstant.SWAGGER_FM_INT32
-                        break
-                    case SwaggerConstant.SWAGGER_DT_FLOAT:
-                        field.dataType = SwaggerConstant.SWAGGER_DT_NUMBER
-                        field.format = SwaggerConstant.SWAGGER_FM_FLOAT
-                        break
-                    case SwaggerConstant.SWAGGER_DT_DOUBLE:
-                        field.dataType = SwaggerConstant.SWAGGER_DT_NUMBER
-                        field.format = SwaggerConstant.SWAGGER_FM_DOUBLE
-                        break
-                    case SwaggerConstant.SWAGGER_DT_STRING_DATE:
-                        field.dataType = SwaggerConstant.SWAGGER_DT_STRING
-                        field.format = SwaggerConstant.SWAGGER_FM_DATE
-                        break
-                }
-            }
-
-            swaggerProperty.property(field.name, field.dataType)
-            swaggerProperty.format(field.format)
-
-
+            swaggerProperty = requestResponseToSwaggerProperties(field, swaggerProperty, inType)
             if (field.relationalEntity) {
                 swaggerProperty.objectProperty(name, requestPropertiesProcessor(field.relationalEntity.requestProperties, inType))
             }
-
-            if (field.example) {
-                swaggerProperty.example(field.example)
-            }
-
-            if (field.description) {
-                swaggerProperty.description(field.description)
-            }
-
-            if (inType) {
-                swaggerProperty.in(inType)
-            }
-
-            if (inType && inType.equals(SwaggerConstant.IN_QUERY) && field.isRequired){
-                swaggerProperty.required()
-            }
-
             swaggerProperty.addToList()
         }
         return swaggerProperty
     }
 
 
-
-    SwaggerProperty propertiesProcessor(Map<String, GsRequestResponseProperty> responsePropertyMap, String inType, Map domainFields) {
-        SwaggerProperty swaggerProperty = new SwaggerProperty()
-        responsePropertyMap.each { String name, GsRequestResponseProperty field ->
-            if (field.referenceDefinition) {
-
-            } else {
-                if (field.dataType == null || field.dataType.equals("")) {
-                    field.dataType = SwaggerConstant.SWAGGER_DT_STRING
-                    if (domainFields.get(field.name)) {
-                        field.dataType = domainFields.get(field.name)
-                    }
-                }
-                swaggerProperty.property(field.name, field.dataType)
-                if (field.format) {
-                    swaggerProperty.format(field.format)
-                }
-            }
-
-
-            if (field.example) {
-                swaggerProperty.example(field.example)
-            }
-
-            if (field.description) {
-                swaggerProperty.description(field.description)
-            }
-
-            if (inType) {
-                swaggerProperty.in(inType)
-            }
-            swaggerProperty.addToList()
-        }
-        return swaggerProperty
-    }
-
-
-
-    SwaggerProperty responsePropertiesProcessor(LinkedHashMap<String, GsApiResponseProperty> responsePropertyMap, String inType, Map domainFields) {
+    SwaggerProperty responsePropertiesProcessor(LinkedHashMap<String, GsApiResponseProperty> responsePropertyMap, String inType) {
         SwaggerProperty swaggerProperty = new SwaggerProperty()
         responsePropertyMap.each { String name, GsApiResponseProperty field ->
-            if (field.referenceDefinition) {
-
-            } else {
-                if (field.dataType == null || field.dataType.equals("")) {
-                    field.dataType = SwaggerConstant.SWAGGER_DT_STRING
-                    if (domainFields.get(field.name)) {
-                        field.dataType = domainFields.get(field.name)
-                    }
-                }
-                swaggerProperty.property(field.name, field.dataType)
-                if (field.format) {
-                    swaggerProperty.format(field.format)
-                }
-            }
-
+            swaggerProperty = requestResponseToSwaggerProperties(field, swaggerProperty, inType)
             if (field.relationalEntity) {
-                swaggerProperty.objectProperty(name, responsePropertiesProcessor(field.relationalEntity.responseProperties, inType, domainFields[name]))
-            }
-
-            if (field.example) {
-                swaggerProperty.example(field.example)
-            }
-
-            if (field.description) {
-                swaggerProperty.description(field.description)
-            }
-
-            if (inType) {
-                swaggerProperty.in(inType)
+                swaggerProperty.objectProperty(name, responsePropertiesProcessor(field.relationalEntity.responseProperties, inType))
             }
             swaggerProperty.addToList()
         }
         return swaggerProperty
     }
-
-
-    SwaggerProperty requestPropertiesProcessor(LinkedHashMap<String, GsApiRequestProperty> requestPropertyMap, String inType, Map domainFields) {
-        SwaggerProperty swaggerProperty = new SwaggerProperty()
-        requestPropertyMap.each { String name, GsApiRequestProperty field ->
-            if (field.referenceDefinition) {
-
-            } else {
-                if (field.dataType == null || field.dataType.equals("")) {
-                    field.dataType = SwaggerConstant.SWAGGER_DT_STRING
-                    if (domainFields.get(field.name)) {
-                        field.dataType = domainFields.get(field.name)
-                    }
-                }
-                swaggerProperty.property(field.name, field.dataType)
-                if (field.format) {
-                    swaggerProperty.format(field.format)
-                }
-            }
-
-            if (field.relationalEntity) {
-                swaggerProperty.objectProperty(name, requestPropertiesProcessor(field.relationalEntity.requestProperties, inType, domainFields[name]))
-            }
-
-            if (field.example) {
-                swaggerProperty.example(field.example)
-            }
-
-            if (field.description) {
-                swaggerProperty.description(field.description)
-            }
-
-            if (inType) {
-                swaggerProperty.in(inType)
-            }
-            swaggerProperty.addToList()
-        }
-        return swaggerProperty
-    }
-
-
-
-
 
     void startSwagger(String host, String basePath){
         swaggerDefinition = new SwaggerDefinition()
@@ -383,8 +281,6 @@ class SwaggerUIGeneratorService {
         swaggerDefinition.basePath("/" + basePath)
         swaggerDefinition.scheme("http")
     }
-
-
 
     void addToDefinition(String name, String type, SwaggerProperty swaggerProperty){
         swaggerDefinition.addDefinition(name, type).addProperties(swaggerProperty)
