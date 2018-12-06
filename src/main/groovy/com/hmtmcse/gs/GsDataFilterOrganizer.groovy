@@ -34,7 +34,7 @@ trait GsDataFilterOrganizer<T> {
     }
 
     public T disableQueryFilter(){
-        this.enableQueryFilter = true
+        this.enableQueryFilter = false
         return this as T
     }
 
