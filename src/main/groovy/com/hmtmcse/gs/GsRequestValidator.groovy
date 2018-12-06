@@ -87,14 +87,8 @@ class GsRequestValidator {
                 param = GsReflectionUtil.castToGSObject(requestProperty.dataType, param)
             }
 
-            if (param == null) {
-                gsInternalResponse.addRequestValidationError(requestedKey, GsConfigHolder.requiredFieldMissing())
-                gsInternalResponse.isSuccess = false
-                return
-            }
             gsInternalResponse.response[fieldName] = param
         }
-
         return gsInternalResponse
     }
 
