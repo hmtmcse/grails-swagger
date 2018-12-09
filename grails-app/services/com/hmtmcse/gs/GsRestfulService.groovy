@@ -257,7 +257,23 @@ class GsRestfulService {
 
 
     GsApiResponseData responseToApi(GsApiActionDefinition definition, def queryResult, def defaultResponse = [:]) {
-        return GsApiResponseData.successResponse(responseMapGenerator(definition.getResponseProperties(), queryResult, defaultResponse))
+        if (definition.failedResponseFormat == null) {
+            definition.failedResponseFormat = GsConfigHolder.defaultFailedResponse
+        }
+        if (queryResult){
+            return GsApiResponseData.successResponse(responseMapGenerator(definition.getResponseProperties(), queryResult, defaultResponse))
+        }
+        return definition.failedResponseFormat
+    }
+
+    GsApiResponseData responseMessageToApi(GsApiActionDefinition definition, Boolean isSuccess) {
+        if (definition.failedResponseFormat == null) {
+            definition.failedResponseFormat = GsConfigHolder.defaultFailedResponse
+        }
+        if (definition.successResponseFormat == null) {
+            definition.successResponseFormat = GsConfigHolder.defaultSuccessResponse
+        }
+        return isSuccess ? definition.successResponseFormat : definition.failedResponseFormat
     }
 
 
