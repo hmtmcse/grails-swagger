@@ -33,10 +33,6 @@ class GsApiResponseProperty extends GsRequestResponseProperty {
     }
 
 
-    String getMapKey() {
-        return alias != null ? alias : name
-    }
-
     List<GsApiResponseProperty> getHasMany() {
         return hasMany
     }

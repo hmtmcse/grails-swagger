@@ -39,4 +39,8 @@ class GsRequestResponseProperty {
     String getDefaultValue() {
         return defaultValue
     }
+
+    String getMapKey() {
+        return alias != null ? alias : name
+    }
 }
