@@ -226,23 +226,24 @@ class SwaggerUIGeneratorService {
             }
         }
 
-        swaggerProperty.property(field.name, field.dataType)
+        String keyName = field.getMapKey()
+        swaggerProperty.property(keyName, field.dataType)
         if (field.format){
             swaggerProperty.format(field.format)
         }
 
         switch (field.dataType) {
             case SwaggerConstant.SWAGGER_DT_ARRAY_STRING:
-                swaggerProperty.arrayPropertyList(field.name, SwaggerConstant.SWAGGER_DT_STRING, field.example)
+                swaggerProperty.arrayPropertyList(keyName, SwaggerConstant.SWAGGER_DT_STRING, field.example)
                 break
             case SwaggerConstant.SWAGGER_DT_ARRAY_INTEGER:
-                swaggerProperty.arrayPropertyList(field.name, SwaggerConstant.SWAGGER_DT_INTEGER, field.example)
+                swaggerProperty.arrayPropertyList(keyName, SwaggerConstant.SWAGGER_DT_INTEGER, field.example)
                 break
             case SwaggerConstant.SWAGGER_DT_ARRAY_DOUBLE:
-                swaggerProperty.arrayPropertyList(field.name, SwaggerConstant.SWAGGER_DT_NUMBER, field.example, SwaggerConstant.SWAGGER_FM_DOUBLE)
+                swaggerProperty.arrayPropertyList(keyName, SwaggerConstant.SWAGGER_DT_NUMBER, field.example, SwaggerConstant.SWAGGER_FM_DOUBLE)
                 break
             case SwaggerConstant.SWAGGER_DT_ARRAY_LONG:
-                swaggerProperty.arrayPropertyList(field.name, SwaggerConstant.SWAGGER_DT_NUMBER, field.example, SwaggerConstant.SWAGGER_FM_INT64)
+                swaggerProperty.arrayPropertyList(keyName, SwaggerConstant.SWAGGER_DT_NUMBER, field.example, SwaggerConstant.SWAGGER_FM_INT64)
                 break
         }
 
