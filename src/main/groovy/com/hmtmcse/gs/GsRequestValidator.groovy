@@ -77,7 +77,7 @@ class GsRequestValidator {
                 param = requestProperty.defaultValue
             }
 
-            if (requestProperty.dataType && requestProperty.dataType.startsWith("ARRAY_") && !(param instanceof List)){
+            if (param != null && requestProperty.dataType && requestProperty.dataType.startsWith("ARRAY_") && !(param instanceof List)){
                 gsInternalResponse.addRequestValidationError(requestedKey,GsConfigHolder.invalidList())
                 gsInternalResponse.isSuccess = false
                 return
