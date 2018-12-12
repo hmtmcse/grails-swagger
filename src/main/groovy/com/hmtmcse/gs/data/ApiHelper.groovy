@@ -6,6 +6,7 @@ class ApiHelper {
 
     GsRestfulService help
     GsApiResponseData response = new GsApiResponseData()
+    GsFilteredData gsFilteredData
 
     GsRestfulService getHelp() {
         return help
@@ -21,5 +22,13 @@ class ApiHelper {
 
     void setResponse(GsApiResponseData response) {
         this.response = response
+    }
+
+    GsFilteredData getGsFilteredData() {
+        return gsFilteredData
+    }
+
+    void setGsFilteredData(GsFilteredData gsFilteredData) {
+        this.gsFilteredData = gsFilteredData
     }
 }
