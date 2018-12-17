@@ -26,6 +26,10 @@ class GsRestProcessor implements GsExceptionHandler {
         return "list${returnFor}"(definition)
     }
 
+    def listOnly(GsApiActionDefinition definition){
+        return "list${returnFor}"(definition)
+    }
+
 
     private detailsForApi(GsApiActionDefinition definition){
         return render(gsRestfulService.gsDetails(definition, params) as JSON)
@@ -39,6 +43,10 @@ class GsRestProcessor implements GsExceptionHandler {
         definition.allowedConditionEqualAndOr()
         definition.disablePaginationAndSorting()
         definition.enableQueryFilter()
+        return "details${returnFor}"(definition)
+    }
+
+    def detailsOnly(GsApiActionDefinition definition){
         return "details${returnFor}"(definition)
     }
 
@@ -75,6 +83,10 @@ class GsRestProcessor implements GsExceptionHandler {
         return "update${returnFor}"(definition)
     }
 
+    def updateOnly(GsApiActionDefinition definition){
+        return "update${returnFor}"(definition)
+    }
+
 
     private deleteForApi(GsApiActionDefinition definition){
         return render(gsRestfulService.gsDelete(definition, params) as JSON)
@@ -88,6 +100,10 @@ class GsRestProcessor implements GsExceptionHandler {
         definition.allowedConditionEqualAndOr()
         definition.disablePaginationAndSorting()
         definition.enableQueryFilter()
+        return "delete${returnFor}"(definition)
+    }
+
+    def deleteOnly(GsApiActionDefinition definition){
         return "delete${returnFor}"(definition)
     }
 
