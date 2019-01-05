@@ -1,5 +1,6 @@
 package com.hmtmcse.gs
 
+import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsDomain
 import com.hmtmcse.gs.data.GsDomainProperty
 import com.hmtmcse.swagger.definition.SwaggerConstant
@@ -145,21 +146,21 @@ class GsReflectionUtil {
     }
 
 
-    private static def castDate(String dateTime) {
+    private static def castDate(String dateTime, GsApiRequestProperty requestProperty) {
+        String format = GsConfigHolder.defaultDateParseFormat()
         try {
-            return Date.parse('dd-MM-yyyy H:m:s', dateTime)
-        } catch (Exception e) {
-            try {
-                return Date.parse('dd-MM-yyyy', dateTime)
-            } catch (Exception ex) {
-                println("Expected format is dd-MM-yyyy H:m:s / dd-MM-yyyy")
-                println("Unable to cast date time: " + e.getMessage())
+            if (requestProperty){
+                format = requestProperty.dateFormat
             }
+            return Date.parse(format, dateTime)
+        } catch (Exception e) {
+            println("Expected format is " + format)
+            println("Unable to cast date time: " + e.getMessage())
         }
         return dateTime
     }
 
-    public static def castToGSObject(String dataType, def data) {
+    public static def castToGSObject(String dataType, def data, GsApiRequestProperty requestProperty = null) {
         switch (dataType) {
             case SwaggerConstant.SWAGGER_DT_BOOLEAN:
                 return data?.toBoolean()
@@ -175,7 +176,7 @@ class GsReflectionUtil {
             case SwaggerConstant.SWAGGER_DT_ARRAY_DOUBLE:
                 return data*.toDouble()
             case SwaggerConstant.SWAGGER_FM_DATE:
-                return castDate(data)
+                return castDate(data, requestProperty)
         }
         return data
     }

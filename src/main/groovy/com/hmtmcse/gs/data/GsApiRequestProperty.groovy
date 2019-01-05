@@ -1,5 +1,6 @@
 package com.hmtmcse.gs.data
 
+import com.hmtmcse.gs.GsConfigHolder
 import com.hmtmcse.gs.GsRelationalEntityRequest
 import com.hmtmcse.gs.model.CustomRequestParamProcessor
 
@@ -8,6 +9,7 @@ class GsApiRequestProperty extends GsRequestResponseProperty {
     public Boolean isRequired = false
     public String errorMessage = null
     public String helpText = null
+    public String dateFormat = GsConfigHolder.defaultDateParseFormat()
     public GsRelationalEntityRequest relationalEntity = null
     public Boolean isTypeCast = false
     public String defaultValue = null
@@ -31,6 +33,11 @@ class GsApiRequestProperty extends GsRequestResponseProperty {
 
     GsApiRequestProperty required() {
         this.isRequired = true
+        return this
+    }
+
+    GsApiRequestProperty setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat
         return this
     }
 

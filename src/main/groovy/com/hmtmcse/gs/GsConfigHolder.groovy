@@ -30,6 +30,7 @@ class GsConfigHolder {
     public static String requestedConditionEmptyDefaultMessage = "Requested Condition Empty"
     public static String unAuthorizeFieldOrCondition = "You are Request for Unauthorized %s Name %s"
     public static String invalidListParams = "Invalid List"
+    public static String defaultDateFormat = "dd-MM-yyyy"
 
 
 
@@ -66,6 +67,10 @@ class GsConfigHolder {
 
     static String controllerStartWith() {
         return controllerStartWithDefault
+    }
+
+    static String defaultDateParseFormat() {
+        return defaultDateFormat
     }
 
     public static String getUID(){
