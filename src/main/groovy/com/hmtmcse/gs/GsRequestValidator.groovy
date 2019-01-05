@@ -39,7 +39,7 @@ class GsRequestValidator {
             param = GsUtil.getMapValue(requestProperty.getRequestedKey(), params)
             requestedKey = requestProperty.getRequestedKey()
             if (requestProperty.isRequired && param == null) {
-                gsInternalResponse.addRequestValidationError(requestedKey, GsConfigHolder.requiredFieldMissing())
+                gsInternalResponse.addRequestValidationError(requestedKey, (requestProperty.errorMessage != null ? requestProperty.errorMessage : GsConfigHolder.requiredFieldMissing()))
                 gsInternalResponse.isSuccess = false
                 return
             }
@@ -78,7 +78,7 @@ class GsRequestValidator {
             }
 
             if (param != null && requestProperty.dataType && requestProperty.dataType.startsWith("ARRAY_") && !(param instanceof List)){
-                gsInternalResponse.addRequestValidationError(requestedKey,GsConfigHolder.invalidList())
+                gsInternalResponse.addRequestValidationError(requestedKey, (requestProperty.errorMessage != null ? requestProperty.errorMessage : GsConfigHolder.invalidList()))
                 gsInternalResponse.isSuccess = false
                 return
             }

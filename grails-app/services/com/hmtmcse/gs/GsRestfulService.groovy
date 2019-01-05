@@ -1,6 +1,7 @@
 package com.hmtmcse.gs
 
 import com.hmtmcse.gs.data.ApiHelper
+import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsApiResponseData
 import com.hmtmcse.gs.data.GsApiResponseProperty
 import com.hmtmcse.gs.data.GsFilteredData
@@ -102,12 +103,16 @@ class GsRestfulService {
     }
 
 
-    private GsInternalResponse saveUpdate(Object domain, Map params) {
+    private GsInternalResponse saveUpdate(Object domain, Map params, GsApiActionDefinition definition = null) {
         GsInternalResponse gsInternalResponse = GsInternalResponse.instance()
         domain.properties = params
         domain.validate()
         if (domain.hasErrors()) {
-            return gsInternalResponse.processDomainError(domain.errors.allErrors)
+            LinkedHashMap<String, GsApiRequestProperty> requestMap = null
+            if (definition){
+                requestMap = definition.getRequestProperties()
+            }
+            return gsInternalResponse.processDomainError(domain.errors.allErrors, requestMap)
         } else {
             gsInternalResponse.domain = domain.save(flush: true)
         }
@@ -129,7 +134,7 @@ class GsRestfulService {
     def saveUpdateProcessor(GsApiActionDefinition definition, GrailsParameterMap params, def domain) {
         GsInternalResponse gsInternalResponse = filterAndValidateRequest(definition, params)
         if (gsInternalResponse.isSuccess) {
-            gsInternalResponse = saveUpdate(domain, gsInternalResponse.filteredParams)
+            gsInternalResponse = saveUpdate(domain, gsInternalResponse.filteredParams, definition)
         }
 
         if (definition.successResponseFormat == null) {

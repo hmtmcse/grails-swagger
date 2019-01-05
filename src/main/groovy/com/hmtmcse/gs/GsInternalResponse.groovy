@@ -1,5 +1,6 @@
 package com.hmtmcse.gs
 
+import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsFilteredData
 import com.hmtmcse.gs.data.GsParamsPairData
 import org.springframework.validation.FieldError
@@ -80,9 +81,16 @@ class GsInternalResponse {
         return addErrorDetail(fieldName, message)
     }
 
-    GsInternalResponse processDomainError(List errors){
+    private getErrorMessage(LinkedHashMap<String, GsApiRequestProperty> requestMap, String fieldName){
+        if (requestMap && requestMap.get(fieldName)){
+           return requestMap.get(fieldName).errorMessage ?: GsConfigHolder.invalidFieldData()
+        }
+        return GsConfigHolder.invalidFieldData()
+    }
+
+    GsInternalResponse processDomainError(List errors, LinkedHashMap<String, GsApiRequestProperty> requestMap = null){
         errors?.each { FieldError fieldError ->
-            addErrorDetail(fieldError.field, GsConfigHolder.invalidFieldData())
+            addErrorDetail(fieldError.field, getErrorMessage(requestMap, fieldError.field))
         }
         return this
     }
