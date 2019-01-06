@@ -13,7 +13,6 @@ class GsRequestValidator {
         if (internalResponse.isSuccess) {
             gsParamsPairData.params = internalResponse.response
             internalResponse.gsParamsPairData = gsParamsPairData.initFilteredGrailsParams()
-            internalResponse.filteredParams = internalResponse.response
         }
         return internalResponse
     }

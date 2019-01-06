@@ -20,5 +20,8 @@ class GsParamsPairData {
         return this
     }
 
+    public addToParams(String key, Object value){
+        rawParams[key] = filteredGrailsParameterMap[key] = params[key] = value
+    }
 
 }

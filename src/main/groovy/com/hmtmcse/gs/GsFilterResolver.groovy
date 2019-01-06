@@ -250,23 +250,23 @@ class GsFilterResolver {
         }
     }
 
-    public GsFilteredData resolve(GsApiActionDefinition definition, GrailsParameterMap params){
-        GsParamsPairData paramsPairData = getParamsPair(params, definition.gsDomain.domainProperties)
-        GsFilteredData gsFilteredData = resolveFilterData(paramsPairData, definition)
-        gsFilteredData.gsParamsPairData = paramsPairData
-        validateWhereAllowedCondition(gsFilteredData.where, definition)
-        gsFilteredData.whereClosure = resolveWhereClosure(gsFilteredData.where, definition)
+    public static GsFilteredData resolveRequestPreProcessor(GsApiActionDefinition definition, GsFilteredData gsFilteredData){
+        if (definition.requestPreProcessor != null){
+            gsFilteredData = definition.requestPreProcessor.process(gsFilteredData)
+        }
         return gsFilteredData
     }
 
 
-
-
-
-
-
-
-
+    public GsFilteredData resolve(GsApiActionDefinition definition, GrailsParameterMap params) {
+        GsParamsPairData paramsPairData = getParamsPair(params, definition.gsDomain.domainProperties)
+        GsFilteredData gsFilteredData = resolveFilterData(paramsPairData, definition)
+        gsFilteredData.gsParamsPairData = paramsPairData
+        validateWhereAllowedCondition(gsFilteredData.where, definition)
+        gsFilteredData = resolveRequestPreProcessor(definition, gsFilteredData)
+        gsFilteredData.whereClosure = resolveWhereClosure(gsFilteredData.where, definition)
+        return gsFilteredData
+    }
 
 
     public SwaggerProperty resolveSwaggerDefinition(GsApiActionDefinition gsApiActionDefinition, String inType, SwaggerProperty swaggerProperty = null) {

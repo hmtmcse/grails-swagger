@@ -9,7 +9,6 @@ class GsInternalResponse {
 
     String message = null
     List errorDetails = []
-    Map filteredParams = [:]
     Integer code = null
     Closure where = null
     Boolean isSuccess = false
@@ -49,10 +48,6 @@ class GsInternalResponse {
         return new GsInternalResponse()
     }
 
-     GsInternalResponse params(String key, Object value){
-         filteredParams.put(key, value)
-        return this
-    }
 
     GsInternalResponse setGsParamsPairData(GsParamsPairData gsParamsPairData) {
         this.gsParamsPairData = gsParamsPairData

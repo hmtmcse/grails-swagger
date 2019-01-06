@@ -127,14 +127,18 @@ class GsRestfulService {
     GsInternalResponse filterAndValidateRequest(GsApiActionDefinition definition, GrailsParameterMap params) {
         GsFilteredData gsFilteredData = GsFilterResolver.instance().resolve(definition, params)
         GsRequestValidator gsRequestValidator = GsRequestValidator.instance()
-        return gsRequestValidator.validate(gsFilteredData.gsParamsPairData, definition).setGsFilteredData(gsFilteredData)
+        GsInternalResponse gsInternalResponse = gsRequestValidator.validate(gsFilteredData.gsParamsPairData, definition).setGsFilteredData(gsFilteredData)
+        gsFilteredData.gsParamsPairData = gsInternalResponse.gsParamsPairData
+        gsFilteredData = GsFilterResolver.resolveRequestPreProcessor(definition, gsFilteredData)
+        gsInternalResponse.gsParamsPairData = gsFilteredData.gsParamsPairData
+        return gsInternalResponse
     }
 
 
     def saveUpdateProcessor(GsApiActionDefinition definition, GrailsParameterMap params, def domain) {
         GsInternalResponse gsInternalResponse = filterAndValidateRequest(definition, params)
         if (gsInternalResponse.isSuccess) {
-            gsInternalResponse = saveUpdate(domain, gsInternalResponse.filteredParams, definition)
+            gsInternalResponse = saveUpdate(domain, gsInternalResponse.gsParamsPairData.params, definition)
         }
 
         if (definition.successResponseFormat == null) {
