@@ -128,9 +128,11 @@ class GsRestfulService {
         GsFilteredData gsFilteredData = GsFilterResolver.instance().resolve(definition, params)
         GsRequestValidator gsRequestValidator = GsRequestValidator.instance()
         GsInternalResponse gsInternalResponse = gsRequestValidator.validate(gsFilteredData.gsParamsPairData, definition).setGsFilteredData(gsFilteredData)
-        gsFilteredData.gsParamsPairData = gsInternalResponse.gsParamsPairData
-        gsFilteredData = GsFilterResolver.resolveRequestPreProcessor(definition, gsFilteredData)
-        gsInternalResponse.gsParamsPairData = gsFilteredData.gsParamsPairData
+        if (gsInternalResponse.isSuccess) {
+            gsFilteredData.gsParamsPairData = gsInternalResponse.gsParamsPairData
+            gsFilteredData = GsFilterResolver.resolveRequestPreProcessor(definition, gsFilteredData)
+            gsInternalResponse.gsParamsPairData = gsFilteredData.gsParamsPairData
+        }
         return gsInternalResponse
     }
 
