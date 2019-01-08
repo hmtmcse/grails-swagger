@@ -44,6 +44,7 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
     }
 
 
+
     public Map domainFields() {
         return GsReflectionUtil.getDomainToSwaggerDataType(this.domain)
     }
@@ -59,6 +60,15 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
     }
 
 
+    public GsApiActionDefinition<T> copyRequestResponse(GsApiActionDefinition gsApiActionDefinition) {
+        gsApiActionDefinition.getRequestProperties().each { String fieldName, GsApiRequestProperty gsApiRequestProperty ->
+            includeInRequest(fieldName, gsApiRequestProperty)
+        }
+        gsApiActionDefinition.getResponseProperties().each { String fieldName, GsApiResponseProperty gsApiResponseProperty ->
+            includeInResponse(fieldName, gsApiResponseProperty)
+        }
+        return this
+    }
 
     @Override
     LinkedHashMap<String, GsApiResponseProperty> getResponseProperties() {

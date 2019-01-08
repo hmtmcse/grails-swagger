@@ -20,6 +20,10 @@ trait GsResponseOrganizer<T> {
         return this as T
     }
 
+    public T includeInResponse(String fieldName, GsApiResponseProperty gsApiResponseProperty) {
+        responseProperties.put(fieldName, gsApiResponseProperty)
+        return this as T
+    }
 
     public T excludeFromResponse(List<String> fields) {
         fields?.each { String field ->

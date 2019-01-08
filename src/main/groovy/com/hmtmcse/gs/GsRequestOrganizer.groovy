@@ -19,6 +19,10 @@ trait GsRequestOrganizer<T>  {
         return this as T
     }
 
+    public T includeInRequest(String fieldName, GsApiRequestProperty gsApiRequestProperty) {
+        requestProperties.put(fieldName, gsApiRequestProperty)
+        return this as T
+    }
 
     public GsApiRequestProperty addRequestProperty(String name, String dataType = null, String defaultValue = "") {
         dataType = (dataType != null ? dataType : gsDomain.domainProperties.get(name)?.swaggerDataType)
