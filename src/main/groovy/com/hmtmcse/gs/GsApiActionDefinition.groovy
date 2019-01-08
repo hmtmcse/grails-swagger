@@ -70,6 +70,14 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
         return this
     }
 
+
+    public GsApiActionDefinition<T> copyToRelationalRequestResponse(String relationalEntityName, GsApiActionDefinition gsApiActionDefinition, String alias = null) {
+        addResponseProperty(relationalEntityName).setAlias(alias).relationalEntity = new GsRelationalEntityResponse()
+        this.responseProperties.get(relationalEntityName).relationalEntity.setResponseProperties(gsApiActionDefinition.getResponseProperties())
+        return this
+    }
+
+
     @Override
     LinkedHashMap<String, GsApiResponseProperty> getResponseProperties() {
         return this.responseProperties
