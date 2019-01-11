@@ -30,6 +30,7 @@ class GsUtil {
             }
             params.gsHttpRequestMethod = request.method
         }catch(Exception e){
+            println(GsConfigHolder.unableToParseJSON + ". Error: " + e.getMessage())
             return false
         }
         return true

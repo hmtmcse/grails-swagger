@@ -15,7 +15,7 @@ class GsApiInterceptor {
 
     boolean before() {
         if (!GsUtil.setJsonToParams(request, params)){
-            render(GsApiResponseData.failed(GsConfigHolder.failedMessage()).toMap() as JSON)
+            render(GsApiResponseData.failed(GsConfigHolder.unableToParseJSON).toMap() as JSON)
             return false
         }
         return true

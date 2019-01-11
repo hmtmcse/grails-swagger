@@ -22,6 +22,7 @@ class GsConfigHolder {
     public static String controllerCustomUrlRegexDefault = "(site|admin)([A-Z]\\w+)"
 
     public static String defaultFailedMessage = "Unable to Process Request"
+    public static String unableToParseJSON = "Unable To Parse JSON"
     public static String invalidRequestDefaultMessage = "Invalid API Request"
     public static String invalidRequestTypeDefaultMessage = "Invalid API Request Type"
     public static String multipleMatchInDetailsDefaultMessage = "If Multiple Match Found then will return first one"
