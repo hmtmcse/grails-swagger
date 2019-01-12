@@ -271,7 +271,7 @@ class GsRestfulService {
         if (definition.failedResponseFormat == null) {
             definition.failedResponseFormat = GsConfigHolder.defaultFailedResponse
         }
-        if (queryResult){
+        if (queryResult != null){
             return GsApiResponseData.successResponse(responseMapGenerator(definition.getResponseProperties(), queryResult, defaultResponse))
         }
         return definition.failedResponseFormat
