@@ -15,7 +15,6 @@ class GsApiRequestProperty extends GsRequestResponseProperty {
     public String defaultValue = null
     public CustomRequestParamProcessor customRequestParamProcessor = null
 
-
     GsApiRequestProperty() {}
 
     GsApiRequestProperty(String name, String alias) {
@@ -112,5 +111,14 @@ class GsApiRequestProperty extends GsRequestResponseProperty {
     @Override
     String getDefaultValue() {
         return defaultValue
+    }
+
+    LinkedHashMap<String, Object> getPropertyMap() {
+        return super.propertyMap
+    }
+
+    GsApiRequestProperty setPropertyMap(LinkedHashMap<String, Object> propertyMap) {
+        super.propertyMap = propertyMap
+        return this
     }
 }

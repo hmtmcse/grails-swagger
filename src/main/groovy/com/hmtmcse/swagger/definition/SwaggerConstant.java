@@ -34,6 +34,7 @@ public class SwaggerConstant {
     public final static String SWAGGER_DT_ARRAY_INTEGER = "ARRAY_INTEGER";
     public final static String SWAGGER_DT_ARRAY_DOUBLE = "ARRAY_DOUBLE";
     public final static String SWAGGER_DT_ARRAY_LONG = "ARRAY_LONG";
+    public final static String SWAGGER_DT_ARRAY_MAP = "ARRAY_MAP";
 
     // Swagger Data Types Format
     public final static String SWAGGER_FM_INT64 = "int64";

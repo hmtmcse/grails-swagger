@@ -245,6 +245,9 @@ class SwaggerUIGeneratorService {
             case SwaggerConstant.SWAGGER_DT_ARRAY_LONG:
                 swaggerProperty.arrayPropertyList(keyName, SwaggerConstant.SWAGGER_DT_NUMBER, field.example, SwaggerConstant.SWAGGER_FM_INT64)
                 break
+            case SwaggerConstant.SWAGGER_DT_ARRAY_MAP:
+                swaggerProperty.arrayPropertyMap(keyName, field.propertyMap)
+                break
         }
 
         if (field.example) {

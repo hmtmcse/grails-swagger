@@ -11,6 +11,7 @@ class GsRequestResponseProperty {
     public String description = null
     public String defaultValue = ""
     public String referenceDefinition = null
+    public LinkedHashMap<String, Object> propertyMap = [:]
 
     String getName() {
         return name

@@ -27,13 +27,19 @@ public class SwaggerProperty {
     }
 
     public SwaggerProperty arrayProperty(String name, SwaggerProperty swaggerProperty){
+        arrayPropertyMap(name, swaggerProperty.getDefinition());
+        return this;
+    }
+
+
+    public SwaggerProperty arrayPropertyMap(String name, LinkedHashMap map){
         this.name = name;
         definition.put(name,
                 SwaggerMap.object()
                         .set("type", SwaggerConstant.SWAGGER_DT_ARRAY)
                         .setGet("items", SwaggerMap.object()
-                                .set("type", SwaggerConstant.SWAGGER_DT_OBJECT).setGet("properties", swaggerProperty.getDefinition())
-        ));
+                                .set("type", SwaggerConstant.SWAGGER_DT_OBJECT).setGet("properties", map)
+                        ));
         return this;
     }
 
