@@ -109,8 +109,11 @@ class GsFilterResolver {
         return gsFilterData
     }
 
-    public Closure resolveWhereClosure(GsWhereData whereData, GsDataFilterOrganizer gsDataFilter) throws GsValidationException {
+    public Closure resolveWhereClosure(GsWhereData whereData, GsDataFilterOrganizer gsDataFilter, Closure additionalWhereClosure = null) throws GsValidationException {
         if (whereData == null) {
+            if (additionalWhereClosure){
+                return additionalWhereClosure
+            }
             return {}
         }
 
@@ -236,7 +239,15 @@ class GsFilterResolver {
                 }
             }
             resolveAllCriteria.call(whereData)
+        }.with {
+            if (additionalWhereClosure){
+                additionalWhereClosure.call()
+            }else{
+                return it
+            }
         }
+
+
         return criteria
     }
 
@@ -252,7 +263,7 @@ class GsFilterResolver {
 
     public static GsFilteredData resolveRequestPreProcessor(GsApiActionDefinition definition, GsFilteredData gsFilteredData){
         if (definition.requestPreProcessor != null){
-            gsFilteredData = definition.requestPreProcessor.process(gsFilteredData)
+            gsFilteredData = definition.requestPreProcessor.process(definition, gsFilteredData)
         }
         return gsFilteredData
     }
@@ -264,7 +275,7 @@ class GsFilterResolver {
         gsFilteredData.gsParamsPairData = paramsPairData
         validateWhereAllowedCondition(gsFilteredData.where, definition)
         gsFilteredData = resolveRequestPreProcessor(definition, gsFilteredData)
-        gsFilteredData.whereClosure = resolveWhereClosure(gsFilteredData.where, definition)
+        gsFilteredData.whereClosure = resolveWhereClosure(gsFilteredData.where, definition, gsFilteredData.additionalWhereClosure)
         return gsFilteredData
     }
 

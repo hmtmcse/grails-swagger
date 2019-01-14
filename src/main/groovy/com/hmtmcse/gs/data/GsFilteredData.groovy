@@ -11,6 +11,7 @@ class GsFilteredData {
     public GsParamsPairData gsParamsPairData
     public GsWhereData where = new GsWhereData()
     public Closure whereClosure
+    public Closure additionalWhereClosure = null
     public Map offsetMaxSort = [:]
 
 }

@@ -17,4 +17,39 @@ class GsWhereData {
     public GsWhereData and = null
     public GsWhereData or = null
 
+
+    public GsWhereData addEqual(String field, Object data) {
+        equal.put(field, data)
+        return this
+    }
+
+    public GsWhereData addNotEqual(String field, Object data) {
+        notEqual.put(field, data)
+        return this
+    }
+
+
+    public GsWhereData addLessThan(String field, Object data) {
+        lessThan.put(field, data)
+        return this
+    }
+
+
+    public GsWhereData addLessThanEqual(String field, Object data) {
+        lessThanEqual.put(field, data)
+        return this
+    }
+
+
+    public GsWhereData addGreaterThan(String field, Object data) {
+        greaterThan.put(field, data)
+        return this
+    }
+
+
+    public GsWhereData addGreaterThanEqual(String field, Object data) {
+        greaterThanEqual.put(field, data)
+        return this
+    }
+
 }
