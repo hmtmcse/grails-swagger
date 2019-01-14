@@ -83,7 +83,7 @@ class GsRequestValidator {
             }
 
             if (param != null && requestProperty.isTypeCast) {
-                param = GsReflectionUtil.castToGSObject(requestProperty.dataType, param)
+                param = GsReflectionUtil.castToGSObject(requestProperty.dataType, param, requestProperty)
             }
 
             gsInternalResponse.response[fieldName] = param
