@@ -10,6 +10,8 @@ class GsExceptionParser {
                 throw new GrailsSwaggerException("The Query did not return a unique result")
             case  "java.lang.NumberFormatException":
                 throw new GrailsSwaggerException(GsConfigHolder.invalidFieldData())
+            case  "java.lang.ClassCastException":
+                throw new GrailsSwaggerException(GsConfigHolder.unableToCastValue)
             default:
                 throw new GrailsSwaggerException(GsConfigHolder.failedMessage())
         }
