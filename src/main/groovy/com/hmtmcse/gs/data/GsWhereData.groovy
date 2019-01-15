@@ -23,6 +23,25 @@ class GsWhereData {
         return this
     }
 
+    public GsWhereData addInList(String field, List<Object> list) {
+        if (inList.get(field) != null){
+            inList.get(field).addAll(list)
+        }else{
+            inList.put(field, list)
+        }
+        return this
+    }
+
+    public GsWhereData addAnd() {
+        and = and ?: new GsWhereData()
+        return and
+    }
+
+    public GsWhereData addOr() {
+        or = or ?: new GsWhereData()
+        return or
+    }
+
     public GsWhereData addNotEqual(String field, Object data) {
         notEqual.put(field, data)
         return this
