@@ -196,6 +196,25 @@ class GsFilterResolver {
                     }
                 }
 
+
+                where.isNull.each { String fieldName ->
+                    whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(fieldName)
+                    if (whereFilterProperty) {
+                        isNull(fieldName)
+                    } else {
+                        throw new GsValidationException(GsConfigHolder.unauthorizedFieldOrCondition(fieldName))
+                    }
+                }
+
+                where.isNotNull.each { String fieldName ->
+                    whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(fieldName)
+                    if (whereFilterProperty) {
+                        isNotNull(fieldName)
+                    } else {
+                        throw new GsValidationException(GsConfigHolder.unauthorizedFieldOrCondition(fieldName))
+                    }
+                }
+
                 where.between.each { String key, Object value ->
                     whereFilterProperty = gsDataFilter.whereAllowedPropertyMap.get(key)
                     if (whereFilterProperty && where.between.get(key)) {

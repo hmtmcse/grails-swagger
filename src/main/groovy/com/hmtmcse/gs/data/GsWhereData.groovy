@@ -14,6 +14,8 @@ class GsWhereData {
     public Boolean count = false
     public LinkedHashMap<String, List<Object>> inList  = []
     public List<Object> select = []
+    public List<String> isNull = []
+    public List<String> isNotNull = []
     public GsWhereData and = null
     public GsWhereData or = null
 
@@ -40,6 +42,16 @@ class GsWhereData {
     public GsWhereData addOr() {
         or = or ?: new GsWhereData()
         return or
+    }
+
+    public GsWhereData addIsNull(String field) {
+        isNull.add(field)
+        return this
+    }
+
+    public GsWhereData addIsNotNull(String field) {
+        isNotNull.add(field)
+        return this
     }
 
     public GsWhereData addNotEqual(String field, Object data) {
