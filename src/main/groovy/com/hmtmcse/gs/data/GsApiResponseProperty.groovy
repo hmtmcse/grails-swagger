@@ -41,4 +41,13 @@ class GsApiResponseProperty extends GsRequestResponseProperty {
         super.dataType = dataType
         return this
     }
+
+    LinkedHashMap<String, Object> getPropertyMap() {
+        return super.propertyMap
+    }
+
+    GsApiResponseProperty setPropertyMap(LinkedHashMap<String, Object> propertyMap) {
+        super.propertyMap = propertyMap
+        return this
+    }
 }
