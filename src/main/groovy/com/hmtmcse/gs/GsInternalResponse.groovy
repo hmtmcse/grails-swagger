@@ -7,16 +7,17 @@ import org.springframework.validation.FieldError
 
 class GsInternalResponse {
 
-    String message = null
-    List errorDetails = []
+    public String message = null
+    public Boolean isSuccess = false
+    public Object response = null
+    public Object queryResult = null
+    public List errorDetails = []
+    public Integer total = null
+    public Boolean isExist = null
+    public Integer count = null
     Integer code = null
     Closure where = null
-    Boolean isSuccess = false
     Object domain = null
-    Object response = null
-    Integer total = null
-    Integer count = null
-    Boolean isExist = null
     String tempData = null
     GsParamsPairData gsParamsPairData = null
     GsFilteredData gsFilteredData = null

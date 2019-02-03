@@ -133,6 +133,13 @@ class GsApiResponseData {
 
     static Map processAPIResponse(GsApiActionDefinition gsApiActionDefinition, GsInternalResponse gsInternalResponse) {
         GsApiResponseData gsApiResponseData
+        if (gsApiActionDefinition.responsePostProcessor){
+            GsResponsePostData responsePostData = new GsResponsePostData(gsInternalResponse.isSuccess, gsInternalResponse.response, gsInternalResponse.queryResult)
+            responsePostData = gsApiActionDefinition.responsePostProcessor.process(gsApiActionDefinition, responsePostData)
+            gsInternalResponse.isSuccess = responsePostData.isSuccess
+            gsInternalResponse.response = responsePostData.response
+            gsInternalResponse.message = responsePostData.message
+        }
         if (gsInternalResponse.isSuccess) {
             gsApiResponseData = gsApiActionDefinition.successResponseFormat ?: GsConfigHolder.defaultSuccessResponse
             gsApiResponseData.isSuccess = true

@@ -8,6 +8,7 @@ import com.hmtmcse.gs.data.GsDomain
 import com.hmtmcse.gs.data.GsWhereFilterProperty
 import com.hmtmcse.gs.model.CustomProcessor
 import com.hmtmcse.gs.model.RequestPreProcessor
+import com.hmtmcse.gs.model.ResponsePostProcessor
 
 
 class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinition>, GsRequestOrganizer<GsApiActionDefinition>, GsDataFilterOrganizer<GsApiActionDefinition> {
@@ -31,6 +32,7 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
     public LinkedHashMap<String, GsWhereFilterProperty> whereAllowedPropertyMap = [:]
     public GsDomain gsDomain = new GsDomain()
     public RequestPreProcessor requestPreProcessor = null
+    public ResponsePostProcessor responsePostProcessor = null
 
 
     public GsApiActionDefinition() {

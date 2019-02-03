@@ -30,6 +30,7 @@ class GsRestfulService {
 
             responseData.isSuccess = true
             def queryResult = definition.domain.createCriteria().list(filteredData.offsetMaxSort, filteredData.whereClosure)
+            responseData.queryResult = queryResult
             responseData.total = (queryResult ? queryResult.totalCount : 0)
             responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult, [])
             if (definition.successResponseFormat == null) {
@@ -51,6 +52,7 @@ class GsRestfulService {
         GsInternalResponse responseData = GsInternalResponse.instance()
         try {
             def queryResult = readGetByCondition(definition, params)
+            responseData.queryResult = queryResult
             responseData.isSuccess = true
             responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult)
             if (definition.successResponseFormat == null) {
@@ -115,6 +117,7 @@ class GsRestfulService {
             return gsInternalResponse.processDomainError(domain.errors.allErrors, requestMap)
         } else {
             gsInternalResponse.domain = domain.save(flush: true)
+            gsInternalResponse.queryResult = gsInternalResponse.domain
         }
         return gsInternalResponse.setIsSuccess(true)
     }
@@ -166,6 +169,7 @@ class GsRestfulService {
         GsInternalResponse responseData = GsInternalResponse.instance()
         try {
             def queryResult = countByCondition(definition, params)
+            responseData.queryResult = queryResult
             responseData.isSuccess = true
             responseData.response = [count: queryResult]
             definition.successResponseFormat = GsApiResponseData.successResponse([])
@@ -217,6 +221,7 @@ class GsRestfulService {
         GsInternalResponse responseData = GsInternalResponse.instance()
         try {
             def queryResult = readGetByCondition(definition, params)
+            responseData.queryResult = queryResult
             if (queryResult == null) {
                 responseData.message = GsConfigHolder.requestedConditionEmpty()
             } else {
@@ -234,6 +239,7 @@ class GsRestfulService {
         GsInternalResponse responseData = GsInternalResponse.instance()
         try {
             def queryResult = readGetByCondition(definition, params)
+            responseData.queryResult = queryResult
             if (queryResult == null) {
                 responseData.message = GsConfigHolder.requestedConditionEmpty()
             } else {
