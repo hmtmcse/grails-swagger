@@ -20,6 +20,11 @@ class GsWhereData {
     public GsWhereData or = null
 
 
+    public GsWhereData addOrderBy(String field, Object data) {
+        order.put(field, data)
+        return this
+    }
+
     public GsWhereData addEqual(String field, Object data) {
         equal.put(field, data)
         return this
