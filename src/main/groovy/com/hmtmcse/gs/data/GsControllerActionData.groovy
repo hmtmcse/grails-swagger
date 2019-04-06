@@ -7,6 +7,7 @@ class GsControllerActionData {
     public String controllerName
     public String controllerRealName
     public String controllerUrlName
+    public String packageName
     public String apiVersion
     public String url
     public String relativeURL
