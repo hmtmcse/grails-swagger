@@ -21,15 +21,21 @@ class GsRestfulService {
         }
     }
 
-
     def readListProcessor(GsApiActionDefinition definition, GrailsParameterMap params) {
+        Closure closure = { GsFilteredData filteredData ->
+            return definition.domain.createCriteria().list(filteredData.offsetMaxSort, filteredData.whereClosure)
+        }
+        return readListProcessWithClosure(definition, params, closure)
+    }
+
+
+    def readListProcessWithClosure(GsApiActionDefinition definition, GrailsParameterMap params, Closure closure) {
         GsInternalResponse responseData = GsInternalResponse.instance()
         try {
             GsFilterResolver gsFilterResolver = new GsFilterResolver()
             GsFilteredData filteredData = gsFilterResolver.resolve(definition, params)
-
             responseData.isSuccess = true
-            def queryResult = definition.domain.createCriteria().list(filteredData.offsetMaxSort, filteredData.whereClosure)
+            def queryResult = closure(filteredData)
             responseData.queryResult = queryResult
             responseData.total = (queryResult ? queryResult.totalCount : 0)
             responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult, [])
