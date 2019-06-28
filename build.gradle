@@ -22,9 +22,12 @@ apply plugin: 'com.jfrog.bintray'
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
+    maven { url "https://raw.github.com/hmtmcse/maven-repository/master" }
 }
 
 dependencies {
+
+    compile group: 'com.hmtmcse', name: 'java-crypto-and-auth', version: '1.0'
 
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.7'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.7'

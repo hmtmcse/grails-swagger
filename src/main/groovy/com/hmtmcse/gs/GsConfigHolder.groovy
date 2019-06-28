@@ -12,6 +12,8 @@ class GsConfigHolder {
     public static String swaggerDefinitionUrl = "http://localhost:8080/swaggerUi/definition"
 
 
+    public static String JWT_HMAC_SECRET = "Th1sIsjWtTokenSecRet123@"
+
     public static Integer defaultItemsPerPage = 20
     public static String defaultSortColumn = "id"
     public static String defaultSortOrder = "desc"
