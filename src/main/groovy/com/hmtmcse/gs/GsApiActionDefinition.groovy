@@ -52,7 +52,7 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
     }
 
 
-    public static GsApiActionDefinition instance(Class<T> domain) {
+    public static GsApiActionDefinition instance(Class<?> domain) {
         return new GsApiActionDefinition(domain)
     }
 
