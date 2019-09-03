@@ -60,18 +60,14 @@ dependencies {
 }
 
 bootRun {
-    jvmArgs(
-            '-Dspring.output.ansi.enabled=always',
-            '-noverify',
-            '-XX:TieredStopAtLevel=1',
-            '-Xmx1024m')
-    sourceResources sourceSets.main
+    jvmArgs('-Dspring.output.ansi.enabled=always')
+    addResources = true
     String springProfilesActive = 'spring.profiles.active'
     systemProperty springProfilesActive, System.getProperty(springProfilesActive)
 }
 
 // enable if you wish to package this plugin as a standalone application
-bootJar.enabled = false
+bootRepackage.enabled = false
 grailsPublish {
     user = ''
     key = ''
