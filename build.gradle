@@ -1,3 +1,5 @@
+apply from: "gradle/asciidoc.gradle"
+
 buildscript {
     repositories {
         mavenLocal()
@@ -7,6 +9,7 @@ buildscript {
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.0.10"
+        classpath "org.asciidoctor:asciidoctor-gradle-jvm:2.3.0"
     }
 }
 
@@ -20,6 +23,7 @@ apply plugin:"org.grails.grails-plugin-publish"
 apply plugin:"asset-pipeline"
 apply plugin:"org.grails.grails-gsp"
 apply plugin: 'com.jfrog.bintray'
+
 
 repositories {
     mavenLocal()

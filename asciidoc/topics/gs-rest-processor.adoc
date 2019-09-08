@@ -1,0 +1,11 @@
+
+1. list
+2. listOnly
+3. details
+4. detailsOnly
+5. create
+6. update
+7. updateOnly
+8. delete
+9. count
+10. customProcessor
