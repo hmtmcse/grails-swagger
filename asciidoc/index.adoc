@@ -31,3 +31,12 @@ include::topics/gs-api-response-property.adoc[]
 {blank} +
 
 include::topics/configuration.adoc[]
+
+
+{blank} +
+
+include::topics/custom-processors.adoc[]
+
+{blank} +
+
+include::topics/criteria-builder.adoc[]

@@ -1,0 +1,95 @@
+= Configurations
+
+
+{blank} +
+
+=== GsConfigHolder Properties
+
+[cols="3, 5, 3"]
+|===
+|Name |Description | Default value
+
+| String hostnameWithPort
+| 
+| localhost:8080
+
+| String swaggerDefinitionUrl 
+| 
+| http://localhost:8080/swaggerUi/definition
+
+| Integer defaultItemsPerPage
+| 
+| 20
+
+| String defaultSortColumn 
+| 
+| id
+
+| String defaultSortOrder 
+| 
+| desc
+
+| String defaultResponseKey 
+| 
+| response
+
+| String controllerStartWithDefault 
+| 
+| Api
+
+
+| String defaultFailedMessage 
+| 
+| Unable to Process Request
+
+| String unableToCastValue 
+| 
+| Unable to Type Cast Value
+
+| String unableToParseJSON 
+| 
+| Unable To Parse JSON
+
+| String invalidRequestDefaultMessage 
+| 
+| Invalid API Request
+
+| String invalidRequestTypeDefaultMessage
+| 
+| Invalid API Request Type
+
+
+| String multipleMatchInDetailsDefaultMessage 
+| 
+| If Multiple Match Found then will return first one
+
+| String requiredFieldMissingDefaultMessage 
+| 
+| Required Field Missing
+
+| String invalidFieldDataDefaultMessage 
+| 
+| Invalid/Missing Field Or Data
+
+| String requestedConditionEmptyDefaultMessage 
+| 
+| Requested Condition Empty
+
+| String unAuthorizeFieldOrCondition 
+| 
+| You are Request for Unauthorized %s Name %s
+
+| String invalidListParams 
+| 
+| Invalid List
+
+| String defaultDateFormat
+| 
+| dd-MM-yyyy
+
+| String controllerCustomUrlRegexDefault 
+| 
+| (site\|admin)([A-Z]\\w+)}
+
+
+|===
