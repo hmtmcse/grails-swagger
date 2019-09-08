@@ -1,4 +1,21 @@
 
+== Controller Method Conventions
+
+GET ::
+For *HTTP GET* Request action must start with **__get__**MethodName
+
+POST ::
+For *HTTP POST* Request action must start with **__post__**MethodName
+
+PUT ::
+For *HTTP PUT* Request action must start with **__put__**MethodName
+
+DELETE ::
+For *HTTP DELETE* Request action must start with **__delete__**MethodName
+
+
+
+
 1. list
 2. listOnly
 3. details

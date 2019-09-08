@@ -21,9 +21,12 @@ asciidoctorj {
     version = '2.1.0'
 }
 
+
+def docSource = 'asciidoc'
+def docHtml = 'docs'
 asciidoctor {
-    sourceDir = file('asciidoc')
-    outputDir = file('docs')
+    sourceDir = file(docSource)
+    outputDir = file(docHtml)
     resources {
         from(sourceDir) {
             include 'images/**'
@@ -31,4 +34,20 @@ asciidoctor {
     }
     attributes 'toc': 'left',
             'source-highlighter': 'coderay'
+}
+
+asciidoctor.doLast {
+    copy {
+        from "${docHtml}/html5"
+        into "$docHtml"
+    }
+    delete {
+        delete "${docHtml}/html5"
+    }
+}
+
+asciidoctor.doFirst {
+    delete {
+        delete "$docHtml"
+    }
 }

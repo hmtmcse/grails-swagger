@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>Untitled</title>
+<title>Controller Method Conventions</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -436,10 +436,36 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_controller_method_conventions">Controller Method Conventions</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
+<div class="sect1">
+<h2 id="_controller_method_conventions">Controller Method Conventions</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">GET </dt>
+<dd>
+<p>For <strong>HTTP GET</strong> Request action must start with <strong><em>get</em></strong>MethodName</p>
+</dd>
+<dt class="hdlist1">POST </dt>
+<dd>
+<p>For <strong>HTTP POST</strong> Request action must start with <strong><em>post</em></strong>MethodName</p>
+</dd>
+<dt class="hdlist1">PUT </dt>
+<dd>
+<p>For <strong>HTTP PUT</strong> Request action must start with <strong><em>put</em></strong>MethodName</p>
+</dd>
+<dt class="hdlist1">DELETE </dt>
+<dd>
+<p>For <strong>HTTP DELETE</strong> Request action must start with <strong><em>delete</em></strong>MethodName</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -474,11 +500,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ol>
 </div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.1<br>
-Last updated 2019-09-08 21:57:41 +0600
+Last updated 2019-09-08 22:14:51 +0600
 </div>
 </div>
 </body>

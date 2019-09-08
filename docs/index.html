@@ -447,7 +447,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel0">
-<li><a href="#_request_response_example">Request &amp; Response Example</a></li>
+<li><a href="#_request_response_example">Request &amp; Response Example</a>
+<ul class="sectlevel1">
+<li><a href="#_controller_method_conventions">Controller Method Conventions</a></li>
+</ul>
+</li>
 <li><a href="#_api_action_definition">API Action Definition</a></li>
 <li><a href="#_api_request_property">API Request Property</a></li>
 <li><a href="#_api_response_property">API Response Property</a></li>
@@ -479,6 +483,26 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <h1 id="_request_response_example" class="sect0">Request &amp; Response Example</h1>
+<div class="sect1">
+<h2 id="_controller_method_conventions">Controller Method Conventions</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">GET </dt>
+<dd>
+<p>For <strong>HTTP GET</strong> Request action must start with <strong><em>get</em></strong>MethodName</p>
+</dd>
+<dt class="hdlist1">POST </dt>
+<dd>
+<p>For <strong>HTTP POST</strong> Request action must start with <strong><em>post</em></strong>MethodName</p>
+</dd>
+<dt class="hdlist1">PUT </dt>
+<dd>
+<p>For <strong>HTTP PUT</strong> Request action must start with <strong><em>put</em></strong>MethodName</p>
+</dd>
+<dt class="hdlist1">DELETE </dt>
+<dd>
+<p>For <strong>HTTP DELETE</strong> Request action must start with <strong><em>delete</em></strong>MethodName</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -512,6 +536,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>customProcessor</p>
 </li>
 </ol>
+</div>
+</dd>
+</dl>
+</div>
+</div>
 </div>
 <h1 id="_api_action_definition" class="sect0">API Action Definition</h1>
 
