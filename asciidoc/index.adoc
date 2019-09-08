@@ -1,17 +1,33 @@
 = Grails Swagger 1.0.0
-H.M.Touhid Mia v1.0.0, 2019-10-01
+H.M.Touhid Mia
 :toc:
 
 
+{blank} +
 
 include::topics/intro.adoc[]
 
+{blank} +
+
 include::topics/request-response-example.adoc[]
+
+{blank} +
 
 include::topics/gs-rest-processor.adoc[]
 
+{blank} +
+
 include::topics/gs-api-action-definition.adoc[]
+
+{blank} +
 
 include::topics/gs-api-request-property.adoc[]
 
+{blank} +
+
 include::topics/gs-api-response-property.adoc[]
+
+
+{blank} +
+
+include::topics/configuration.adoc[]

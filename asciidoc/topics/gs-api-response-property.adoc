@@ -1,1 +1,32 @@
 = API Response Property
+
+
+{blank} +
+
+=== Methods
+
+[cols="2,3,3, 5"]
+|===
+|Method Name |Request Params| Return |Description
+
+| setAlias(String alias)
+| 
+| GsApiResponseProperty
+| 
+
+| setDefaultValue(String defaultValue)
+| 
+| GsApiResponseProperty
+| 
+
+| setDataType(String dataType)
+| 
+| GsApiResponseProperty
+| 
+
+| setPropertyMap(LinkedHashMap<String, Object> propertyMap)
+| 
+| GsApiResponseProperty
+| 
+
+|===

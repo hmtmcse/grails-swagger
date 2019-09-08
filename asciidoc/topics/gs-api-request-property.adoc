@@ -1,1 +1,76 @@
 = API Request Property
+
+=== Methods
+
+[cols="2,3,3, 5"]
+|===
+|Method Name |Request Params| Return |Description
+
+| required()
+| 
+| GsApiRequestProperty
+| 
+
+| setDateFormat(String dateFormat)
+| 
+| GsApiRequestProperty
+| 
+
+| setErrorMessage(String errorMessage)
+| 
+| GsApiRequestProperty
+| 
+
+| setHelpText(String helpText)
+| 
+| GsApiRequestProperty
+| 
+
+| setName(String name)
+| 
+| GsApiRequestProperty
+| 
+
+| setAlias(String alias)
+| 
+| GsApiRequestProperty
+| 
+
+| setDataType(String dataType)
+| 
+| GsApiRequestProperty
+| 
+
+| setExample(Object example)
+| 
+| GsApiRequestProperty
+| 
+
+| setFormat(String format)
+| 
+| GsApiRequestProperty
+| 
+
+| setDescription(String description)
+| 
+| GsApiRequestProperty
+| 
+
+| setDefaultValue(String defaultValue)
+| 
+| GsApiRequestProperty
+| 
+
+
+| enableTypeCast()
+| 
+| GsApiRequestProperty
+| 
+
+| setPropertyMap(LinkedHashMap<String, Object> propertyMap)
+| 
+| GsApiRequestProperty
+| 
+
+
+|===

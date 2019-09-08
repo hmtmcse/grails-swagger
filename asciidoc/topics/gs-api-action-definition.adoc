@@ -1,1 +1,58 @@
 = API Action Definition
+
+
+{blank} +
+
+=== Methods
+
+[cols="2,3,3, 5"]
+|===
+|Method Name |Request Params| Return |Description
+
+| successResponseAsData(def isMapOrList = [:], Integer code = null)
+| 
+| GsApiActionDefinition<T>
+| 
+
+| copyRequestResponse(GsApiActionDefinition gsApiActionDefinition)
+| 
+| GsApiActionDefinition<T>
+| 
+
+| copyToRelationalRequestResponse(String relationalEntityName, GsApiActionDefinition gsApiActionDefinition, String alias = null)
+| 
+| GsApiActionDefinition<T>
+| 
+
+
+| setResponseProperties(LinkedHashMap<String, GsApiResponseProperty> responsePropertyLinkedHashMap)
+| 
+| LinkedHashMap<String, GsApiResponseProperty>
+| 
+
+| setRequestProperties(LinkedHashMap<String, GsApiRequestProperty> requestPropertyLinkedHashMap)
+| 
+| LinkedHashMap<String, GsApiRequestProperty>
+| 
+
+| setWhereAllowedPropertyList(List<GsWhereFilterProperty> list)
+| 
+| List<GsWhereFilterProperty>
+| 
+
+| setWhereAllowedPropertyMap(LinkedHashMap<String, GsWhereFilterProperty> map)
+| 
+| LinkedHashMap<String, GsWhereFilterProperty>
+| 
+
+| setModelDefinition(String apiVersion, String controller, GsAction gsAction)
+| 
+| Void
+| 
+
+| addRelationalEntityResponse(String name, String alias = null, String defaultValue = "")
+| 
+| GsRelationalEntityResponse
+| 
+
+|===

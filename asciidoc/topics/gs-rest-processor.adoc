@@ -1,5 +1,6 @@
+= Rest Processor
 
-== Controller Method Conventions
+=== Controller Method Conventions
 
 GET ::
 For *HTTP GET* Request action must start with **__get__**MethodName
@@ -14,15 +15,79 @@ DELETE ::
 For *HTTP DELETE* Request action must start with **__delete__**MethodName
 
 
+{blank} +
+
+=== Rest Processor Methods
+
+[cols="2,3,3, 5"]
+|===
+|Method Name |Request Params| Return |Description
+
+| create(GsApiActionDefinition definition)
+| GsApiActionDefinition
+| JSON String
+| This Method Help to process create request.
+
+| list(GsApiActionDefinition definition)
+| GsApiActionDefinition
+| JSON String
+| 
 
 
-1. list
-2. listOnly
-3. details
-4. detailsOnly
-5. create
-6. update
-7. updateOnly
-8. delete
-9. count
-10. customProcessor
+| listOnly(GsApiActionDefinition definition)
+| GsApiActionDefinition
+| JSON String
+| 
+
+
+| details(GsApiActionDefinition definition)
+| GsApiActionDefinition
+| JSON String
+| 
+
+
+| detailsOnly(GsApiActionDefinition definition)
+| GsApiActionDefinition
+| JSON String
+| 
+
+
+| update(GsApiActionDefinition definition)
+| GsApiActionDefinition
+| JSON String
+| 
+
+
+| updateOnly(GsApiActionDefinition definition)
+| GsApiActionDefinition
+| JSON String
+| 
+
+
+| delete(GsApiActionDefinition definition)
+| GsApiActionDefinition
+| JSON String
+| 
+
+
+| deleteOnly(GsApiActionDefinition definition)
+| GsApiActionDefinition
+| JSON String
+| 
+
+
+| count(GsApiActionDefinition definition)
+| GsApiActionDefinition
+| JSON String
+| 
+
+
+| customProcessor(GsApiActionDefinition definition)
+| GsApiActionDefinition
+| JSON String
+| 
+
+
+|===
+
+
