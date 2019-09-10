@@ -38,6 +38,8 @@ class GsRestfulService {
             def queryResult = closure(filteredData)
             responseData.queryResult = queryResult
             responseData.total = (queryResult ? queryResult.totalCount : 0)
+            responseData.offset = filteredData.offset
+            responseData.itemPerPage = filteredData.max
             responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult, [])
             if (definition.successResponseFormat == null) {
                 definition.successResponseFormat = GsApiResponseData.successResponseWithTotal([], 0)
@@ -122,7 +124,7 @@ class GsRestfulService {
             }
             return gsInternalResponse.processDomainError(domain.errors.allErrors, requestMap)
         } else {
-            gsInternalResponse.domain = domain.save(flush: true)
+            gsInternalResponse.domain = domain.save()
             gsInternalResponse.queryResult = gsInternalResponse.domain
         }
         return gsInternalResponse.setIsSuccess(true)
@@ -249,7 +251,7 @@ class GsRestfulService {
             if (queryResult == null) {
                 responseData.message = GsConfigHolder.requestedConditionEmpty()
             } else {
-                queryResult.delete(flush: true)
+                queryResult.delete()
                 responseData.isSuccess = true
             }
         } catch (GrailsSwaggerException e) {
