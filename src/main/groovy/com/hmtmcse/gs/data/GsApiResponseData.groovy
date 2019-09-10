@@ -13,6 +13,8 @@ class GsApiResponseData {
     String message = null
     List errorDetails = null
     Integer code = null
+    String status = HTTPConst.SUCCESS_STATUS
+    Integer httpCode = HTTPConst.SUCCESS
     Integer total = null
     Integer count = null
     Boolean isExist = null
