@@ -23,6 +23,10 @@ of are where can put custom codes or processor.
     def issueManagement = [ system: "GitHub", url: "https://github.com/hmtmcse/grails-swagger/issues" ]
     def license = "MIT"
 
-
+    Closure doWithSpring() {
+        { ->
+            gsConfigHolder(GsConfigHolder)
+        }
+    }
 
 }
