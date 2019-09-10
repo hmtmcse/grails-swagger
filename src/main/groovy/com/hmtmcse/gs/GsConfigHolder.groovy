@@ -9,6 +9,7 @@ class GsConfigHolder {
 
 
     public static String hostnameWithPort = "localhost:8080"
+    public static String systemVersion = ""
     public static String swaggerDefinitionUrl = "http://localhost:8080/swaggerUi/definition"
 
 

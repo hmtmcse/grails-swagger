@@ -221,7 +221,7 @@ class GsApiResponseData {
         if (gsApiResponseData.httpCode != null && gsInternalResponse.httpCode != null) {
             gsApiResponseData.httpCode = gsInternalResponse.httpCode
         }
-        return gsApiResponseData.toMap()
+        return gsApiResponseData."to${GsConfigHolder.systemVersion}Map"()
     }
 
     Integer getTotal() {
