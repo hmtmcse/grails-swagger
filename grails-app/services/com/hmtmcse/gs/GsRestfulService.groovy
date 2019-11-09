@@ -8,6 +8,7 @@ import com.hmtmcse.gs.data.GsFilteredData
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.gs.model.CustomResponseParamProcessor
 import com.hmtmcse.gs.model.CustomProcessor
+import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsParameterMap
 
 class GsRestfulService {
@@ -113,6 +114,7 @@ class GsRestfulService {
     }
 
 
+    @Transactional
     private GsInternalResponse saveUpdate(Object domain, Map params, GsApiActionDefinition definition = null) {
         GsInternalResponse gsInternalResponse = GsInternalResponse.instance()
         domain.properties = params
