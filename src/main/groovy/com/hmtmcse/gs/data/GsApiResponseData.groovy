@@ -127,6 +127,10 @@ class GsApiResponseData {
     }
 
     Map toMap(){
+        return "to${GsConfigHolder.systemVersion}Map"()
+    }
+
+    Map toV1Map(){
         LinkedHashMap<String, Object> responseMap = [
                 "isSuccess" : isSuccess,
         ]
