@@ -33,7 +33,6 @@ repositories {
 
 dependencies {
 
-    compile group: 'com.hmtmcse', name: 'caa', version: '1.0.0'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.7'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.7'
 
