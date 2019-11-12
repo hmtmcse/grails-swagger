@@ -92,37 +92,51 @@ class GsApiResponseData {
 
     }
 
-    Map toV2Map(){
+    Map toV2Map() {
         Map responseMap = [
-                "status" : status ?: (isSuccess ? HTTPConst.SUCCESS_STATUS : HTTPConst.ERROR_STATUS)
+                "status": status ?: (isSuccess ? HTTPConst.SUCCESS_STATUS : HTTPConst.ERROR_STATUS)
         ]
-        if (count != null){
+        if (count != null) {
             Map count = ["count": count]
             responseMap.data = count
         }
 
-        if (response != null){
+        if (response != null) {
             responseMap.data = response
         }
 
-        if (isSuccess){
-            if (message != null){responseMap.message = message}
-        }else{
+        if (isSuccess) {
+            if (message != null) {
+                responseMap.message = message
+            }
+        } else {
             Map error = [:]
-            if (message != null){error.message = message}
-            if (errorDetails){error.fields = errorDetails}
+            if (message != null) {
+                error.message = message
+            }
+            if (errorDetails) {
+                error.fields = errorDetails
+            }
             responseMap.error = error
         }
 
-        if (total != null && offset != null && itemPerPage != null){
-            Map pagination = [
-                    "total": total,
-                    "offset": offset,
-                    "itemPerPage": itemPerPage
-            ]
-            responseMap.pagination = pagination
+        Map pagination = [:]
+
+        if (total != null) {
+            pagination.total = total
         }
 
+        if (offset != null) {
+            pagination.offset = offset
+        }
+
+        if (itemPerPage != null) {
+            pagination.itemPerPage = itemPerPage
+        }
+
+        if (pagination) {
+            responseMap.pagination = pagination
+        }
         return responseMap
     }
 
@@ -225,7 +239,7 @@ class GsApiResponseData {
         if (gsApiResponseData.httpCode != null && gsInternalResponse.httpCode != null) {
             gsApiResponseData.httpCode = gsInternalResponse.httpCode
         }
-        return gsApiResponseData."to${GsConfigHolder.systemVersion}Map"()
+        return gsApiResponseData.toMap()
     }
 
     Integer getTotal() {

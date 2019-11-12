@@ -80,6 +80,7 @@ trait GsDataFilterOrganizer<T> {
         return allowedConditions([
                 GsConstant.EQUAL,
                 GsConstant.AND,
+                GsConstant.OR,
                 GsConstant.ORDER,
                 GsConstant.NOT_EQUAL,
                 GsConstant.LESS_THAN,
