@@ -76,6 +76,13 @@ trait GsDataFilterOrganizer<T> {
         ])
     }
 
+    public T allowedConditionEqualAndOrder() {
+        return allowedConditions([
+                GsConstant.ORDER,
+                GsConstant.EQUAL
+        ])
+    }
+
     public T allowedAllCondition() {
         return allowedConditions([
                 GsConstant.EQUAL,
