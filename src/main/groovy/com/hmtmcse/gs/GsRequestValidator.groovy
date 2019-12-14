@@ -4,6 +4,7 @@ import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.gs.model.CustomRequestParamProcessor
 import com.hmtmcse.swagger.definition.SwaggerConstant
+import org.grails.web.json.JSONObject
 
 class GsRequestValidator {
 
@@ -72,7 +73,7 @@ class GsRequestValidator {
             }
 
 
-            if (param == null && requestProperty.defaultValue != null) {
+            if ((param == null || (param instanceof JSONObject && param.size() == 0)) && requestProperty.defaultValue != GsConstant.NOT_DEFAULT_VALUE) {
                 param = requestProperty.defaultValue
             }
 
