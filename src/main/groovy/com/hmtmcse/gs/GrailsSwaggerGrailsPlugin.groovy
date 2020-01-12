@@ -7,6 +7,7 @@ class GrailsSwaggerGrailsPlugin extends Plugin {
     def pluginExcludes = [
         "grails-app/views/error.gsp"
     ]
+    def version = "1.0.0"
 
     def title = "Grails Swagger API Definition"
     def author = "H.M.Touhid Mia (HMTMCSE)"
