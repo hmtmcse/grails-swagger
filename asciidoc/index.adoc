@@ -40,3 +40,8 @@ include::topics/custom-processors.adoc[]
 {blank} +
 
 include::topics/criteria-builder.adoc[]
+
+
+{blank} +
+
+include::topics/gs-request-organizer.adoc[]

@@ -7,6 +7,7 @@ class GrailsSwaggerGrailsPlugin extends Plugin {
     def pluginExcludes = [
         "grails-app/views/error.gsp"
     ]
+    def version = "1.0.0"
 
     def title = "Grails Swagger API Definition"
     def author = "H.M.Touhid Mia (HMTMCSE)"
@@ -23,6 +24,10 @@ of are where can put custom codes or processor.
     def issueManagement = [ system: "GitHub", url: "https://github.com/hmtmcse/grails-swagger/issues" ]
     def license = "MIT"
 
-
+    Closure doWithSpring() {
+        { ->
+            gsConfigHolder(GsConfigHolder)
+        }
+    }
 
 }

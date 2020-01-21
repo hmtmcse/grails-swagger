@@ -1,6 +1,7 @@
 package com.hmtmcse.gs
 
 import com.hmtmcse.swagger.definition.SwaggerConstant
+import grails.util.Holders
 import grails.web.servlet.mvc.GrailsParameterMap
 
 import javax.servlet.http.HttpServletRequest
@@ -50,5 +51,17 @@ class GsUtil {
         }catch(Exception e){
             return null
         }
+    }
+
+    static def getBean(String beanIdentifier) {
+        try {
+            return Holders.grailsApplication.mainContext.getBean(beanIdentifier)
+        } catch (Exception e) {
+            return null
+        }
+    }
+
+    static GsCommonHelpService getCommonHelpService() {
+        return getBean("gsCommonHelpService")
     }
 }

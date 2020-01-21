@@ -1,0 +1,51 @@
+= Request Organizer
+
+{blank} +
+
+=== Methods
+
+addRequestProperty(String name, String dataType = null, String defaultValue = "") :: You can add request property by this method via *GsApiActionDefinition*
+
+.*Return Type*: GsApiRequestProperty
+{blank} +
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +

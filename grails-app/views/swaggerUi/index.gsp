@@ -26,7 +26,7 @@
     }
     </style>
     <script>
-        window.GrailsSwaggerDefinitionURL = "${com.hmtmcse.gs.GsConfigHolder.swaggerDefinitionUrl}"
+        window.GrailsSwaggerDefinitionURL = "${swaggerDefinitionUrl}"
     </script>
     <asset:stylesheet src="swagger/swagger-ui.css"/>
     <asset:javascript src="swagger/swagger-ui-bundle.js"/>

@@ -17,15 +17,66 @@ For *HTTP DELETE* Request action must start with **__delete__**MethodName
 
 {blank} +
 
+=== Methods
+
+create(GsApiActionDefinition definition) :: This Method allow you to handle data save operation according to *GsApiActionDefinition*.
+
+.*Return Type*: JSON String
+{blank} +
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+{blank} +
+
 === Rest Processor Methods
 
 [cols="2,3,3, 5"]
 |===
 |Method Name |Request Params| Return |Description
 
-| create(GsApiActionDefinition definition)
+| 
 | GsApiActionDefinition
-| JSON String
+| g
 | This Method Help to process create request.
 
 | list(GsApiActionDefinition definition)

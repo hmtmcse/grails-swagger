@@ -13,7 +13,11 @@ class GsApiResponseData {
     String message = null
     List errorDetails = null
     Integer code = null
+    String status = null
+    Integer httpCode = HTTPConst.SUCCESS
     Integer total = null
+    Integer offset = null
+    Integer itemPerPage = null
     Integer count = null
     Boolean isExist = null
     Boolean isSuccess = false
@@ -88,7 +92,59 @@ class GsApiResponseData {
 
     }
 
+    Map toV2Map() {
+        Map responseMap = [
+                "status": status ?: (isSuccess ? HTTPConst.SUCCESS_STATUS : HTTPConst.ERROR_STATUS)
+        ]
+        if (count != null) {
+            Map count = ["count": count]
+            responseMap.data = count
+        }
+
+        if (response != null) {
+            responseMap.data = response
+        }
+
+        if (isSuccess) {
+            if (message != null) {
+                responseMap.message = message
+            }
+        } else {
+            Map error = [:]
+            if (message != null) {
+                error.message = message
+            }
+            if (errorDetails) {
+                error.fields = errorDetails
+            }
+            responseMap.error = error
+        }
+
+        Map pagination = [:]
+
+        if (total != null) {
+            pagination.total = total
+        }
+
+        if (offset != null) {
+            pagination.offset = offset
+        }
+
+        if (itemPerPage != null) {
+            pagination.itemPerPage = itemPerPage
+        }
+
+        if (pagination) {
+            responseMap.pagination = pagination
+        }
+        return responseMap
+    }
+
     Map toMap(){
+        return "to${GsConfigHolder.systemVersion}Map"()
+    }
+
+    Map toV1Map(){
         LinkedHashMap<String, Object> responseMap = [
                 "isSuccess" : isSuccess,
         ]
@@ -170,6 +226,18 @@ class GsApiResponseData {
 
         if (gsApiResponseData.isExist != null && gsInternalResponse.isExist != null) {
             gsApiResponseData.isExist = gsInternalResponse.isExist
+        }
+
+        if (gsApiResponseData.offset != null && gsInternalResponse.offset != null) {
+            gsApiResponseData.offset = gsInternalResponse.offset
+        }
+
+        if (gsApiResponseData.itemPerPage != null && gsInternalResponse.itemPerPage != null) {
+            gsApiResponseData.itemPerPage = gsInternalResponse.itemPerPage
+        }
+
+        if (gsApiResponseData.httpCode != null && gsInternalResponse.httpCode != null) {
+            gsApiResponseData.httpCode = gsInternalResponse.httpCode
         }
         return gsApiResponseData.toMap()
     }

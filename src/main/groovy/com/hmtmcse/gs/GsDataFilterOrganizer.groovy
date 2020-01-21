@@ -76,10 +76,18 @@ trait GsDataFilterOrganizer<T> {
         ])
     }
 
+    public T allowedConditionEqualAndOrder() {
+        return allowedConditions([
+                GsConstant.ORDER,
+                GsConstant.EQUAL
+        ])
+    }
+
     public T allowedAllCondition() {
         return allowedConditions([
                 GsConstant.EQUAL,
                 GsConstant.AND,
+                GsConstant.OR,
                 GsConstant.ORDER,
                 GsConstant.NOT_EQUAL,
                 GsConstant.LESS_THAN,

@@ -53,5 +53,7 @@ class GsConstant {
     public final static String PROPERTY_VALUE = "propertyValue"
     public final static String PROPERTY_VALUE_X = "propertyValueX"
     public final static String ALLOWED_PROPERTY = "allowedProperty"
+
+    public final static String NOT_DEFAULT_VALUE = "NOT_DEFAULT_VALUE"
     // End of Data Filter
 }

@@ -1,6 +1,27 @@
 = API Request Property
 
+
+{blank} +
+
+
 === Methods
+
+required() :: 
+
+This will make the property required.
+
+.*Return Type*: GsApiRequestProperty
+
+{blank} +
+
+required() :: 
+
+This will make the property required.
+
+.*Return Type*: *GsApiRequestProperty*
+
+
+{blank} +
 
 [cols="2,3,3, 5"]
 |===

@@ -25,6 +25,7 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
     public Class<T> domain
 
     public String lastResponseRelationalEntityName = null
+    public String lastRequestRelationalEntityName = null
     public String parameterName = null
     public GsApiResponseData successResponseFormat = null
     public GsApiResponseData failedResponseFormat = null
@@ -139,6 +140,20 @@ class GsApiActionDefinition<T> implements GsResponseOrganizer<GsApiActionDefinit
         this.responseProperties.put(name, gsApiResponseProperty)
         lastResponseRelationalEntityName = name
         return this.responseProperties.get(name).relationalEntity
+    }
+
+    public GsRelationalEntityRequest addRelationalEntityRequest(String name, String alias = null, String defaultValue = "") {
+        GsApiRequestProperty gsApiRequestProperty = new GsApiRequestProperty(name).setAlias(alias).setDefaultValue(defaultValue)
+        gsApiRequestProperty.relationalEntity = new GsRelationalEntityRequest()
+        def relationalProperties = gsDomain.domainProperties.get(name)?.relationalProperties
+        gsApiRequestProperty.relationalEntity.gsDomain.domainProperties = relationalProperties ?: new LinkedHashMap<>()
+        this.requestProperties.put(name, gsApiRequestProperty)
+        lastRequestRelationalEntityName = name
+        return this.requestProperties.get(name).relationalEntity
+    }
+
+    public GsRelationalEntityRequest reRequestData() {
+        return this.requestProperties.get(lastRequestRelationalEntityName).relationalEntity
     }
 
 

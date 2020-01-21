@@ -5,6 +5,58 @@
 
 === Methods
 
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+methodName :: Description
+
+.*Return Type*: xxxxxxxxxxxxx
+{blank} +
+
+
+
+
+
+
+
 [cols="2,3,3, 5"]
 |===
 |Method Name |Request Params| Return |Description

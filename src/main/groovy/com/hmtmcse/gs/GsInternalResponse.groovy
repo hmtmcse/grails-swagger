@@ -3,6 +3,7 @@ package com.hmtmcse.gs
 import com.hmtmcse.gs.data.GsApiRequestProperty
 import com.hmtmcse.gs.data.GsFilteredData
 import com.hmtmcse.gs.data.GsParamsPairData
+import com.hmtmcse.gs.data.HTTPConst
 import org.springframework.validation.FieldError
 
 class GsInternalResponse {
@@ -13,6 +14,9 @@ class GsInternalResponse {
     public Object queryResult = null
     public List errorDetails = []
     public Integer total = null
+    public Integer httpCode = HTTPConst.SUCCESS
+    public Integer offset = null
+    public Integer itemPerPage = null
     public Boolean isExist = null
     public Integer count = null
     Integer code = null

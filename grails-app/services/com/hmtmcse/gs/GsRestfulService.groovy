@@ -8,6 +8,7 @@ import com.hmtmcse.gs.data.GsFilteredData
 import com.hmtmcse.gs.data.GsParamsPairData
 import com.hmtmcse.gs.model.CustomResponseParamProcessor
 import com.hmtmcse.gs.model.CustomProcessor
+import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsParameterMap
 
 class GsRestfulService {
@@ -38,6 +39,8 @@ class GsRestfulService {
             def queryResult = closure(filteredData)
             responseData.queryResult = queryResult
             responseData.total = (queryResult ? queryResult.totalCount : 0)
+            responseData.offset = filteredData.offset
+            responseData.itemPerPage = filteredData.max
             responseData.response = responseMapGenerator(definition.getResponseProperties(), queryResult, [])
             if (definition.successResponseFormat == null) {
                 definition.successResponseFormat = GsApiResponseData.successResponseWithTotal([], 0)
@@ -111,6 +114,7 @@ class GsRestfulService {
     }
 
 
+    @Transactional
     private GsInternalResponse saveUpdate(Object domain, Map params, GsApiActionDefinition definition = null) {
         GsInternalResponse gsInternalResponse = GsInternalResponse.instance()
         domain.properties = params
@@ -122,7 +126,7 @@ class GsRestfulService {
             }
             return gsInternalResponse.processDomainError(domain.errors.allErrors, requestMap)
         } else {
-            gsInternalResponse.domain = domain.save(flush: true)
+            gsInternalResponse.domain = domain.save()
             gsInternalResponse.queryResult = gsInternalResponse.domain
         }
         return gsInternalResponse.setIsSuccess(true)
@@ -249,7 +253,7 @@ class GsRestfulService {
             if (queryResult == null) {
                 responseData.message = GsConfigHolder.requestedConditionEmpty()
             } else {
-                queryResult.delete(flush: true)
+                queryResult.delete()
                 responseData.isSuccess = true
             }
         } catch (GrailsSwaggerException e) {
